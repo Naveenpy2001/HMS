@@ -61,7 +61,9 @@ const Home = () => {
                   <BsArrowRightCircle className="icon" /> mail services
                 </span>
                 <div className="bottom-btn">
-                  <button className="demo">demo</button>
+                  <a href="/Primary">
+                    <button className="demo">demo</button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -150,7 +152,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-
       </main>
     </section>
   );
