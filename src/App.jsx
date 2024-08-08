@@ -1,27 +1,22 @@
 import React from "react";
 import Header from "./header/header";
 import Home from "./home/home";
-import HospitalDashboard from "./demo/primaryDemo";
-import DoctorManagement from "./demo/doctorManage";
-import HospitalAccountsPage from "./demo/accountManagement";
-import PatientRegistration from "./demo/patientRegistration";
-import PatientTracker from "./demo/patientTrack";
-
 import { Routes,Route } from "react-router-dom";
+import DashboardHMS from "./Dashboard/dashboard";
+import Login from "./Dashboard/Login";
+import Register from "./Dashboard/Register";
+import ForgotPswd from "./Dashboard/components/ForgotPswd";
+import Loader from "./loader";
 const App = () => {
   return (
     <>
-      <Header />
+    <Loader />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/Primary" element={<HospitalDashboard />} />
-        <Route path="/DoctorManagement" element={<DoctorManagement />} />
-        <Route path="/PatientRegistration" element={<PatientRegistration />} />
-        <Route path="/PatientTracker" element={<PatientTracker />} />
-        <Route
-          path="/HospitalAccountsPage"
-          element={<HospitalAccountsPage />}
-        />
+        <Route path="/Dashboard" element={<DashboardHMS />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
+        <Route path="/pswd" element={<ForgotPswd />} />
       </Routes>
     </>
   );
