@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../css/login.css"; 
 
+import { useNavigate } from "react-router-dom";
+
 import ForgotPswd from "./components/ForgotPswd";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const[forgot,setForgot] = useState(false)
 
@@ -15,11 +19,12 @@ const Login = () => {
 
     try {
         // 'URL'
-      const response = await axios.post("", {
-        email,
-        password,
-      });
-      console.log("Login successful:", response.data);
+      // const response = await axios.post("", {
+      //   email,
+      //   password,
+      // });
+      navigate(`/dashboard`);
+      // console.log("Login successful:", response.data);
     } catch (error) {
       console.error("Error logging in:", error);
     }

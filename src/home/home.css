@@ -86,7 +86,7 @@ strike {
   transform: scale(1.02);
 }
 .bottom-btn {
-  position: absolute;
+  /* position: absolute; */
   bottom: 3%;
   left: 0;
   display: flex;

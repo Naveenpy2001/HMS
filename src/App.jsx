@@ -6,18 +6,24 @@ import DashboardHMS from "./Dashboard/dashboard";
 import Login from "./Dashboard/Login";
 import Register from "./Dashboard/Register";
 import ForgotPswd from "./Dashboard/components/ForgotPswd";
-import Loader from "./loader";
+
+import IndexPage from "./home/IndexPage";
+import Services from "./home/HomeComponents/Services";
+import Navbar from "./home/HomeComponents/Nav";
+import Footer from "./home/Footer";
 const App = () => {
   return (
     <>
-    <Loader />
+    <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<IndexPage />} />
         <Route path="/Dashboard" element={<DashboardHMS />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/pswd" element={<ForgotPswd />} />
+        <Route path="/Services" element={<Services />} />
       </Routes>
+      <Footer />
     </>
   );
 };

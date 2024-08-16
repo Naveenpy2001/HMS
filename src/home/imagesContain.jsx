@@ -5,22 +5,12 @@ import "./ImageSlider.css";
 import slide3 from "../media/slide3.jpg";
 import slide2 from "../media/slide2.png";
 import slide1 from "../media/slide1.png";
+
 const ImagesContain = () => {
   const images = [slide3, slide2, slide1];
-//   gradient text css
-  const welcomeText = {
-    fontSize: "34px",
-    textAlign: "center",
-    padding: "15px 0",
-    fontWeight: "500",
-    background:
-      "linear-gradient(to right, #A40D91 0%, #FE34FF 50%, #A40D91 87%)",
-    backgroundClip: "text",
-    webkitTextFillColor: "transparent",
-  };
+  
   return (
     <div>
-      <h1 style={welcomeText}>Welcome to HMS</h1>
       <ImageSlider images={images} />
     </div>
   );

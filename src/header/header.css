@@ -14,8 +14,8 @@ a {
 header {
   display: flex;
   align-items: center;
-  padding: 15px 20px;
-  border-bottom: 1px solid #999;
+  padding: 10px 20px;
+
   position: sticky;
   top: 0;
   z-index: 9999;
