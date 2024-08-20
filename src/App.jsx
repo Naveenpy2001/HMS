@@ -9,12 +9,15 @@ import ForgotPswd from "./Dashboard/components/ForgotPswd";
 
 import IndexPage from "./home/IndexPage";
 import Services from "./home/HomeComponents/Services";
-import Navbar from "./home/HomeComponents/Nav";
-import Footer from "./home/Footer";
+
+
+import ContactUs from "./home/HomeComponents/ContactUSMain";
+import AboutUs from "./home/HomeComponents/AboutUsMain";
+import Support from "./home/HomeComponents/Support";
 const App = () => {
   return (
     <>
-    <Navbar />
+
       <Routes>
         <Route path="/" element={<IndexPage />} />
         <Route path="/Dashboard" element={<DashboardHMS />} />
@@ -22,8 +25,11 @@ const App = () => {
         <Route path="/Register" element={<Register />} />
         <Route path="/pswd" element={<ForgotPswd />} />
         <Route path="/Services" element={<Services />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/Support" element={<Support />} />
       </Routes>
-      <Footer />
+
     </>
   );
 };

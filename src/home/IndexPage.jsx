@@ -1,14 +1,15 @@
 import React from 'react';
-import Navbar from './HomeComponents/Nav';
 import ImagesContain from './imagesContain';
 import { AboutUs, Services } from './HomeComponents/AboutUs';
 import ContactForm from './HomeComponents/ContactUs';
 import Newsletter from './HomeComponents/NewsLetter';
-import Footer from './Footer';
+import Navbar from '../home/HomeComponents/Nav'
 import Pricing from './HomeComponents/Pricing';
+import Footer from './Footer'
 const IndexPage = () => {
     return (
         <>
+        <Navbar />
             <br />
             <div className="hms-imgs-slider">
                 <ImagesContain />
@@ -28,6 +29,7 @@ const IndexPage = () => {
             <div className="newsLetter">
                 <Newsletter />
             </div>
+            <Footer />
         </>
     );
 }
