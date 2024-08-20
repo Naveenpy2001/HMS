@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../css/register.css"; 
+import "../css/register.css";
+
+import OtpVerification from "../home/HomeComponents/OTP";
 
 const Register = () => {
   const [firstname, setFirstName] = useState("");
@@ -11,6 +13,9 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [repetepassword, setConfirmPassword] = useState("");
   // const [gender, setGender] = useState("");
+
+const [otpVerify,setOtpVerify] = useState(false)
+
 
   const [loading,setLoading] = useState(false);
 
@@ -42,9 +47,13 @@ const Register = () => {
         // gender,
       });
       setLoading(false)
+      setOtpVerify(true)
       console.log("Registration successful:", response.data);
     } catch (error) {
       console.error("Error registering:", error);
+      setLoading(false);
+      setOtpVerify(false);
+
     }
   };
 
@@ -246,6 +255,9 @@ const Register = () => {
           </p>
         </div>
       </form>
+      <div className={otpVerify ? "active-otp-form" : "PopUp-OTP"}>
+        <OtpVerification />
+      </div>
     </div>
   );
 };

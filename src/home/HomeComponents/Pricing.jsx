@@ -162,7 +162,6 @@ const Pricing = () => {
               <span className="feature">Feature 3</span>
               <span className="feature">Feature 4</span>
               <span className="feature">Feature 5</span>
-              <span className="feature">Feature 6</span>
               <div className="bottom-btn">
                 <button className="demo-btn">Demo</button>
               </div>

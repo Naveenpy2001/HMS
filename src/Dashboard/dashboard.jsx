@@ -119,8 +119,8 @@ function App() {
       <section className="home-section">
         <nav>
           <div className="sidebar-button">
-            <FaBars className="sidebarBtn" />
-            <span className="dashboard">Dashboard</span>
+            {/* <FaBars className="sidebarBtn" /> */}
+            <span className="dashboard">Hi! Name/Email</span>
           </div>
         </nav>
         <div className="home-content">{renderContent()}</div>

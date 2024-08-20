@@ -79,6 +79,232 @@
     box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
 }
 
+
+.pr-form-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.pr-title {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.pr-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.pr-input,
+.pr-textarea,
+.pr-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.pr-textarea {
+    resize: vertical;
+}
+
+.pr-radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.pr-radio-label {
+    margin-left: 5px;
+    margin-right: 15px;
+}
+
+.pr-dob {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.pr-age {
+    margin-bottom: 20px;
+}
+
+.pr-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pr-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Dashboard.css */
+
+
+
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 15px;
+}
+
+.stats-card {
+    border-radius: 8px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    text-align: center;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card h2 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.stats-card p {
+    font-size: 2em;
+    color: #0A2558;
+    margin: 10px 0;
+}
+
+.count {
+    transition: color 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.tracking-container {
+    margin-top: 30px;
+}
+
+.tracking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tracking-table th,
+.tracking-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.tracking-table th {
+    background-color: #0A2558;
+    color: white;
+}
+
+.tracking-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.tracking-table tr:hover {
+    background-color: #ddd;
+}
+
+
+/* DoctorView */
+
+.dct-view {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dct-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.dct-subheading {
+    font-size: 20px;
+    margin: 20px 0;
+    color: #555;
+}
+
+.dct-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.dct-form-group {
+    margin-bottom: 15px;
+}
+
+.dct-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.dct-input,
+.dct-select,
+.dct-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.dct-input {
+    margin-bottom: 10px;
+}
+
+.dct-select {
+    margin-bottom: 10px;
+}
+
+.dct-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.dct-radio {
+    margin-right: 10px;
+}
+
+.dct-radio-label {
+    margin-right: 20px;
+}
+
+.dct-submit-button {
+    background-color: #0A2558;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.dct-submit-button:hover {
+    background-color: #082A45;
+}
+
+
 @media (max-width: 768px) {
     .pr-forms {
         padding: 20px;
