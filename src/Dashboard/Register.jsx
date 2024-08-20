@@ -3,13 +3,13 @@ import axios from "axios";
 import "../css/register.css"; 
 
 const Register = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [hospitalName,setHospitalName] = useState("")
-  const [email, setEmail] = useState("");
-  const [phone,setPhone] = useState('')
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [hospitalname,setHospitalName] = useState("")
+  const [emailid, setEmail] = useState("");
+  const [phonenumber,setPhone] = useState('')
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [repetepassword, setConfirmPassword] = useState("");
   // const [gender, setGender] = useState("");
 
   const [loading,setLoading] = useState(false);
@@ -17,7 +17,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (password !== confirmPassword) {
+    if (password !== repetepassword) {
       alert("Passwords do not match");
       return;
     }
@@ -31,14 +31,14 @@ const Register = () => {
     }
     try {
       setLoading(true)
-      const response = await axios.post("", {
-        firstName,
-        lastName,
-        hospitalName,
-        email,
-        phone,
+      const response = await axios.post("http://localhost:8080/register", {
+        firstname,
+        lastname,
+        hospitalname,
+        emailid,
+        phonenumber,
         password,
-        confirmPassword,
+        repetepassword,
         // gender,
       });
       setLoading(false)
@@ -79,7 +79,7 @@ const Register = () => {
             type="text"
             className="input_field"
             id="username_field"
-            value={firstName}
+            value={firstname}
             onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
@@ -94,7 +94,7 @@ const Register = () => {
             type="text"
             className="input_field"
             id="username_field"
-            value={lastName}
+            value={lastname}
             onChange={(e) => setLastName(e.target.value)}
           />
         </div>
@@ -109,7 +109,7 @@ const Register = () => {
             type="text"
             className="input_field"
             id="username_field"
-            value={hospitalName}
+            value={hospitalname}
             onChange={(e) => setHospitalName(e.target.value)}
           />
         </div>
@@ -145,7 +145,7 @@ const Register = () => {
             type="email"
             className="input_field"
             id="email_field"
-            value={email}
+            value={emailid}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -161,7 +161,7 @@ const Register = () => {
             type="tel"
             className="input_field"
             id="username_field"
-            value={phone}
+            value={phonenumber}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
@@ -210,7 +210,7 @@ const Register = () => {
             type="password"
             className="input_field"
             id="confirm_password_field"
-            value={confirmPassword}
+            value={repetepassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>

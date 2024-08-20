@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import ForgotPswd from "./components/ForgotPswd";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [emailid, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -19,12 +19,12 @@ const Login = () => {
 
     try {
         // 'URL'
-      // const response = await axios.post("", {
-      //   email,
-      //   password,
-      // });
+      const response = await axios.post("http://localhost:8080/dologin", {
+        emailid,
+        password,
+      });
       navigate(`/dashboard`);
-      // console.log("Login successful:", response.data);
+      console.log("Login successful:", response.data);
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -85,7 +85,7 @@ const Login = () => {
               type="text"
               className="input_field"
               id="email_field"
-              value={email}
+              value={emailid}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
