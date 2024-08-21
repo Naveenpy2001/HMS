@@ -160,17 +160,24 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    gap: 15px;
+    gap: 10px;
 }
 
 .stats-card {
     border-radius: 8px;
     padding: 20px;
     margin: 10px;
-    width: 300px;
+    width: 380px;
     text-align: center;
     color: #333;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all .2s linear;
+    cursor: pointer;
+    border: 3px solid transparent;
+}
+.stats-card:hover{
+    /* transform: translateY(-5px); */
+    border: 3px solid #000000;
 }
 
 .stats-card h2 {
@@ -190,6 +197,7 @@
 
 .tracking-container {
     margin-top: 30px;
+    padding: 0 10px;
 }
 
 .tracking-table {
@@ -218,10 +226,76 @@
 }
 
 
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+
+}
+
+.search-input {
+    width: 400px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.filter-select{
+    padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+}
+.filter-container{
+    padding: 10px 0;
+    display: flex;
+    align-items: end;
+    justify-content: flex-end;
+}
+
+.dropdown-list {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 200px;
+    max-height: 150px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+}
+
+.dropdown-item {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
+.search-button {
+    margin-left: 10px;
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.tracking-table th,
+.tracking-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.highlight {
+    background-color: #f0f0f0;
+}
+
 /* DoctorView */
 
 .dct-view {
-    padding: 20px;
+    padding: 20px 300px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -304,6 +378,140 @@
     background-color: #082A45;
 }
 
+/* billing.css */
+.billing {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.billing-heading {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.billing-section {
+    margin-bottom: 30px;
+}
+
+.billing-subheading {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.billing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.billing-table th,
+.billing-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.billing-table th {
+    background-color: #0A2558;
+    color: #fff;
+}
+
+.billing-summary {
+    display: flex;
+    justify-content: space-between;
+}
+
+.billing-summary-item {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.billing-button {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.billing-button:hover {
+    background-color: #c0392b;
+}
+
+/* HospitalData */
+
+
+.hospital-data {
+    padding: 20px 280px;
+}
+
+.hospital-data-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hospital-data-section {
+    margin-bottom: 20px;
+}
+
+.hospital-data-subheading {
+    margin-bottom: 10px;
+}
+
+.hospital-data-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.hospital-data-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.hospital-data-button:hover {
+    background-color: #0056b3;
+}
+
+.hospital-data-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    margin: 10px auto;
+}
+
+.hospital-data-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hospital-data-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
 
 @media (max-width: 768px) {
     .pr-forms {

@@ -16,15 +16,15 @@ function App() {
   const renderContent = () => {
     switch (activeTab) {
       case "Dashboard":
-        return <Dashboard />;
+        return <Dashboard setActiveTab={setActiveTab}/>;
       case "PatientRegistration":
         return <PatientRegistration />;
       case "DoctorView":
         return <DoctorView />;
-      case "MedicalTests":
-        return <MedicalTests />;
-      case "MedicalPrescription":
-        return <MedicalPrescription />;
+      // case "MedicalTests":
+      //   return <MedicalTests />;
+      // case "MedicalPrescription":
+      //   return <MedicalPrescription />;
       case "Billing":
         return <Billing />;
       case "HospitalData":
@@ -72,7 +72,7 @@ function App() {
               <span className="links_name">Doctor View</span>
             </button>
           </li>
-          <li>
+          {/* <li>
             <button
               className={activeTab === "MedicalTests" ? "active" : ""}
               onClick={() => setActiveTab("MedicalTests")}
@@ -89,14 +89,14 @@ function App() {
               <i className="bx bx-coin-stack"></i>
               <span className="links_name">Medical Prescription</span>
             </button>
-          </li>
+          </li> */}
           <li>
             <button
               className={activeTab === "Billing" ? "active" : ""}
               onClick={() => setActiveTab("Billing")}
             >
               <i className="bx bx-book-alt"></i>
-              <span className="links_name">Billing</span>
+              <span className="links_name">Accounts</span>
             </button>
           </li>
           <li>
@@ -105,7 +105,7 @@ function App() {
               onClick={() => setActiveTab("HospitalData")}
             >
               <i className="bx bx-user"></i>
-              <span className="links_name">Hospital Data</span>
+              <span className="links_name">Profile </span>
             </button>
           </li>
           <li className="log_out">
