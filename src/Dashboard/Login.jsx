@@ -16,11 +16,15 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!emailid || !password) {
+      alert('Email and password must not be empty.');
+      return;
+  }
 
     try {
         // 'URL'
-      const response = await axios.post("http://localhost:8080/dologin", {
-        emailid,
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        emailid, 
         password,
       });
       navigate(`/dashboard`);

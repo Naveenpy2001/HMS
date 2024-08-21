@@ -12,7 +12,7 @@ const Dashboard = () => {
     totalPayment: 0,
     patientTracking: [],
   });
-
+  console.log(data)
   const [animatedData, setAnimatedData] = useState({
     todayPatientsCount: 0,
     totalPatientsCount: 0,
@@ -27,7 +27,8 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         // Replace with your API endpoint
-        const response = await fetch("/api/dashboard-data");
+        const response = await fetch("http://localhost:8080/dashboard");
+        
         const result = await response.json();
         setData(result);
 
@@ -63,9 +64,9 @@ const Dashboard = () => {
   }, []);
 
   // Function to format currency in INR
-  const formatCurrency = (amount) => {
-    return `₹${amount.toLocaleString("en-IN")}`;
-  };
+  // const formatCurrency = (amount) => {
+  //   return `₹${amount.toLocaleString("en-IN")}`;
+  // };
 
   // Function to animate the count
   const countAnimation = (targetValue, element) => {
@@ -131,13 +132,13 @@ const Dashboard = () => {
         <div className="stats-card" style={{ backgroundColor: "#B9FBC0" }}>
           <h2>Today's Payment</h2>
           <p className="count" data-target={data.todayPayment}>
-            {formatCurrency(data.todayPayment)}
+            {/* {formatCurrency(data.todayPayment)} */}
           </p>
         </div>
         <div className="stats-card" style={{ backgroundColor: "#C2C2F0" }}>
           <h2>Total Payment</h2>
           <p className="count" data-target={data.totalPayment}>
-            {formatCurrency(data.totalPayment)}
+            {/* {formatCurrency(data.totalPayment)} */}
           </p>
         </div>
       </div>
@@ -151,14 +152,14 @@ const Dashboard = () => {
               <th>Status</th>
             </tr>
           </thead>
-          <tbody>
+          {/* <tbody>
             {data.patientTracking.map((patient, index) => (
               <tr key={index}>
                 <td>{patient.name}</td>
                 <td>{patient.visited ? "Visited" : "Not Visited"}</td>
               </tr>
             ))}
-          </tbody>
+          </tbody> */}
         </table>
       </div>
     </div>
