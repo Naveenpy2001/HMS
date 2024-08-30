@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import '../../css/otp.css'
-const OtpVerification = () => {
+import { useNavigate } from "react-router-dom";
+const OtpVerification = ({ firstname,lastname,emailid,hospitalname,phonenumber,password,repetepassword }) => {
+  const navigate = useNavigate();
   const [otp, setOtp] = useState({
     input1: "",
     input2: "",
@@ -10,7 +12,6 @@ const OtpVerification = () => {
     input5: "",
     input6: "",
   });
-
   const handleChange = (e) => {
     const { id, value } = e.target;
     const index = parseInt(id.slice(-1));
@@ -53,10 +54,12 @@ const OtpVerification = () => {
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/verify-otp",
-        { verificationCode }
+        "http://localhost:8080/verify-otp",{
+        emailid,
+        otp: verificationCode}
       );
       console.log(response.data);
+     
     //   here navigate to profile after OTP verification is Success
     
     } catch (error) {
@@ -65,8 +68,13 @@ const OtpVerification = () => {
   };
 
   const handleResend = async () => {
+    const verificationCode = Object.values(otp).join("");
+
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/resend-otp");
+      const response = await axios.post("http://localhost:8080/resend-otp",
+      { firstname,lastname,emailid,hospitalname,phonenumber,password,repetepassword
+        ,otp: verificationCode}
+      );
       console.log(response.data);
     } catch (error) {
       console.error("Error resending OTP:", error);

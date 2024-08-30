@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 
 const DoctorView = () => {
   // State to hold form values
@@ -16,15 +16,35 @@ const DoctorView = () => {
   const [tests, setTests] = useState("");
   const [doctorAdvice, setDoctorAdvice] = useState("");
 
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      fetchPatientData();
+    }
+  };
+
+  const fetchPatientData = async () => {
+    try {
+      // Replace with your fetch API endpoint
+      const response = await axios.get(`http://localhost:8080/api/record/${patientId}`);
+      const data = response.data[0]; // Assuming API returns an array with one object
+      setPatientName(data.firstName+" "+data.lastName);
+      setPtDiseases(data.disease);
+    } catch (error) {
+      console.error("Error fetching patient data:", error);
+      alert("Failed to fetch patient data. Please try again.");
+    }
+  };
+
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Handle form submission logic here
+    // Form data to be sent to the backend
     const formData = {
       patientId,
       patientName,
       ptDiseases,
-      patientTreatment,
+      // patientTreatment,
       prescription,
       tabletName,
       otherTabletName,
@@ -34,20 +54,38 @@ const DoctorView = () => {
       tests,
       doctorAdvice,
     };
-    console.log("Form Data Submitted:", formData);
-    // Clear form after submission
-    setPatientId("");
-    setPatientName("");
-    setPtDiseases("");
-    setPatientTreatment("");
-    setPrescription("");
-    setTabletName("");
-    setOtherTabletName("");
-    setInjection("");
-    setMg("");
-    setTabletCount("");
-    setTests("");
-    setDoctorAdvice("");
+
+    try {
+      // Replace with your Spring Boot endpoint URL
+      const response = await axios.post(
+        "http://localhost:8080/savetreatment", // Update with your actual Spring Boot endpoint
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("Form Data Submitted:", response.data);
+      alert("Data submitted successfully!");
+
+      // Clear form after submission
+      setPatientId("");
+      // setPatientName("");
+      // setPtDiseases("");
+      setPatientTreatment("");
+      setPrescription("");
+      setTabletName("");
+      setOtherTabletName("");
+      setInjection("");
+      setMg("");
+      setTabletCount("");
+      setTests("");
+      setDoctorAdvice("");
+    } catch (error) {
+      console.error("Error submitting form data:", error);
+      alert("Failed to submit data. Please try again.");
+    }
   };
 
   return (
@@ -64,8 +102,13 @@ const DoctorView = () => {
             className="dct-input"
             value={patientId}
             onChange={(e) => setPatientId(e.target.value)}
+            // onKeyDown={handleKeyDown}
+            onBlur={fetchPatientData}
             required
           />
+           {/* <button type="button" onClick={fetchPatientData} className="dct-fetch-button">
+            Fetch Patient Data
+          </button> */}
         </div>
 
         <div className="dct-form-group">
@@ -79,6 +122,7 @@ const DoctorView = () => {
             value={patientName}
             onChange={(e) => setPatientName(e.target.value)}
             required
+            readOnly
           />
         </div>
 
@@ -93,6 +137,7 @@ const DoctorView = () => {
             value={ptDiseases}
             onChange={(e) => setPtDiseases(e.target.value)}
             required
+            readOnly
           />
         </div>
 

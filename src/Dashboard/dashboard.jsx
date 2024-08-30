@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import "../css/dashboard.css";
 import { FaBars } from "react-icons/fa";
 import Dashboard from "./components/Dashboard";
@@ -8,15 +8,65 @@ import MedicalTests from "./components/MedicalTests";
 import MedicalPrescription from "./components/MedicalPrescription";
 import Billing from "./components/Billing";
 import HospitalData from "./components/HospitalData";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function App() {
+function App(token) {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [userData,setUserData] = useState('');
 
+  // check if data showing or not
+  
+  
+  const UserDataFetch =async () => {
+       try {
+        const response = await fetch("http://localhost:8080/dashboard",
+          {method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },}
+        )
+          const data = await response.json()
+          setUserData(data)
+          console.log("Data",data.firstname,data.lastname);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }  
+      } catch (error) {
+      console.log('error fetching : ', error );
+      }
+  }
+  
+  // const LogoutButton = () => {
+  //   const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
+    const handleLogout = async () => {
+      try {
+        // Send a POST request to the logout endpoint
+        await axios.post("http://localhost:8080/reactlogout", { 
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } // Add token to headers if needed
+        });
+        // Clear the token from local storage
+        localStorage.removeItem('token');
+        console.log(" logout succesfull:");
+        // Redirect to login page or home page
+        navigate("/login"); 
+        // Adjust the route as needed
+      } catch (error) {
+        console.error("Error logging out:", error);
+        // Optionally handle logout errors
+      }
+    };
+  
+  useEffect(() => {
+        UserDataFetch()
+  },[]);
   const renderContent = () => {
     switch (activeTab) {
       case "Dashboard":
-        return <Dashboard setActiveTab={setActiveTab}/>;
+        return <Dashboard setActiveTab={setActiveTab} token={token}/>;
       case "PatientRegistration":
         return <PatientRegistration />;
       case "DoctorView":
@@ -30,7 +80,7 @@ function App() {
       case "HospitalData":
         return <HospitalData />;
       default:
-        return <Dashboard />;
+        return <Dashboard token={token} />;
     }
   };
 
@@ -109,7 +159,7 @@ function App() {
             </button>
           </li>
           <li className="log_out">
-            <button>
+            <button onClick={handleLogout}>
               <i className="bx bx-log-out"></i>
               <span className="links_name">Log out</span>
             </button>
@@ -120,7 +170,12 @@ function App() {
         <nav>
           <div className="sidebar-button">
             {/* <FaBars className="sidebarBtn" /> */}
-            <span className="dashboard">Hi! Name/Email</span>
+            <span className="dashboard">Wellcome To! {userData.firstname} {userData.lastname}/ Doctor name :{userData.hospitalname}/</span>
+            <span className="dashboard">Last Login:{userData.formattedDate}</span>
+
+            {/* <div className="date-time">
+             Date: {userData.currentDate} | Time: {userData.currentTime}
+              </div> */}
           </div>
         </nav>
         <div className="home-content">{renderContent()}</div>

@@ -2,19 +2,20 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import "./HospitalData.css"; // Import the CSS file for styling
 
-const API_URL = "http://127.0.0.1:8000/api/hospital-data/"; // Replace with your actual API URL
+const API_URL = "http://localhost:8080/get/api/"; // Replace with your actual API URL
 
 const HospitalData = () => {
   // States for handling data
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [hospitalname, sethospitalname] = useState("");
   const [password, setPassword] = useState("");
   const [resetPassword, setResetPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [hospitalImages, setHospitalImages] = useState([]);
+  const [hospitalImages, setHospitalImages] = useState([]); // Initialize as empty array
   const [newImage, setNewImage] = useState("");
   const [showForm, setShowForm] = useState(false); // To show or hide the popup form
   const [links, setLinks] = useState({
@@ -30,12 +31,15 @@ const HospitalData = () => {
       .then((response) => {
         const data = response.data;
         setProfilePhoto(data.profilePhoto);
-        setFirstName(data.firstName);
-        setLastName(data.lastName);
-        setEmail(data.email);
-        setPhone(data.phone);
+        setFirstName(data.firstname);
+        setLastName(data.lastname);
+        setEmail(data.emailid);
+        setPhone(data.phonenumber);
         setAddress(data.address);
-        setHospitalImages(data.hospitalImages);
+        setPassword(data.password);
+        setResetPassword(data.repetepassword);
+        sethospitalname(data.hospitalname);
+        setHospitalImages(Array.isArray(data.hospitalImages) ? data.hospitalImages : []); // Ensure it's an array
         setLinks(data.links);
       })
       .catch((error) => console.error("Error fetching data:", error));
@@ -135,6 +139,16 @@ const HospitalData = () => {
                 type="email"
                 name="email"
                 value={email}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+            <label>
+            hospitalname:
+              <input
+                type="text"
+                name="hospitalname"
+                value={hospitalname}
                 onChange={handleInputChange}
                 className="hospital-data-input"
               />
@@ -295,16 +309,18 @@ const HospitalData = () => {
           >
             Add Image
           </button>
-          <div className="hospital-data-images">
-            {hospitalImages.map((img, index) => (
-              <img
-                key={index}
-                src={img}
-                alt={`Hospital ${index}`}
-                className="hospital-data-image"
-              />
-            ))}
-          </div>
+          {hospitalImages && hospitalImages.length > 0 && (
+            <div className="hospital-data-images">
+              {hospitalImages.map((img, index) => (
+                <img
+                  key={index}
+                  src={img}
+                  alt={`Hospital ${index}`}
+                  className="hospital-data-image"
+                />
+              ))}
+            </div>
+          )}
         </section>
 
         <button className="hospital-data-button" type="submit">

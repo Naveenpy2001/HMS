@@ -3,7 +3,7 @@ import axios from "axios";
 import "../css/register.css";
 
 import OtpVerification from "../home/HomeComponents/OTP";
-
+import { useNavigate } from "react-router-dom";
 const Register = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
@@ -13,7 +13,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [repetepassword, setConfirmPassword] = useState("");
   // const [gender, setGender] = useState("");
-
+  const navigate = useNavigate();
+  
 const [otpVerify,setOtpVerify] = useState(false)
 
 
@@ -36,7 +37,7 @@ const [otpVerify,setOtpVerify] = useState(false)
     }
     try {
       setLoading(true)
-      const response = await axios.post("http://localhost:8080/register", {
+      const response = await axios.post("http://localhost:8080/register-react", {
         firstname,
         lastname,
         hospitalname,
@@ -49,6 +50,7 @@ const [otpVerify,setOtpVerify] = useState(false)
       setLoading(false)
       setOtpVerify(true)
       console.log("Registration successful:", response.data);
+      navigate(`/dashboard`);
     } catch (error) {
       console.error("Error registering:", error);
       setLoading(false);
@@ -150,8 +152,8 @@ const [otpVerify,setOtpVerify] = useState(false)
           </svg>
           <input
             placeholder="name@mail.com"
-            name="email"
-            type="email"
+            name="emailid"
+            type="emailid"
             className="input_field"
             id="email_field"
             value={emailid}
@@ -256,7 +258,9 @@ const [otpVerify,setOtpVerify] = useState(false)
         </div>
       </form>
       <div className={otpVerify ? "active-otp-form" : "PopUp-OTP"}>
-        <OtpVerification />
+      
+        <OtpVerification emailid={emailid} firstname={firstname} lastname={lastname} 
+        hospitalname={hospitalname} phonenumber={phonenumber} password={password}  repetepassword={repetepassword}/>
       </div>
     </div>
   );

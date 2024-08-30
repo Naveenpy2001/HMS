@@ -1,36 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios for API calls
 
-
-    const Billing = () => {
+const Billing = () => {
   // States to hold various data
-  const [todaysPayments, setTodaysPayments] = useState([
-    // Example data format
-    { patientId: 'P001', phone: '1234567890', name: 'John Doe', registrationFee: 500 },
-  ]);
+  const [todaysPayments, setTodaysPayments] = useState([]);
+  const [monthlyTotalPayments, setMonthlyTotalPayments] = useState({ monthWise: [], yearWise: [] });
+  const [totalPatients, setTotalPatients] = useState(0);
+  const [pendingPayments, setPendingPayments] = useState([]);
+  const [walletAmount, setWalletAmount] = useState(0);
 
-  const [totalPayments, setTotalPayments] = useState({
-    monthWise: [
-      { month: 'January', amount: 1000 },
-      { month: 'February', amount: 1200 },
-    ],
-    yearWise: [
-      { year: 2023, amount: 15000 },
-    ],
-  });
+  // Fetch data from API when the component mounts
+  useEffect(() => {
+    // Fetch today's payments
+    axios.get('http://localhost:8080/api/payments/today')
+      .then(response => setTodaysPayments(response.data || []))
+      .catch(error => console.error('Error fetching today\'s payments:', error));
 
-  const [totalPatients, setTotalPatients] = useState(50);
-  const [pendingPayments, setPendingPayments] = useState([
-    // Example data format
-    { patientId: 'P002', phone: '0987654321', name: 'Jane Smith', pendingAmount: 200 },
-  ]);
+    // Fetch total payments
+    axios.get('http://localhost:8080/monthly-total')
+      .then(response => setMonthlyTotalPayments(response.data || { monthWise: [], yearWise: [] }))
+      .catch(error => console.error('Error fetching total payments:', error));
 
-  const [walletAmount, setWalletAmount] = useState(5000);
+   
+    // // Fetch wallet amount
+    // axios.get('http://localhost:8080/api/wallet/amount')
+    //   .then(response => setWalletAmount(response.data || 0))
+    //   .catch(error => console.error('Error fetching wallet amount:', error));
+  }, []);
 
-  // Function to handle clearing patients and pending payments
+  // Function to handle clearing pending payments
   const handleClear = (type) => {
-    if (type === 'patients') {
-      setTotalPatients(0);
-    } else if (type === 'pendingPayments') {
+    if (type === 'pendingPayments') {
       setPendingPayments([]);
     }
   };
@@ -51,14 +51,20 @@ import React, { useState } from 'react';
             </tr>
           </thead>
           <tbody>
-            {todaysPayments.map((payment, index) => (
-              <tr key={index}>
-                <td>{payment.patientId}</td>
-                <td>{payment.phone}</td>
-                <td>{payment.name}</td>
-                <td>{payment.registrationFee} INR</td>
+            {todaysPayments.length > 0 ? (
+              todaysPayments.map((payment, index) => (
+                <tr key={index}>
+                  <td>{payment.id}</td>
+                  <td>{payment.phoneNumber}</td>
+                  <td>{payment.firstName} {payment.lastName}</td>
+                  <td>{payment.amount} INR</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4">No data available</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </section>
@@ -76,12 +82,18 @@ import React, { useState } from 'react';
                 </tr>
               </thead>
               <tbody>
-                {totalPayments.monthWise.map((payment, index) => (
-                  <tr key={index}>
-                    <td>{payment.month}</td>
-                    <td>{payment.amount} INR</td>
+                {monthlyTotalPayments.monthWise && monthlyTotalPayments.monthWise.length > 0 ? (
+                  monthlyTotalPayments.monthWise.map((payment, index) => (
+                    <tr key={index}>
+                      <td>{payment.month}</td>
+                      <td>{payment.totalAmount} INR</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="2">No data available</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -96,12 +108,18 @@ import React, { useState } from 'react';
                 </tr>
               </thead>
               <tbody>
-                {totalPayments.yearWise.map((payment, index) => (
-                  <tr key={index}>
-                    <td>{payment.year}</td>
-                    <td>{payment.amount} INR</td>
+                {monthlyTotalPayments.yearWise && monthlyTotalPayments.yearWise.length > 0 ? (
+                  monthlyTotalPayments.yearWise.map((payment, index) => (
+                    <tr key={index}>
+                      <td>{payment.year}</td>
+                      <td>{payment.amount} INR</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="2">No data available</td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
@@ -111,7 +129,8 @@ import React, { useState } from 'react';
       <section className="billing-section">
         <h2 className="billing-subheading">Total Patients & Total Payments</h2>
         <p>Total Patients: {totalPatients}</p>
-        <p>Total Payments: {totalPayments.yearWise.reduce((acc, payment) => acc + payment.amount, 0)} INR</p>
+        <p>Total Payments: {monthlyTotalPayments.yearWise && monthlyTotalPayments.yearWise.length > 0 ? 
+          monthlyTotalPayments.yearWise.reduce((acc, payment) => acc + payment.amount, 0) : 0} INR</p>
       </section>
 
       <section className="billing-section">
@@ -126,14 +145,20 @@ import React, { useState } from 'react';
             </tr>
           </thead>
           <tbody>
-            {pendingPayments.map((payment, index) => (
-              <tr key={index}>
-                <td>{payment.patientId}</td>
-                <td>{payment.phone}</td>
-                <td>{payment.name}</td>
-                <td>{payment.pendingAmount} INR</td>
+            {pendingPayments.length > 0 ? (
+              pendingPayments.map((payment, index) => (
+                <tr key={index}>
+                  <td>{payment.patientId}</td>
+                  <td>{payment.phone}</td>
+                  <td>{payment.name}</td>
+                  <td>{payment.pendingAmount} INR</td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4">No data available</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
         <button className="billing-button" onClick={() => handleClear('pendingPayments')}>

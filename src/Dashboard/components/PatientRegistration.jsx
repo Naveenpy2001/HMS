@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../css/patientRegister.css";
 
-
 const PatientRegistration = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -40,30 +39,42 @@ const PatientRegistration = () => {
   });
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+
+    // Trigger age calculation when day, month, or year changes
+    if (["day", "month", "year"].includes(name)) {
+      calculateAge({ ...formData, [name]: value });
+    }
   };
 
-  const calculateAge = () => {
-    if (formData.day && formData.month && formData.year) {
-      const birthDate = new Date(
-        formData.year,
-        formData.month - 1,
-        formData.day
-      );
+  const calculateAge = (data) => {
+    const { day, month, year } = data;
+    if (day && month && year) {
+      const birthDate = new Date(year, month - 1, day);
       const ageDifMs = Date.now() - birthDate.getTime();
       const ageDate = new Date(ageDifMs);
       const calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-      setFormData({ ...formData, age: calculatedAge });
+      setFormData((prevState) => ({
+        ...prevState,
+        age: calculatedAge,
+      }));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("your-api-endpoint", formData);
+      await axios.post("http://localhost:8080/saveAthentication", formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Form submitted successfully!");
       alert("Form submitted successfully!");
     } catch (error) {
       console.error("There was an error submitting the form!", error);
@@ -181,10 +192,7 @@ const PatientRegistration = () => {
         <select
           name="day"
           value={formData.day}
-          onChange={(e) => {
-            handleInputChange(e);
-            calculateAge();
-          }}
+          onChange={handleInputChange}
           className="pr-select"
         >
           <option value="">Day</option>
@@ -197,10 +205,7 @@ const PatientRegistration = () => {
         <select
           name="month"
           value={formData.month}
-          onChange={(e) => {
-            handleInputChange(e);
-            calculateAge();
-          }}
+          onChange={handleInputChange}
           className="pr-select"
         >
           <option value="">Month</option>
@@ -213,10 +218,7 @@ const PatientRegistration = () => {
         <select
           name="year"
           value={formData.year}
-          onChange={(e) => {
-            handleInputChange(e);
-            calculateAge();
-          }}
+          onChange={handleInputChange}
           className="pr-select"
         >
           <option value="">Year</option>
@@ -319,7 +321,7 @@ const PatientRegistration = () => {
                   netBankingScreenshot: e.target.files[0],
                 })
               }
-              className="pr-input"
+              className="pr-file"
             />
           </div>
         )}
@@ -343,7 +345,7 @@ const PatientRegistration = () => {
               className="pr-input"
             />
             <br />
-            <label>Upload Document:</label>
+            <label>Document:</label>
             <input
               type="file"
               name="accountDocument"
@@ -353,52 +355,40 @@ const PatientRegistration = () => {
                   accountDocument: e.target.files[0],
                 })
               }
-              className="pr-input"
+              className="pr-file"
             />
           </div>
         )}
         {formData.modeOfPayment === "Reference" && (
           <div>
-            <label>Amount:</label>
-            <input
-              type="text"
-              name="amount"
-              value={formData.amount}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>Reference:</label>
-            <input
-              type="text"
+            <label>Reference Details:</label>
+            <textarea
               name="reference"
               value={formData.reference}
               onChange={handleInputChange}
-              className="pr-input"
+              className="pr-textarea"
             />
           </div>
         )}
         {formData.modeOfPayment === "Insurance" && (
           <div>
             <label>Insurance Details:</label>
-            <input
-              type="text"
+            <textarea
               name="insurance"
               value={formData.insurance}
               onChange={handleInputChange}
-              className="pr-input"
+              className="pr-textarea"
             />
           </div>
         )}
         {formData.modeOfPayment === "Others" && (
           <div>
             <label>Other Payment Details:</label>
-            <input
-              type="text"
+            <textarea
               name="otherPayment"
               value={formData.otherPayment}
               onChange={handleInputChange}
-              className="pr-input"
+              className="pr-textarea"
             />
           </div>
         )}
@@ -412,7 +402,7 @@ const PatientRegistration = () => {
           className="pr-input"
         />
         <br />
-        <label>BP:</label>
+        <label>Blood Pressure:</label>
         <input
           type="text"
           name="bp"
@@ -516,6 +506,7 @@ const PatientRegistration = () => {
           </div>
         )}
         <br />
+
         <button type="submit" className="pr-button">
           Submit
         </button>

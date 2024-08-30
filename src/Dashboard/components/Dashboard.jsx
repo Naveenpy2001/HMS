@@ -1,58 +1,65 @@
 import React, { useState, useEffect } from "react";
-// import "./PatientsRegister.css";
 
-const Dashboard = ({ setActiveTab }) => {
+const Dashboard = ({ emailid,setActiveTab, token}) => {
   const [data, setData] = useState({
-    todayPatientsCount: 0,
-    totalPatientsCount: 0,
+    TodaypatientCount: 0,
+    TotalpatientCount: 0,
     todayAppointmentsCount: 0,
     totalAppointmentsCount: 0,
     todayPayment: 0,
     totalPayment: 0,
     patientTracking: [],
   });
-
-  console.log(data)
+ console.log(token)
   const [animatedData, setAnimatedData] = useState({
-    todayPatientsCount: 0,
-    totalPatientsCount: 0,
+    TodaypatientCount: 0,
+    TotalpatientCount: 0,
     todayAppointmentsCount: 0,
     totalAppointmentsCount: 0,
     todayPayment: 0,
     totalPayment: 0,
   });
 
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
-  const [filterVisited, setFilterVisited] = useState("all"); // Default to showing all patients
-
-
+  const [filterVisited, setFilterVisited] = useState("all");
+ console.log(data)
   useEffect(() => {
     const fetchData = async () => {
       try {
-
-        // Replace with your API endpoint
-        const response = await fetch("http://localhost:8080/dashboard");
         
-
-        // const response = await fetch("/api/dashboard-data");
-
+        const response = await fetch("http://localhost:8080/dashboard",
+         { method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${localStorage.getItem(token)}`
+        }
+         }
+        );
+        if (!response.ok) {
+          throw new Error(`HTTP fetching error! status: ${response.status}`);
+      }
         const result = await response.json();
-        setData(result);
-        setFilteredPatients(result.patientTracking);
+        setData({
+          TodaypatientCount: result.TodaypatientCount || 0,
+          TotalpatientCount: result.TotalpatientCount || 0,
+          todayAppointmentsCount: result.todayAppointmentsCount || 0,
+          totalAppointmentsCount: result.totalAppointmentsCount || 0,
+          todayPayment: result.todayPayment || 0,
+          totalPayment: result.totalPayment || 0,
+          patientTracking: result.patientTracking || [],
+        });
+        setFilteredPatients(result.patientTracking || []);
       } catch (error) {
         console.error("Error fetching data:", error);
-
-        // Fallback data
         const fallbackData = [
           { name: "John Doe", visited: true, disease: "Flu", age: 45 },
           { name: "Jane Smith", visited: false, disease: "Diabetes", age: 38 },
           { name: "Mike Johnson", visited: true, disease: "Asthma", age: 50 },
         ];
         setData({
-          todayPatientsCount: 12,
-          totalPatientsCount: 150,
+          TodaypatientCount: 12,
+          TotalpatientCount: 150,
           todayAppointmentsCount: 8,
           totalAppointmentsCount: 100,
           todayPayment: 1200,
@@ -64,17 +71,11 @@ const Dashboard = ({ setActiveTab }) => {
     };
 
     fetchData();
-  }, []);
+  }, [token]);
 
-// HEAD
-  // Function to format currency in INR
-  // const formatCurrency = (amount) => {
-  //   return `₹${amount.toLocaleString("en-IN")}`;
-  // };
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
-
 
     const filtered = data.patientTracking.filter((patient) => {
       const matchesTerm =
@@ -123,8 +124,8 @@ const Dashboard = ({ setActiveTab }) => {
           onClick={() => setActiveTab("Billing")}
         >
           <h2>Today's Patients</h2>
-          <p className="count" data-target={data.todayPatientsCount}>
-            {data.todayPatientsCount}
+          <p className="count" data-target={data.TodaypatientCount}>
+            {data.TodaypatientCount}
           </p>
         </div>
         <div
@@ -133,8 +134,8 @@ const Dashboard = ({ setActiveTab }) => {
           onClick={() => setActiveTab("Billing")}
         >
           <h2>Total Patients</h2>
-          <p className="count" data-target={data.totalPatientsCount}>
-            {data.totalPatientsCount}
+          <p className="count" data-target={data.TotalpatientCount}>
+            {data.TotalpatientCount}
           </p>
         </div>
         <div className="stats-card" style={{ backgroundColor: "#FFC3A0" }}>
@@ -156,11 +157,7 @@ const Dashboard = ({ setActiveTab }) => {
         >
           <h2>Today's Payment</h2>
           <p className="count" data-target={data.todayPayment}>
-
-            {/* {formatCurrency(data.todayPayment)} */}
-
-            ₹{data.todayPayment.toLocaleString("en-IN")} /-
-
+            ₹{data.todayPayment ? data.todayPayment.toLocaleString("en-IN") : '0'} /-
           </p>
         </div>
         <div
@@ -170,10 +167,7 @@ const Dashboard = ({ setActiveTab }) => {
         >
           <h2>Total Payment</h2>
           <p className="count" data-target={data.totalPayment}>
-            {/* {formatCurrency(data.totalPayment)} */}
-
-            ₹{data.totalPayment.toLocaleString("en-IN")} /-
-
+            ₹{data.totalPayment ? data.totalPayment.toLocaleString("en-IN") : '0'} /-
           </p>
         </div>
       </div>
@@ -209,16 +203,6 @@ const Dashboard = ({ setActiveTab }) => {
               <th>Status</th>
             </tr>
           </thead>
-
-          {/* <tbody>
-            {data.patientTracking.map((patient, index) => (
-              <tr key={index}>
-                <td>{patient.name}</td>
-                <td>{patient.visited ? "Visited" : "Not Visited"}</td>
-              </tr>
-            ))}
-          </tbody> */}
-
           <tbody>
             {filteredPatients.length > 0 ? (
               filteredPatients.map((patient, index) => (
@@ -235,7 +219,6 @@ const Dashboard = ({ setActiveTab }) => {
               </tr>
             )}
           </tbody>
-
         </table>
       </div>
     </div>

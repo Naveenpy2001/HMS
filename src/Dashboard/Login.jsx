@@ -5,11 +5,12 @@ import "../css/login.css";
 import { useNavigate } from "react-router-dom";
 
 import ForgotPswd from "./components/ForgotPswd";
+import App from "./dashboard";
 
 const Login = () => {
   const [emailid, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [token, setToken] = useState("");
   const navigate = useNavigate();
 
   const[forgot,setForgot] = useState(false)
@@ -29,6 +30,8 @@ const Login = () => {
       });
       navigate(`/dashboard`);
       console.log("Login successful:", response.data);
+      // setToken=response.data
+      setToken(response.data);
     } catch (error) {
       console.error("Error logging in:", error);
     }
@@ -151,6 +154,7 @@ const Login = () => {
             ×
           </span>
           <ForgotPswd />
+          {/* <App token={token} /> */}
         </div>
       </div>
     </>
