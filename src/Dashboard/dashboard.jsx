@@ -71,10 +71,10 @@ function App(token) {
         return <PatientRegistration />;
       case "DoctorView":
         return <DoctorView />;
-      // case "MedicalTests":
-      //   return <MedicalTests />;
-      // case "MedicalPrescription":
-      //   return <MedicalPrescription />;
+       case "MedicalTests":
+        return <MedicalTests />;
+       case "MedicalPrescription":
+         return <MedicalPrescription />;
       case "Billing":
         return <Billing />;
       case "HospitalData":
@@ -122,13 +122,13 @@ function App(token) {
               <span className="links_name">Doctor View</span>
             </button>
           </li>
-          {/* <li>
+           <li>
             <button
               className={activeTab === "MedicalTests" ? "active" : ""}
               onClick={() => setActiveTab("MedicalTests")}
             >
               <i className="bx bx-pie-chart-alt-2"></i>
-              <span className="links_name">Medical Tests</span>
+              <span className="links_name">Patients</span>
             </button>
           </li>
           <li>
@@ -137,9 +137,9 @@ function App(token) {
               onClick={() => setActiveTab("MedicalPrescription")}
             >
               <i className="bx bx-coin-stack"></i>
-              <span className="links_name">Medical Prescription</span>
+              <span className="links_name">Appointements</span>
             </button>
-          </li> */}
+          </li> 
           <li>
             <button
               className={activeTab === "Billing" ? "active" : ""}

@@ -9,20 +9,17 @@ const HospitalData = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [hospitalname, sethospitalname] = useState("");
+  const [hospitalName, setHospitalName] = useState("");
   const [password, setPassword] = useState("");
-  const [resetPassword, setResetPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [ifscCode, setIfscCode] = useState("");
+  const [accountNumber, setAccountNumber] = useState("");
   const [hospitalImages, setHospitalImages] = useState([]); // Initialize as empty array
   const [newImage, setNewImage] = useState("");
-  const [showForm, setShowForm] = useState(false); // To show or hide the popup form
-  const [links, setLinks] = useState({
-    details: "",
-    fetchHospital: "",
-    appointment: "",
-  });
 
   // Fetch data from the backend
   useEffect(() => {
@@ -37,10 +34,12 @@ const HospitalData = () => {
         setPhone(data.phonenumber);
         setAddress(data.address);
         setPassword(data.password);
-        setResetPassword(data.repetepassword);
-        sethospitalname(data.hospitalname);
+        setConfirmPassword(data.repetepassword);
+        setHospitalName(data.hospitalname);
+        setBankName(data.bankName);
+        setIfscCode(data.ifscCode);
+        setAccountNumber(data.accountNumber);
         setHospitalImages(Array.isArray(data.hospitalImages) ? data.hospitalImages : []); // Ensure it's an array
-        setLinks(data.links);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -55,10 +54,11 @@ const HospitalData = () => {
     if (name === "address") setAddress(value);
     if (name === "newImage") setNewImage(value);
     if (name === "password") setPassword(value);
-    if (name === "resetPassword") setResetPassword(value);
-    if (name.startsWith("link_")) {
-      setLinks({ ...links, [name.replace("link_", "")]: value });
-    }
+    if (name === "confirmPassword") setConfirmPassword(value);
+    if (name === "hospitalName") setHospitalName(value);
+    if (name === "bankName") setBankName(value);
+    if (name === "ifscCode") setIfscCode(value);
+    if (name === "accountNumber") setAccountNumber(value);
   };
 
   // Handlers for file uploads
@@ -67,7 +67,7 @@ const HospitalData = () => {
   };
 
   const handleAddImage = () => {
-    if (newImage && hospitalImages.length < 5) {
+    if (newImage && hospitalImages.length < 4) {
       setHospitalImages([...hospitalImages, newImage]);
       setNewImage("");
     }
@@ -77,15 +77,25 @@ const HospitalData = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // Ensure passwords match
+    if (password !== confirmPassword) {
+      alert("Passwords do not match!");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("profilePhoto", profilePhoto);
     formData.append("firstName", firstName);
     formData.append("lastName", lastName);
+    formData.append("hospitalName", hospitalName);
     formData.append("password", password);
-    formData.append("resetPassword", resetPassword);
+    formData.append("confirmPassword", confirmPassword);
     formData.append("email", email);
     formData.append("phone", phone);
     formData.append("address", address);
+    formData.append("bankName", bankName);
+    formData.append("ifscCode", ifscCode);
+    formData.append("accountNumber", accountNumber);
     formData.append("hospitalImages", JSON.stringify(hospitalImages));
 
     axios
@@ -97,108 +107,9 @@ const HospitalData = () => {
       .catch((error) => console.error("Error:", error));
   };
 
-  // Toggle form visibility
-  const toggleForm = () => setShowForm(!showForm);
-
   return (
     <div className="hospital-data">
       <h1 className="hospital-data-heading">Profile</h1>
-
-      <button className="hospital-data-button" onClick={toggleForm}>
-        {showForm ? "Hide Appointment Form" : "Show Appointment Form"}
-      </button>
-
-      {showForm && (
-        <div className="hospital-data-popup">
-          <h2>Appointment Form</h2>
-          {/* Include Patient Registration Form here */}
-          <form>
-            <label>
-              First Name:
-              <input
-                type="text"
-                name="firstName"
-                value={firstName}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-              Last Name:
-              <input
-                type="text"
-                name="lastName"
-                value={lastName}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-              Email:
-              <input
-                type="email"
-                name="email"
-                value={email}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-            hospitalname:
-              <input
-                type="text"
-                name="hospitalname"
-                value={hospitalname}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-              Phone:
-              <input
-                type="text"
-                name="phone"
-                value={phone}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-              Address:
-              <input
-                type="text"
-                name="address"
-                value={address}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-              Password:
-              <input
-                type="password"
-                name="password"
-                value={password}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <label>
-              Reset Password:
-              <input
-                type="password"
-                name="resetPassword"
-                value={resetPassword}
-                onChange={handleInputChange}
-                className="hospital-data-input"
-              />
-            </label>
-            <button className="hospital-data-button" type="submit">
-              Submit
-            </button>
-          </form>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit}>
         <section className="hospital-data-section">
@@ -281,15 +192,58 @@ const HospitalData = () => {
             />
           </label>
           <label>
-            Reset Password:
+            Confirm Password:
             <input
               type="password"
-              name="resetPassword"
-              value={resetPassword}
+              name="confirmPassword"
+              value={confirmPassword}
               onChange={handleInputChange}
               className="hospital-data-input"
             />
           </label>
+          <label>
+            Hospital Name:
+            <input
+              type="text"
+              name="hospitalName"
+              value={hospitalName}
+              onChange={handleInputChange}
+              className="hospital-data-input"
+            />
+          </label>
+         <fieldset className="legend-tag">
+          <legend> Bank Details : </legend>
+          <label>
+            Bank Name:
+            <input
+              type="text"
+              name="bankName"
+              value={bankName}
+              onChange={handleInputChange}
+              className="hospital-data-input"
+            />
+          </label>
+          <label>
+            IFSC Code:
+            <input
+              type="text"
+              name="ifscCode"
+              value={ifscCode}
+              onChange={handleInputChange}
+              className="hospital-data-input"
+            />
+          </label>
+          <label>
+            Account Number:
+            <input
+              type="text"
+              name="accountNumber"
+              value={accountNumber}
+              onChange={handleInputChange}
+              className="hospital-data-input"
+            />
+          </label>
+         </fieldset>
         </section>
 
         <section className="hospital-data-section">
@@ -309,15 +263,17 @@ const HospitalData = () => {
           >
             Add Image
           </button>
-          {hospitalImages && hospitalImages.length > 0 && (
+          {hospitalImages.length > 0 && (
             <div className="hospital-data-images">
               {hospitalImages.map((img, index) => (
-                <img
-                  key={index}
-                  src={img}
-                  alt={`Hospital ${index}`}
-                  className="hospital-data-image"
-                />
+                <div key={index} className="hospital-data-image-container">
+                  <img
+                    src={img}
+                    alt={`Hospital ${index}`}
+                    className="hospital-data-image"
+                  />
+                  <span>{index + 1}</span>
+                </div>
               ))}
             </div>
           )}

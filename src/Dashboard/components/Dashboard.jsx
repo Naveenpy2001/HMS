@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Dashboard = ({ emailid,setActiveTab, token}) => {
+const Dashboard = ({ emailid, setActiveTab, token }) => {
   const [data, setData] = useState({
     TodaypatientCount: 0,
     TotalpatientCount: 0,
@@ -10,35 +10,25 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
     totalPayment: 0,
     patientTracking: [],
   });
- console.log(token)
-  const [animatedData, setAnimatedData] = useState({
-    TodaypatientCount: 0,
-    TotalpatientCount: 0,
-    todayAppointmentsCount: 0,
-    totalAppointmentsCount: 0,
-    todayPayment: 0,
-    totalPayment: 0,
-  });
-
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [filterVisited, setFilterVisited] = useState("all");
- console.log(data)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        
-        const response = await fetch("http://localhost:8080/dashboard",
-         { method: "GET",
+        const response = await fetch("http://localhost:8080/dashboard", {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `${localStorage.getItem(token)}`
-        }
-         }
-        );
+            "Authorization": `Bearer ${localStorage.getItem(token)}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error(`HTTP fetching error! status: ${response.status}`);
-      }
+        }
+
         const result = await response.json();
         setData({
           TodaypatientCount: result.TodaypatientCount || 0,
@@ -52,21 +42,7 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
         setFilteredPatients(result.patientTracking || []);
       } catch (error) {
         console.error("Error fetching data:", error);
-        const fallbackData = [
-          { name: "John Doe", visited: true, disease: "Flu", age: 45 },
-          { name: "Jane Smith", visited: false, disease: "Diabetes", age: 38 },
-          { name: "Mike Johnson", visited: true, disease: "Asthma", age: 50 },
-        ];
-        setData({
-          TodaypatientCount: 12,
-          TotalpatientCount: 150,
-          todayAppointmentsCount: 8,
-          totalAppointmentsCount: 100,
-          todayPayment: 1200,
-          totalPayment: 15000,
-          patientTracking: fallbackData,
-        });
-        setFilteredPatients(fallbackData);
+        // Handle error, e.g., show a notification or retry fetching
       }
     };
 
@@ -121,32 +97,40 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
         <div
           className="stats-card"
           style={{ backgroundColor: "#FFDDC1", cursor: "pointer" }}
-          onClick={() => setActiveTab("Billing")}
+          onClick={() => setActiveTab("MedicalTests")}
         >
           <h2>Today's Patients</h2>
-          <p className="count" data-target={data.TodaypatientCount}>
+          <p className="count">
             {data.TodaypatientCount}
           </p>
         </div>
         <div
           className="stats-card"
           style={{ backgroundColor: "#FFABAB", cursor: "pointer" }}
-          onClick={() => setActiveTab("Billing")}
+          onClick={() => setActiveTab("MedicalTests")}
         >
           <h2>Total Patients</h2>
-          <p className="count" data-target={data.TotalpatientCount}>
+          <p className="count">
             {data.TotalpatientCount}
           </p>
         </div>
-        <div className="stats-card" style={{ backgroundColor: "#FFC3A0" }}>
+        <div
+          className="stats-card"
+          style={{ backgroundColor: "#FFC3A0", cursor: "pointer" }}
+          onClick={() => setActiveTab("MedicalPrescription")}
+        >
           <h2>Today's Appointments</h2>
-          <p className="count" data-target={data.todayAppointmentsCount}>
+          <p className="count">
             {data.todayAppointmentsCount}
           </p>
         </div>
-        <div className="stats-card" style={{ backgroundColor: "#D5AAFF" }}>
+        <div
+          className="stats-card"
+          style={{ backgroundColor: "#D5AAFF", cursor: "pointer" }}
+          onClick={() => setActiveTab("MedicalPrescription")}
+        >
           <h2>Total Appointments</h2>
-          <p className="count" data-target={data.totalAppointmentsCount}>
+          <p className="count">
             {data.totalAppointmentsCount}
           </p>
         </div>
@@ -156,8 +140,8 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
           onClick={() => setActiveTab("Billing")}
         >
           <h2>Today's Payment</h2>
-          <p className="count" data-target={data.todayPayment}>
-            ₹{data.todayPayment ? data.todayPayment.toLocaleString("en-IN") : '0'} /-
+          <p className="count">
+            ₹{data.todayPayment.toLocaleString("en-IN")} /-
           </p>
         </div>
         <div
@@ -166,8 +150,8 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
           onClick={() => setActiveTab("Billing")}
         >
           <h2>Total Payment</h2>
-          <p className="count" data-target={data.totalPayment}>
-            ₹{data.totalPayment ? data.totalPayment.toLocaleString("en-IN") : '0'} /-
+          <p className="count">
+            ₹{data.totalPayment.toLocaleString("en-IN")} /-
           </p>
         </div>
       </div>
@@ -201,6 +185,7 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
               <th>Disease</th>
               <th>Age</th>
               <th>Status</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
@@ -211,11 +196,12 @@ const Dashboard = ({ emailid,setActiveTab, token}) => {
                   <td>{patient.disease}</td>
                   <td>{patient.age}</td>
                   <td>{patient.visited ? "Visited" : "Not Visited"}</td>
+                  <td>Date</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="4">No patients found</td>
+                <td colSpan="5">No patients found</td>
               </tr>
             )}
           </tbody>

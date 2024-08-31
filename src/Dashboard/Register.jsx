@@ -104,7 +104,7 @@ const [otpVerify,setOtpVerify] = useState(false)
             name="username"
             type="text"
             className="input_field"
-            id="username_field"
+            id="username_field-last"
             value={lastname}
             onChange={(e) => setLastName(e.target.value)}
           />
@@ -119,7 +119,7 @@ const [otpVerify,setOtpVerify] = useState(false)
             name="username"
             type="text"
             className="input_field"
-            id="username_field"
+            id="username_field-h-name"
             value={hospitalname}
             onChange={(e) => setHospitalName(e.target.value)}
           />
@@ -171,7 +171,7 @@ const [otpVerify,setOtpVerify] = useState(false)
             name="username"
             type="tel"
             className="input_field"
-            id="username_field"
+            id="username_field-phno"
             value={phonenumber}
             onChange={(e) => setPhone(e.target.value)}
           />
