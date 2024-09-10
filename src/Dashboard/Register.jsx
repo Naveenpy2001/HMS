@@ -37,7 +37,7 @@ const [otpVerify,setOtpVerify] = useState(false)
     }
     try {
       setLoading(true)
-      const response = await axios.post("http://localhost:8080/register-react", {
+      const response = await axios.post("http://hms.tsaritservices.com/register-react", {
         firstname,
         lastname,
         hospitalname,
@@ -50,7 +50,7 @@ const [otpVerify,setOtpVerify] = useState(false)
       setLoading(false)
       setOtpVerify(true)
       console.log("Registration successful:", response.data);
-      navigate(`/dashboard`);
+      // navigate(`/dashboard`);
     } catch (error) {
       console.error("Error registering:", error);
       setLoading(false);

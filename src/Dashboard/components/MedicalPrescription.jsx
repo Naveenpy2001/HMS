@@ -12,7 +12,7 @@ function Appointments({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/appointments", {
+        const response = await fetch("http://hms.tsaritservices.com/api/records", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function Appointments({ token }) {
 
   const updateAppointmentCounts = async (date, totalCount) => {
     try {
-      await fetch("http://localhost:8080/appointments/counts", {
+      await fetch("http://hms.tsaritservices.com/appointments/counts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ function Appointments({ token }) {
   const handleStatusChange = async (id, currentStatus) => {
     const newStatus = currentStatus === "Completed" ? "Not Completed" : "Completed";
     try {
-      const response = await fetch(`http://localhost:8080/appointments/${id}/status`, {
+      const response = await fetch(`http://hms.tsaritservices.com/appointments/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -190,9 +190,9 @@ function Appointments({ token }) {
             {filteredAppointments.length > 0 ? (
               filteredAppointments.map((appointment) => (
                 <tr key={appointment.id}>
-                  <td>{appointment.name}</td>
+                  <td>{appointment.firstName} {appointment.lastName}</td>
                   <td>{appointment.age}</td>
-                  <td>{appointment.reason}</td>
+                  <td>{appointment.disease}</td>
                   <td>{appointment.date}</td>
                   <td>
                     <button

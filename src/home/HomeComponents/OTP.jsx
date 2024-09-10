@@ -54,12 +54,12 @@ const OtpVerification = ({ firstname,lastname,emailid,hospitalname,phonenumber,p
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/verify-otp",{
+        "http://hms.tsaritservices.com/verify-otp",{
         emailid,
         otp: verificationCode}
       );
       console.log(response.data);
-     
+      navigate(`/Login`);
     //   here navigate to profile after OTP verification is Success
     
     } catch (error) {
@@ -71,7 +71,7 @@ const OtpVerification = ({ firstname,lastname,emailid,hospitalname,phonenumber,p
     const verificationCode = Object.values(otp).join("");
 
     try {
-      const response = await axios.post("http://localhost:8080/resend-otp",
+      const response = await axios.post("http://hms.tsaritservices.com/resend-otp",
       { firstname,lastname,emailid,hospitalname,phonenumber,password,repetepassword
         ,otp: verificationCode}
       );

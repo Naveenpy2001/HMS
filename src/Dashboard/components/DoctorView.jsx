@@ -26,7 +26,7 @@ const DoctorView = () => {
   const fetchPatientData = async () => {
     try {
       // Replace with your fetch API endpoint
-      const response = await axios.get(`http://localhost:8080/api/record/${patientId}`);
+      const response = await axios.get(`http://hms.tsaritservices.com/api/record/${patientId}`);
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName+" "+data.lastName);
       setPtDiseases(data.disease);
@@ -58,7 +58,7 @@ const DoctorView = () => {
     try {
       // Replace with your Spring Boot endpoint URL
       const response = await axios.post(
-        "http://localhost:8080/savetreatment", // Update with your actual Spring Boot endpoint
+        "http://hms.tsaritservices.com/savetreatment", // Update with your actual Spring Boot endpoint
         formData,
         {
           headers: {

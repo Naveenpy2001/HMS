@@ -12,12 +12,12 @@ const Billing = () => {
   // Fetch data from API when the component mounts
   useEffect(() => {
     // Fetch today's payments
-    axios.get('http://localhost:8080/api/payments/today')
+    axios.get('http://hms.tsaritservices.com/api/payments/today')
       .then(response => setTodaysPayments(response.data || []))
       .catch(error => console.error('Error fetching today\'s payments:', error));
 
     // Fetch total payments
-    axios.get('http://localhost:8080/monthly-total')
+    axios.get('http://hms.tsaritservices.com/monthly-total')
       .then(response => setMonthlyTotalPayments(response.data || { monthWise: [], yearWise: [] }))
       .catch(error => console.error('Error fetching total payments:', error));
 

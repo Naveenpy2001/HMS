@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../css/forgot.css';
-
-const API_URL = 'http://localhost:8080/api'; // Replace with your actual API URL
+import { useNavigate } from "react-router-dom";
+const API_URL = 'http://hms.tsaritservices.com'; // Replace with your actual API URL
 
 const ForgotPswd = () => {
     const [step, setStep] = useState(1); // Track form step
-    const [email, setEmail] = useState('');
+    const [emailid, setEmail] = useState('');
     const [otp, setOtp] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
+    const navigate = useNavigate();
     // Handle email submission
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${API_URL}/send-otp`, { email });
+            const response = await axios.post(`${API_URL}/forgot-otp/${emailid}`);
             setStep(2); // Move to OTP verification step
+            console.log(response.data);
         } catch (error) {
             console.error('Error sending OTP:', error);
             alert('Failed to send OTP. Please try again.');
@@ -27,8 +28,9 @@ const ForgotPswd = () => {
     const handleOtpSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${API_URL}/verify-otp`, { email, otp });
+            const response = await axios.post(`${API_URL}/verify-otp`, {  emailid, otp });
             setStep(3); // Move to password reset step
+            console.log(response.data);
         } catch (error) {
             console.error('Error verifying OTP:', error);
             alert('Invalid OTP. Please try again.');
@@ -43,9 +45,10 @@ const ForgotPswd = () => {
             return;
         }
         try {
-            await axios.post(`${API_URL}/reset-password`, { email, password });
+            await axios.post(`${API_URL}/reset-password`, {  emailid, password });
             alert('Password reset successfully!');
             // Optionally, redirect to login or another page
+           navigate('/Login')
         } catch (error) {
             console.error('Error resetting password:', error);
             alert('Failed to reset password. Please try again.');
@@ -69,12 +72,12 @@ const ForgotPswd = () => {
                                 name="email"
                                 placeholder="Enter your email"
                                 required
-                                value={email}
+                                value={emailid}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
-                        <button className="form-submit-btn" type="submit">Send Email</button>
+                        <button className="form-submit-btn" type="submit">Send OTP</button>
                     </form>
                 )}
 

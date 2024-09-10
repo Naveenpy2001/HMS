@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 // import "./HospitalData.css"; // Import the CSS file for styling
 
-const API_URL = "http://localhost:8080/get/api/"; // Replace with your actual API URL
+const API_URL = "http://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
 
 const HospitalData = () => {
   // States for handling data

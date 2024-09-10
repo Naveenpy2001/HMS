@@ -21,7 +21,7 @@ function App(token) {
   
   const UserDataFetch =async () => {
        try {
-        const response = await fetch("http://localhost:8080/dashboard",
+        const response = await fetch("http://hms.tsaritservices.com/dashboard",
           {method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -45,7 +45,7 @@ function App(token) {
     const handleLogout = async () => {
       try {
         // Send a POST request to the logout endpoint
-        await axios.post("http://localhost:8080/reactlogout", { 
+        await axios.post("http://hms.tsaritservices.com/reactlogout", { 
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } // Add token to headers if needed
         });
         // Clear the token from local storage
@@ -72,9 +72,9 @@ function App(token) {
       case "DoctorView":
         return <DoctorView />;
        case "MedicalTests":
-        return <MedicalTests />;
+        return <MedicalTests token={token}/>;
        case "MedicalPrescription":
-         return <MedicalPrescription />;
+         return <MedicalPrescription token={token}/>;
       case "Billing":
         return <Billing />;
       case "HospitalData":

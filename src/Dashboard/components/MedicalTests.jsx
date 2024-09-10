@@ -4,7 +4,7 @@ function MedicalTests({ token }) {
   const [data, setData] = useState({
     TodaypatientCount: 0,
     TotalpatientCount: 0,
-    patientTracking: []
+    patientTracking: [],
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
@@ -14,11 +14,11 @@ function MedicalTests({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/dashboard", {
+        const response = await fetch("http://hms.tsaritservices.com/api/records", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem(token)}`,
+            "Authorization": `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
@@ -26,15 +26,21 @@ function MedicalTests({ token }) {
           throw new Error(`HTTP fetching error! status: ${response.status}`);
         }
 
-        const result = await response.json();
+        const result = await response.json(); // Correct usage of response.json()
+        console.log("API Response:", result); // Log entire response object
+
+        // Wrap single patient object in an array if necessary
+        const patientTrackingData = Array.isArray(result) ? result : [result];
+
+        // Update state
         setData({
-          TodaypatientCount: result.TodaypatientCount || 0,
-          TotalpatientCount: result.TotalpatientCount || 0,
-          patientTracking: result.patientTracking || [],
+          TodaypatientCount: patientTrackingData.length, // Assuming today's patient count is based on returned records
+          TotalpatientCount: patientTrackingData.length, // Assuming total patient count is based on returned records
+          patientTracking: patientTrackingData,
         });
-        setFilteredPatients(result.patientTracking || []);
+        setFilteredPatients(patientTrackingData);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error.message);
         // Handle error, e.g., show a notification or retry fetching
       }
     };
@@ -70,15 +76,14 @@ function MedicalTests({ token }) {
   const filterPatients = (term, visitedFilter, dateFilter) => {
     const filtered = data.patientTracking.filter((patient) => {
       const matchesTerm =
-        patient.name.toLowerCase().includes(term) ||
+        patient.firstName.toLowerCase().includes(term) ||
         patient.disease.toLowerCase().includes(term) ||
         patient.age.toString().includes(term);
       const matchesVisited =
         visitedFilter === "all" ||
         (visitedFilter === "visited" && patient.visited) ||
         (visitedFilter === "not_visited" && !patient.visited);
-      const matchesDate =
-        dateFilter === "" || patient.date === dateFilter;
+      const matchesDate = dateFilter === "" || patient.date === dateFilter;
 
       return matchesTerm && matchesVisited && matchesDate;
     });
@@ -139,7 +144,9 @@ function MedicalTests({ token }) {
             {filteredPatients.length > 0 ? (
               filteredPatients.map((patient, index) => (
                 <tr key={index}>
-                  <td>{patient.name}</td>
+                  <td>
+                    {patient.firstName} {patient.lastName}
+                  </td>
                   <td>{patient.disease}</td>
                   <td>{patient.age}</td>
                   <td>{patient.visited ? "Visited" : "Not Visited"}</td>

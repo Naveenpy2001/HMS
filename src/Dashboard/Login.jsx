@@ -24,13 +24,14 @@ const Login = () => {
 
     try {
         // 'URL'
-      const response = await axios.post("http://localhost:8080/auth/login", {
+      const response = await axios.post("http://hms.tsaritservices.com/auth/login", {
         emailid, 
         password,
       });
       navigate(`/dashboard`);
       console.log("Login successful:", response.data);
       // setToken=response.data
+     
       setToken(response.data);
     } catch (error) {
       console.error("Error logging in:", error);
