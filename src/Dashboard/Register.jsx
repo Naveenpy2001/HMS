@@ -14,6 +14,8 @@ const Register = () => {
   const [repetepassword, setConfirmPassword] = useState("");
   // const [gender, setGender] = useState("");
   const navigate = useNavigate();
+
+
   
 const [otpVerify,setOtpVerify] = useState(false)
 
@@ -28,13 +30,6 @@ const [otpVerify,setOtpVerify] = useState(false)
       return;
     }
 
-    if(loading){
-      return (
-        <div class="loader">
-          <div class="justify-content-center jimu-primary-loading"></div>
-        </div>
-      );
-    }
     try {
       setLoading(true)
       const response = await axios.post("http://hms.tsaritservices.com/register-react", {
@@ -245,7 +240,16 @@ const [otpVerify,setOtpVerify] = useState(false)
           </div>
         </div> */}
         <button type="submit" className="sign-in_btn">
-          <span>Register</span>
+
+          {
+              loading ? (
+                  <div class="loadingtext">
+  <p>Sending OTP </p>
+</div>
+                  ) : (
+                      "Register"
+                      )
+              }
         </button>
         <p className="note">Terms of use &amp; Conditions</p>
         <div className="signup_container">
