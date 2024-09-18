@@ -69,7 +69,7 @@ const PatientRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://hms.tsaritservices.com/saveAthentication", formData, {
+      await axios.post("https://hms.tsaritservices.com/saveAthentication", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -77,6 +77,7 @@ const PatientRegistration = () => {
       console.log("Form submitted successfully!");
       alert("Form submitted successfully!");
     } catch (error) {
+      alert("There was an error submitting the form!");
       console.error("There was an error submitting the form!", error);
     }
   };

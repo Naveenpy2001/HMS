@@ -17,7 +17,7 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://hms.tsaritservices.com/dashboard", {
+        const response = await fetch("https://hms.tsaritservices.com/dashboard", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

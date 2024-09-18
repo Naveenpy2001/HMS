@@ -12,7 +12,7 @@ function Appointments({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://hms.tsaritservices.com/api/records", {
+        const response = await fetch("https://hms.tsaritservices.com/api/records", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function Appointments({ token }) {
 
   const updateAppointmentCounts = async (date, totalCount) => {
     try {
-      await fetch("http://hms.tsaritservices.com/appointments/counts", {
+      await fetch("https://hms.tsaritservices.com/appointments/counts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ function Appointments({ token }) {
   const handleStatusChange = async (id, currentStatus) => {
     const newStatus = currentStatus === "Completed" ? "Not Completed" : "Completed";
     try {
-      const response = await fetch(`http://hms.tsaritservices.com/appointments/${id}/status`, {
+      const response = await fetch(`https://hms.tsaritservices.com/appointments/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

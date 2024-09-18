@@ -32,7 +32,7 @@ const [otpVerify,setOtpVerify] = useState(false)
 
     try {
       setLoading(true)
-      const response = await axios.post("http://hms.tsaritservices.com/register-react", {
+      const response = await axios.post("https://hms.tsaritservices.com/register-react", {
         firstname,
         lastname,
         hospitalname,

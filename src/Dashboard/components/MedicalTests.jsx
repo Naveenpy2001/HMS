@@ -14,7 +14,7 @@ function MedicalTests({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://hms.tsaritservices.com/api/records", {
+        const response = await fetch("https://hms.tsaritservices.com/api/records", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

@@ -24,7 +24,7 @@ const Login = () => {
 
     try {
         // 'URL'
-      const response = await axios.post("http://hms.tsaritservices.com/auth/login", {
+      const response = await axios.post("https://hms.tsaritservices.com/auth/login", {
         emailid, 
         password,
       });
@@ -34,6 +34,7 @@ const Login = () => {
      
       setToken(response.data);
     } catch (error) {
+      alert("Error logging in:")
       console.error("Error logging in:", error);
     }
   };
