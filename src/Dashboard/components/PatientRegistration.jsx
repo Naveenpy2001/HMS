@@ -17,6 +17,7 @@ const PatientRegistration = () => {
     month: "",
     year: "",
     age: "",
+    paymentType: "", // New dropdown for payment type
     modeOfPayment: "",
     amount: "",
     upiTransactionNo: "",
@@ -36,6 +37,7 @@ const PatientRegistration = () => {
     bedDetails: "",
     bedNo: "",
     bedDays: "",
+    tsarItAmount: "", // TSAR-IT amount
   });
 
   const handleInputChange = (e) => {
@@ -82,10 +84,38 @@ const PatientRegistration = () => {
     }
   };
 
+  // Razorpay Payment Handler for TSAR-IT
+  const handleTSARITPayment = () => {
+    const options = {
+      key: "your_razorpay_key", // Replace with your Razorpay key
+      amount: formData.tsarItAmount * 100, // Razorpay requires amount in paise
+      currency: "INR",
+      name: "TSAR-IT Services",
+      description: "Payment for services",
+      handler: function (response) {
+        alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+      },
+      prefill: {
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        contact: formData.phoneNumber,
+      },
+      notes: {
+        address: formData.address,
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    const rzp1 = new window.Razorpay(options);
+    rzp1.open();
+  };
+
   return (
     <div className="pr-forms">
       <h1>Patient Registration Form</h1>
       <form onSubmit={handleSubmit}>
+        {/* Form fields for patient details */}
         <label>First name:</label>
         <input
           type="text"
@@ -242,275 +272,319 @@ const PatientRegistration = () => {
             <br />
           </div>
         )}
-        <label>Mode of Payment:</label>
+
+        {/* Payment Type Dropdown */}
+        <label>Select Payment Type:</label>
         <select
-          name="modeOfPayment"
-          value={formData.modeOfPayment}
+          name="paymentType"
+          value={formData.paymentType}
           onChange={handleInputChange}
           className="pr-select"
         >
-          <option value="">Select Payment Mode</option>
-          <option value="Cash">Cash</option>
-          <option value="UPI">UPI</option>
-          <option value="NetBanking">Net Banking</option>
-          <option value="Account">Account</option>
-          <option value="Reference">Reference</option>
-          <option value="Insurance">Insurance</option>
-          <option value="Others">Others</option>
+          <option value="">Select Payment Type</option>
+          <option value="TSAR-IT">TSAR-IT Payment</option>
+          <option value="Doctor Payment">Doctor Payment</option>
         </select>
-        <br />
-        {formData.modeOfPayment === "Cash" && (
-          <div>
-            <label>Amount:</label>
-            <input
-              type="text"
-              name="amount"
-              value={formData.amount}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-          </div>
-        )}
-        {formData.modeOfPayment === "UPI" && (
-          <div>
-            <label>Amount:</label>
-            <input
-              type="text"
-              name="amount"
-              value={formData.amount}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>UPI Transaction No:</label>
-            <input
-              type="text"
-              name="upiTransactionNo"
-              value={formData.upiTransactionNo}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-          </div>
-        )}
-        {formData.modeOfPayment === "NetBanking" && (
-          <div>
-            <label>Amount:</label>
-            <input
-              type="text"
-              name="amount"
-              value={formData.amount}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>Transaction ID:</label>
-            <input
-              type="text"
-              name="netBankingTransactionId"
-              value={formData.netBankingTransactionId}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>Screenshot:</label>
-            <input
-              type="file"
-              name="netBankingScreenshot"
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  netBankingScreenshot: e.target.files[0],
-                })
-              }
-              className="pr-file"
-            />
-          </div>
-        )}
-        {formData.modeOfPayment === "Account" && (
-          <div>
-            <label>Amount:</label>
-            <input
-              type="text"
-              name="amount"
-              value={formData.amount}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>Transaction ID:</label>
-            <input
-              type="text"
-              name="accountTransactionId"
-              value={formData.accountTransactionId}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>Document:</label>
-            <input
-              type="file"
-              name="accountDocument"
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  accountDocument: e.target.files[0],
-                })
-              }
-              className="pr-file"
-            />
-          </div>
-        )}
-        {formData.modeOfPayment === "Reference" && (
-          <div>
-            <label>Reference Details:</label>
-            <textarea
-              name="reference"
-              value={formData.reference}
-              onChange={handleInputChange}
-              className="pr-textarea"
-            />
-          </div>
-        )}
-        {formData.modeOfPayment === "Insurance" && (
-          <div>
-            <label>Insurance Details:</label>
-            <textarea
-              name="insurance"
-              value={formData.insurance}
-              onChange={handleInputChange}
-              className="pr-textarea"
-            />
-          </div>
-        )}
-        {formData.modeOfPayment === "Others" && (
-          <div>
-            <label>Other Payment Details:</label>
-            <textarea
-              name="otherPayment"
-              value={formData.otherPayment}
-              onChange={handleInputChange}
-              className="pr-textarea"
-            />
-          </div>
-        )}
-        <br />
-        <label>Weight:</label>
-        <input
-          type="text"
-          name="weight"
-          value={formData.weight}
-          onChange={handleInputChange}
-          className="pr-input"
-        />
-        <br />
-        <label>Blood Pressure:</label>
-        <input
-          type="text"
-          name="bp"
-          value={formData.bp}
-          onChange={handleInputChange}
-          className="pr-input"
-        />
-        <br />
-        <label>Already Taken Any Appointment:</label>
-        <input
-          type="radio"
-          name="appointmentTaken"
-          value="Yes"
-          onChange={handleInputChange}
-          className="pr-radio"
-        />{" "}
-        Yes
-        <input
-          type="radio"
-          name="appointmentTaken"
-          value="No"
-          onChange={handleInputChange}
-          className="pr-radio"
-        />{" "}
-        No
-        <br />
-        {formData.appointmentTaken === "Yes" && (
-          <div>
-            <label>Details (Phone/Email/Token No.):</label>
-            <input
-              type="text"
-              name="appointmentDetails"
-              value={formData.appointmentDetails}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-          </div>
-        )}
-        <br />
-        <label>Mode of Patient:</label>
-        <select
-          name="modeOfPatient"
-          value={formData.modeOfPatient}
-          onChange={handleInputChange}
-          className="pr-select"
-        >
-          <option value="">Select Mode</option>
-          <option value="OPD">OPD</option>
-          <option value="IPD">IPD</option>
-          <option value="Emergency">Emergency</option>
-        </select>
-        <br />
-        <label>Bed Assigned:</label>
-        <input
-          type="radio"
-          name="bedAssign"
-          value="Yes"
-          onChange={handleInputChange}
-          className="pr-radio"
-        />{" "}
-        Yes
-        <input
-          type="radio"
-          name="bedAssign"
-          value="No"
-          onChange={handleInputChange}
-          className="pr-radio"
-        />{" "}
-        No
-        <br />
-        {formData.bedAssign === "Yes" && (
-          <div>
-            <label>Select Bed:</label>
-            <input
-              type="text"
-              name="bedDetails"
-              value={formData.bedDetails}
-              onChange={handleInputChange}
-              className="pr-input"
-              placeholder="Bed details"
-            />
-            <br />
-            <label>Bed No:</label>
-            <input
-              type="text"
-              name="bedNo"
-              value={formData.bedNo}
-              onChange={handleInputChange}
-              className="pr-input"
-            />
-            <br />
-            <label>How Many Days:</label>
-            <input
-              type="text"
-              name="bedDays"
-              value={formData.bedDays}
-              onChange={handleInputChange}
-              className="pr-input"
-              placeholder="Number of days"
-            />
-          </div>
-        )}
         <br />
 
-        <button type="submit" className="pr-button">
-          Submit
-        </button>
+        {/* Payment Details Based on Selected Payment Type */}
+        {formData.paymentType === "TSAR-IT" && (
+          <div>
+            <label>TSAR-IT Amount:</label>
+            <input
+              type="text"
+              name="tsarItAmount"
+              value={formData.tsarItAmount}
+              onChange={handleInputChange}
+              className="pr-input"
+            />
+            <br />
+            <button type="button" className="pr-button" onClick={handleTSARITPayment}>
+              Pay with Razorpay
+            </button>
+          </div>
+        )}
+
+        {formData.paymentType === "Doctor Payment" && (
+          <div>
+            <label>Mode of Payment:</label>
+            <select
+              name="modeOfPayment"
+              value={formData.modeOfPayment}
+              onChange={handleInputChange}
+              className="pr-select"
+            >
+              <option value="">Select Payment Mode</option>
+              <option value="Cash">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="NetBanking">Net Banking</option>
+              <option value="Account">Account</option>
+              <option value="Reference">Reference</option>
+              <option value="Insurance">Insurance</option>
+              <option value="Others">Others</option>
+            </select>
+            <br />
+            {formData.modeOfPayment === "Cash" && (
+              <div>
+                <label>Amount:</label>
+                <input
+                  type="text"
+                  name="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+              </div>
+            )}
+
+            {formData.modeOfPayment === "UPI" && (
+              <div>
+                <label>Amount:</label>
+                <input
+                  type="text"
+                  name="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+                <br />
+                <label>UPI Transaction No:</label>
+                <input
+                  type="text"
+                  name="upiTransactionNo"
+                  value={formData.upiTransactionNo}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+              </div>
+            )}
+
+            {formData.modeOfPayment === "NetBanking" && (
+              <div>
+                <label>Amount:</label>
+                <input
+                  type="text"
+                  name="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+                <br />
+                <label>Transaction ID:</label>
+                <input
+                  type="text"
+                  name="netBankingTransactionId"
+                  value={formData.netBankingTransactionId}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+                <br />
+                <label>Screenshot:</label>
+                <input
+                  type="file"
+                  name="netBankingScreenshot"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      netBankingScreenshot: e.target.files[0],
+                    })
+                  }
+                  className="pr-file"
+                />
+              </div>
+            )}
+
+            {formData.modeOfPayment === "Account" && (
+              <div>
+                <label>Amount:</label>
+                <input
+                  type="text"
+                  name="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+                <br />
+                <label>Transaction ID:</label>
+                <input
+                  type="text"
+                  name="accountTransactionId"
+                  value={formData.accountTransactionId}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+                <br />
+                <label>Document:</label>
+                <input
+                  type="file"
+                  name="accountDocument"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      accountDocument: e.target.files[0],
+                    })
+                  }
+                  className="pr-file"
+                />
+              </div>
+            )}
+
+            {formData.modeOfPayment === "Reference" && (
+              <div>
+                <label>Reference:</label>
+                <input
+                  type="text"
+                  name="reference"
+                  value={formData.reference}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+              </div>
+            )}
+
+            {formData.modeOfPayment === "Insurance" && (
+              <div>
+                <label>Insurance Details:</label>
+                <input
+                  type="text"
+                  name="insurance"
+                  value={formData.insurance}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+              </div>
+            )}
+
+            {formData.modeOfPayment === "Others" && (
+              <div>
+                <label>Other Payment Details:</label>
+                <input
+                  type="text"
+                  name="otherPayment"
+                  value={formData.otherPayment}
+                  onChange={handleInputChange}
+                  className="pr-input"
+                />
+              </div>
+            )}
+          </div>
+        )}
+
+        
+         <label>Weight:</label>
+         <input
+           type="text"
+           name="weight"
+           value={formData.weight}
+           onChange={handleInputChange}
+           className="pr-input"
+         />
+         <br />
+         <label>Blood Pressure:</label>
+         <input
+           type="text"
+           name="bp"
+           value={formData.bp}
+           onChange={handleInputChange}
+           className="pr-input"
+         />
+         <br />
+         <label>Already Taken Any Appointment:</label>
+         <input
+           type="radio"
+           name="appointmentTaken"
+           value="Yes"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         Yes
+         <input
+           type="radio"
+           name="appointmentTaken"
+           value="No"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         No
+         <br />
+         {formData.appointmentTaken === "Yes" && (
+           <div>
+             <label>Details (Phone/Email/Token No.):</label>
+             <input
+               type="text"
+               name="appointmentDetails"
+               value={formData.appointmentDetails}
+               onChange={handleInputChange}
+               className="pr-input"
+             />
+           </div>
+         )}
+         <br />
+         <label>Mode of Patient:</label>
+         <select
+           name="modeOfPatient"
+           value={formData.modeOfPatient}
+           onChange={handleInputChange}
+           className="pr-select"
+         >
+           <option value="">Select Mode</option>
+           <option value="OPD">OPD</option>
+           <option value="IPD">IPD</option>
+           <option value="Emergency">Emergency</option>
+         </select>
+         <br />
+         <label>Bed Assigned:</label>
+         <input
+           type="radio"
+           name="bedAssign"
+           value="Yes"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         Yes
+         <input
+           type="radio"
+           name="bedAssign"
+           value="No"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         No
+         <br />
+         {formData.bedAssign === "Yes" && (
+           <div>
+             <label>Select Bed:</label>
+             <input
+               type="text"
+               name="bedDetails"
+               value={formData.bedDetails}
+               onChange={handleInputChange}
+               className="pr-input"
+               placeholder="Bed details"
+             />
+             <br />
+             <label>Bed No:</label>
+             <input
+               type="text"
+               name="bedNo"
+               value={formData.bedNo}
+               onChange={handleInputChange}
+               className="pr-input"
+             />
+             <br />
+             <label>How Many Days:</label>
+             <input
+               type="text"
+               name="bedDays"
+               value={formData.bedDays}
+               onChange={handleInputChange}
+               className="pr-input"
+               placeholder="Number of days"
+             />
+           </div>
+         )}
+        <br />
+        <button type="submit" className="pr-button">Submit</button>
       </form>
     </div>
   );

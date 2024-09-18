@@ -171,8 +171,10 @@ function App(token) {
         <nav>
           <div className="sidebar-button">
             {/* <FaBars className="sidebarBtn" /> */}
-            <span className="dashboard">Wellcome To! {userData.firstname} {userData.lastname}/ Doctor name :{userData.hospitalname}/</span>
-            <span className="dashboard">Last Login:{userData.formattedDate}</span>
+            <div className="flexHeaderCol">
+            <span className="dashboard">Welcome! {userData.hospitalname}</span> 
+            <span className="dashboard smallText" >Last Login : {userData.formattedDate}</span>
+            </div>
 
             {/* <div className="date-time">
              Date: {userData.currentDate} | Time: {userData.currentTime}

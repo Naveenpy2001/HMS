@@ -12,9 +12,20 @@ const DoctorView = () => {
   const [otherTabletName, setOtherTabletName] = useState("");
   const [injection, setInjection] = useState("");
   const [mg, setMg] = useState("");
-  const [tabletCount, setTabletCount] = useState("");
   const [tests, setTests] = useState("");
   const [doctorAdvice, setDoctorAdvice] = useState("");
+  
+
+  const [tabletCount, setTabletCount] = useState(0);
+  const [tabletMedicines, setTabletMedicines] = useState([]);
+  const [medicineOptions, setMedicineOptions] = useState([]);
+
+  const [needsInjection, setNeedsInjection] = useState("No");
+  const [injectionSize, setInjectionSize] = useState("");
+  const [injectionName, setInjectionName] = useState("");
+  const [injectionMg, setInjectionMg] = useState("");
+
+  const [age,setAge] = useState('')
 
 
   const handleKeyDown = (e) => {
@@ -53,6 +64,7 @@ const DoctorView = () => {
       tabletCount,
       tests,
       doctorAdvice,
+      age,
     };
 
     try {
@@ -82,10 +94,68 @@ const DoctorView = () => {
       setTabletCount("");
       setTests("");
       setDoctorAdvice("");
+      setAge('')
     } catch (error) {
       console.error("Error submitting form data:", error);
       alert("Failed to submit data. Please try again.");
     }
+
+    
+  };
+
+  // try {
+  //   const newMedicines = tabletMedicines
+  //     .filter(m => m.medicine === "Other" && m.otherName)
+  //     .map(m => ({ name: m.otherName }));
+
+  //   // Submit prescription details
+  //    axios.post('', {
+  //     tablets: tabletMedicines.map(({ medicine, otherName }) => ({
+  //       medicine: medicine === "Other" ? otherName : medicine,
+  //     })),
+  //     injection: needsInjection === "Yes" ? {
+  //       size: injectionSize,
+  //       name: injectionName,
+  //       mg: injectionMg,
+  //     } : null,
+  //   });
+
+  //   // Add new medicines to the database if any
+  //   if (newMedicines.length > 0) {
+  //      axios.post('', newMedicines);
+  //     // Refresh the medicine options
+  //     const response =  axios.get('');
+  //     setMedicineOptions(response.data);
+  //   }
+
+  //   console.log('Prescription submitted successfully!');
+  //   // alert('Prescription submitted successfully!');
+  // } catch (error) {
+  //   console.error('Error submitting prescription:', error);
+  //   // alert('There was an error submitting the prescription!');
+  // }
+
+
+  const handleInjectionChange = (e) => {
+    setNeedsInjection(e.target.value);
+  };
+
+  const handleMedicineChange = (index, value) => {
+    const updatedMedicines = [...tabletMedicines];
+    updatedMedicines[index].medicine = value;
+    setTabletMedicines(updatedMedicines);
+  };
+
+  const handleOtherMedicineChange = (index, value) => {
+    const updatedMedicines = [...tabletMedicines];
+    updatedMedicines[index].otherName = value;
+    setTabletMedicines(updatedMedicines);
+  };
+
+  const handleTabletCountChange = (e) => {
+    const count = parseInt(e.target.value, 10) || 0;
+    setTabletCount(count);
+    setTabletMedicines(Array.from({ length: count }, () => ({ medicine: "", otherName: "" })));
   };
 
   return (
@@ -141,23 +211,32 @@ const DoctorView = () => {
           />
         </div>
 
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Age:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+<hr />
+<hr />
         <h2 className="dct-subheading">Patient Treatment</h2>
 
         <div className="dct-form-group">
           <label htmlFor="prescription" className="dct-label">
             Doctor's Prescription:
           </label>
-          <input
-            type="text"
-            id="prescription"
-            className="dct-input"
-            value={prescription}
-            onChange={(e) => setPrescription(e.target.value)}
-            required
-          />
+        
         </div>
 
-        <div className="dct-form-group">
+        {/* <div className="dct-form-group">
           <label htmlFor="tabletName" className="dct-label">
             Select Tablet Name:
           </label>
@@ -188,66 +267,118 @@ const DoctorView = () => {
               placeholder="Enter tablet name"
             />
           )}
-        </div>
+        </div> */}
 
-        <div className="dct-form-group">
-          <label className="dct-label">Injection:</label>
-          <div>
-            <input
-              type="radio"
-              id="needlesSmall"
-              name="injection"
-              value="needlesSmall"
-              checked={injection === "needlesSmall"}
-              onChange={(e) => setInjection(e.target.value)}
-              className="dct-radio"
-            />
-            <label htmlFor="needlesSmall" className="dct-radio-label">
-              Needles Small
-            </label>
+         {/* Tablets */}
+        
+         <label>Number of Tablets:</label>
+        <input
+          type="number"
+          value={tabletCount}
+          onChange={handleTabletCountChange}
+          className="dct-input"
+        />
+        <br />
 
-            <input
-              type="radio"
-              id="needlesBig"
-              name="injection"
-              value="needlesBig"
-              checked={injection === "needlesBig"}
-              onChange={(e) => setInjection(e.target.value)}
-              className="dct-radio"
-            />
-            <label htmlFor="needlesBig" className="dct-radio-label">
-              Needles Big
-            </label>
+        {tabletCount > 0 && tabletMedicines.map((tablet, index) => (
+          <div key={index}>
+            <label>Select Medicine for Tablet {index + 1}:</label>
+            <select
+              value={tablet.medicine}
+              onChange={(e) => handleMedicineChange(index, e.target.value)}
+              className="dct-input"
+            >
+              <option value="">Select Medicine</option>
+              {medicineOptions.map((medicine) => (
+                <option key={medicine.id} value={medicine.name}>
+                  {medicine.name}
+                </option>
+              ))}
+              <option value="Other">Other</option>
+            </select>
+            {tablet.medicine === "Other" && (
+              <div>
+                <label>Enter Tablet Name:</label>
+                <input
+                  type="text"
+                  value={tablet.otherName}
+                  onChange={(e) => handleOtherMedicineChange(index, e.target.value)}
+                  className="dct-input"
+                />
+              </div>
+            )}
+            <br />
           </div>
-        </div>
+        ))}
 
-        <div className="dct-form-group">
-          <label htmlFor="mg" className="dct-label">
-            MG:
-          </label>
-          <input
-            type="text"
-            id="mg"
-            className="dct-input"
-            value={mg}
-            onChange={(e) => setMg(e.target.value)}
-            required
-          />
-        </div>
 
-        <div className="dct-form-group">
-          <label htmlFor="tabletCount" className="dct-label">
-            Count of Tablets:
-          </label>
+        
+        <br />
+
+        {/* Injection */}
+        
+
+        <label>Need Injection:</label>
+        <div>
           <input
-            type="number"
-            id="tabletCount"
-            className="dct-input"
-            value={tabletCount}
-            onChange={(e) => setTabletCount(e.target.value)}
-            required
-          />
+            type="radio"
+            name="needsInjection"
+            value="Yes"
+            checked={needsInjection === 'Yes'}
+            onChange={handleInjectionChange}
+          /> Yes
+          <input
+            type="radio"
+            name="needsInjection"
+            value="No"
+            checked={needsInjection === 'No'}
+            onChange={handleInjectionChange}
+          /> No
         </div>
+        <br />
+
+        {/* Injection Details */}
+        {needsInjection === "Yes" && (
+          <div>
+            <label>Select Injection Size:</label>
+            <div>
+              <input
+                type="radio"
+                name="injectionSize"
+                value="Small"
+                checked={injectionSize === 'Small'}
+                onChange={(e) => setInjectionSize(e.target.value)}
+              /> Small
+              <input
+                type="radio"
+                name="injectionSize"
+                value="Big"
+                checked={injectionSize === 'Big'}
+                onChange={(e) => setInjectionSize(e.target.value)}
+              /> Big
+            </div>
+            <br />
+
+            <label>Injection Name:</label>
+            <input
+              type="text"
+              value={injectionName}
+              onChange={(e) => setInjectionName(e.target.value)}
+            />
+            <br />
+
+            <label>Injection mg:</label>
+            <input
+              type="text"
+              value={injectionMg}
+              onChange={(e) => setInjectionMg(e.target.value)}
+            />
+            <br />
+
+            <button type="button" onClick={() => alert('Injection details updated!')}>Update</button>
+            <br />
+          </div>
+        )}
 
         <div className="dct-form-group">
           <label htmlFor="tests" className="dct-label">

@@ -125,7 +125,7 @@
     width: calc(100% - 240px);
     left: 240px;
     z-index: 100;
-    padding: 15px 20px;
+    padding: 6px 10px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     transition: all 0.5s ease;
 }
@@ -140,6 +140,15 @@
     align-items: center;
     font-size: 24px;
     font-weight: 500;
+}
+.flexHeaderCol{
+    display: flex;
+    flex-direction: column;
+}
+.smallText{
+    font-size: 11px;
+    color: #535353;
+    padding: 5px 0;
 }
 
 .home-section nav .profile-details {

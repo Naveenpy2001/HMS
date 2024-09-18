@@ -156,7 +156,7 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
         </div>
       </div>
 
-      <div className="tracking-container">
+      {/* <div className="tracking-container">
         <h2>Patient Tracking</h2>
         <div className="filter-container">
           <input
@@ -206,7 +206,7 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
             )}
           </tbody>
         </table>
-      </div>
+      </div> */}
     </div>
   );
 };

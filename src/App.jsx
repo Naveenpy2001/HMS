@@ -22,11 +22,11 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<IndexPage />} />
-        <Route path="/Dashboard" element={
-                                          <PrivateRoute>
+        {/* <Route path="/Dashboard" element={<PrivateRoute>
                                          <DashboardHMS />
                                          </PrivateRoute>
-                                         } />
+                                         } /> */}
+        <Route path="/Dashboard" element={<DashboardHMS />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/pswd" element={<ForgotPswd />} />
