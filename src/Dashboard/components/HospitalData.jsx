@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-// import "./HospitalData.css"; // Import the CSS file for styling
 
 const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
 
 const HospitalData = () => {
-  // States for handling data
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -15,11 +13,12 @@ const HospitalData = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [bankName, setBankName] = useState("");
-  const [ifscCode, setIfscCode] = useState("");
-  const [accountNumber, setAccountNumber] = useState("");
-  const [hospitalImages, setHospitalImages] = useState([]); // Initialize as empty array
-  const [newImage, setNewImage] = useState("");
+  const [hospitalImages, setHospitalImages] = useState([]);
+  const [newImages, setNewImages] = useState([]);
+  const [imageCount, setImageCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const fileInputRef = useRef(null); // Reference for hidden file input
 
   // Fetch data from the backend
   useEffect(() => {
@@ -36,10 +35,9 @@ const HospitalData = () => {
         setPassword(data.password);
         setConfirmPassword(data.repetepassword);
         setHospitalName(data.hospitalname);
-        setBankName(data.bankName);
-        setIfscCode(data.ifscCode);
-        setAccountNumber(data.accountNumber);
-        setHospitalImages(Array.isArray(data.hospitalImages) ? data.hospitalImages : []); // Ensure it's an array
+        const existingImages = Array.isArray(data.hospitalImages) ? data.hospitalImages : [];
+        setHospitalImages(existingImages);
+        setImageCount(existingImages.length);
       })
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
@@ -52,24 +50,34 @@ const HospitalData = () => {
     if (name === "email") setEmail(value);
     if (name === "phone") setPhone(value);
     if (name === "address") setAddress(value);
-    if (name === "newImage") setNewImage(value);
     if (name === "password") setPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
     if (name === "hospitalName") setHospitalName(value);
-    if (name === "bankName") setBankName(value);
-    if (name === "ifscCode") setIfscCode(value);
-    if (name === "accountNumber") setAccountNumber(value);
   };
 
-  // Handlers for file uploads
+  // Trigger hidden file input when dummy image is clicked
+  const handleImageClick = () => {
+    fileInputRef.current.click(); // Trigger the file input
+  };
+
+  // Handle profile photo upload
   const handleProfilePhotoChange = (e) => {
-    setProfilePhoto(URL.createObjectURL(e.target.files[0]));
+    const file = e.target.files[0];
+    if (file) {
+      setProfilePhoto(URL.createObjectURL(file)); // Preview the selected image
+    }
   };
 
-  const handleAddImage = () => {
-    if (newImage && hospitalImages.length < 4) {
-      setHospitalImages([...hospitalImages, newImage]);
-      setNewImage("");
+  const handleImagesChange = (e) => {
+    const files = Array.from(e.target.files);
+    const totalImages = files.length + imageCount;
+
+    if (totalImages > 4) {
+      setErrorMessage("You can only upload up to 4 images.");
+    } else {
+      setNewImages(files);
+      setImageCount(totalImages);
+      setErrorMessage("");
     }
   };
 
@@ -77,7 +85,6 @@ const HospitalData = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Ensure passwords match
     if (password !== confirmPassword) {
       alert("Passwords do not match!");
       return;
@@ -93,10 +100,10 @@ const HospitalData = () => {
     formData.append("email", email);
     formData.append("phone", phone);
     formData.append("address", address);
-    formData.append("bankName", bankName);
-    formData.append("ifscCode", ifscCode);
-    formData.append("accountNumber", accountNumber);
-    formData.append("hospitalImages", JSON.stringify(hospitalImages));
+
+    newImages.forEach((image, index) => {
+      formData.append(`hospitalImage${index + 1}`, image);
+    });
 
     axios
       .post(API_URL, formData)
@@ -114,19 +121,28 @@ const HospitalData = () => {
       <form onSubmit={handleSubmit}>
         <section className="hospital-data-section">
           <h2 className="hospital-data-subheading">Profile Photo</h2>
+          <div onClick={handleImageClick} style={{ cursor: "pointer" }}>
+            {profilePhoto ? (
+              <img
+                src={profilePhoto}
+                alt="Profile"
+                className="hospital-data-photo"
+              />
+            ) : (
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYnsoJKGMaangFJ0fH0LS_f-BhjwV8WEhdgg&s" // Dummy image URL
+                alt="Click to upload"
+                className="hospital-data-photo"
+              />
+            )}
+          </div>
           <input
             type="file"
             accept="image/*"
+            ref={fileInputRef} // Reference to hidden file input
+            style={{ display: "none" }} // Hide file input
             onChange={handleProfilePhotoChange}
-            className="hospital-data-input"
           />
-          {profilePhoto && (
-            <img
-              src={profilePhoto}
-              alt="Profile"
-              className="hospital-data-photo"
-            />
-          )}
         </section>
 
         <section className="hospital-data-section">
@@ -211,58 +227,20 @@ const HospitalData = () => {
               className="hospital-data-input"
             />
           </label>
-         <fieldset className="legend-tag">
-          <legend> Bank Details : </legend>
-          <label>
-            Bank Name:
-            <input
-              type="text"
-              name="bankName"
-              value={bankName}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            IFSC Code:
-            <input
-              type="text"
-              name="ifscCode"
-              value={ifscCode}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Account Number:
-            <input
-              type="text"
-              name="accountNumber"
-              value={accountNumber}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-         </fieldset>
         </section>
 
         <section className="hospital-data-section">
-          <h2 className="hospital-data-subheading">Hospital Images</h2>
+          <h2 className="hospital-data-subheading">Upload Doctor Images</h2>
           <input
-            type="text"
-            name="newImage"
-            value={newImage}
-            onChange={handleInputChange}
-            placeholder="Add image URL"
+            type="file"
+            name="doctorImages"
+            accept="image/*"
+            multiple
+            onChange={handleImagesChange}
             className="hospital-data-input"
           />
-          <button
-            className="hospital-data-button"
-            type="button"
-            onClick={handleAddImage}
-          >
-            Add Image
-          </button>
+          <p>{imageCount} / 4 images uploaded</p>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
           {hospitalImages.length > 0 && (
             <div className="hospital-data-images">
               {hospitalImages.map((img, index) => (

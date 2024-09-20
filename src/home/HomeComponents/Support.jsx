@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../../css/Support.css"; // Ensure you have this CSS file for styling
+import "../../css/Support.css"; 
+
+import Navbar from "./Nav";
+import Footer from "../Footer";
 
 const Support = () => {
   const [name, setName] = useState("");
@@ -31,6 +34,8 @@ const Support = () => {
   };
 
   return (
+    <>
+    <Navbar />
     <section className="nl-support">
       <div className="container">
         <div className="nl-support-intro">
@@ -90,6 +95,8 @@ const Support = () => {
         )}
       </div>
     </section>
+    <Footer />
+    </>
   );
 };
 

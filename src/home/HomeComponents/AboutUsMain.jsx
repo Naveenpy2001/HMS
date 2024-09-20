@@ -1,8 +1,12 @@
 import React from "react";
 import "../../css/AboutUs.css"; // Assuming you'll add your custom styles in this file
 
+import Navbar from "./Nav";
+import Footer from "../Footer";
 const AboutUs = () => {
   return (
+    <>
+    <Navbar />
     <section className="about_us">
       <div className="container">
         <div className="row-2">
@@ -35,61 +39,7 @@ const AboutUs = () => {
                 (EMR) to automated billing, our system is designed to make
                 healthcare management easier and more efficient.
               </p>
-              <h3>Meet Our Team</h3>
-              <div className="team_profiles">
-                <div className="profile_card">
-                  <img
-                    src="profile1.jpg"
-                    alt="Dr. Sarah Johnson"
-                    className="profile_image"
-                  />
-                  <h4>Dr. Sarah Johnson</h4>
-                  <p className="profile_position">Chief Medical Officer</p>
-                  <p className="profile_bio">
-                    Dr. Sarah Johnson is a seasoned healthcare professional with
-                    over 25 years of experience in the medical field. As the
-                    Chief Medical Officer, she oversees the clinical aspects of
-                    our HMS, ensuring that the system meets the highest
-                    standards of patient care. Dr. Johnson’s expertise in
-                    healthcare management and her commitment to patient welfare
-                    make her an invaluable member of our team.
-                  </p>
-                </div>
-                <div className="profile_card">
-                  <img
-                    src="profile2.jpg"
-                    alt="John Smith"
-                    className="profile_image"
-                  />
-                  <h4>John Smith</h4>
-                  <p className="profile_position">Chief Technology Officer</p>
-                  <p className="profile_bio">
-                    John Smith leads our technology team with a focus on
-                    innovation and quality. With a background in software
-                    engineering and healthcare IT, John is responsible for the
-                    development and maintenance of our HMS. His deep
-                    understanding of both technology and healthcare allows us to
-                    create a system that is both advanced and user-friendly.
-                  </p>
-                </div>
-                <div className="profile_card">
-                  <img
-                    src="profile3.jpg"
-                    alt="Emily Davis"
-                    className="profile_image"
-                  />
-                  <h4>Emily Davis</h4>
-                  <p className="profile_position">Operations Manager</p>
-                  <p className="profile_bio">
-                    Emily Davis ensures that our operations run smoothly. Her
-                    extensive experience in project management and hospital
-                    administration helps us deliver our HMS to clients on time
-                    and with the highest level of service. Emily is dedicated to
-                    making sure that our clients are satisfied with the system
-                    and that it meets all of their operational needs.
-                  </p>
-                </div>
-              </div>
+
               <h3>Our Mission</h3>
               <p className="about_description">
                 Our mission is to empower healthcare providers with the tools
@@ -137,6 +87,8 @@ const AboutUs = () => {
         </div>
       </div>
     </section>
+    <Footer />
+    </>
   );
 };
 

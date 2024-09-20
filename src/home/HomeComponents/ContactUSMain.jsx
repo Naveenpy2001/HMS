@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "../../css/Contact.css"; // Import your custom CSS here
+import "../../css/Contact.css"; 
+
+import Navbar from "./Nav";
+import Footer from "../Footer";
+
+import { IoIosCall } from "react-icons/io";
+import { HiOutlineMail } from "react-icons/hi";
 
 const ContactUs = () => {
   const [formData, setFormData] = useState({
@@ -35,6 +41,7 @@ const ContactUs = () => {
 
   return (
     <>
+    <Navbar />
       <section className="contact_us">
         <div className="container">
           <div className="row2">
@@ -123,17 +130,17 @@ const ContactUs = () => {
                   <h4>Contact Info</h4>
                   <div className="d-flex info_single align-items-center">
                     <i className="fas fa-headset"></i>
-                    <span>+91 8009 054294</span>
+                    <span> <IoIosCall className="iconPhone" /> +91 94913 01258</span> <br />
+                    <span> <IoIosCall className="iconPhone" /> +91 81426 16767</span>
                   </div>
                   <div className="d-flex info_single align-items-center">
                     <i className="fas fa-envelope-open-text"></i>
-                    <span>info@flightmantra.com</span>
+                     <span> <HiOutlineMail className="iconPhone" /> info@tsaritservices.com</span>
                   </div>
                   <div className="d-flex info_single align-items-center">
                     <i className="fas fa-map-marked-alt"></i>
                     <span>
-                      1000+ Travel partners and 65+ Service cities across India,
-                      USA, Canada & UAE
+                     Visit Our Website : <a href="https://tsaritservices.com" style={{color:'#fff'}}>www.tsaritservices.com</a>
                     </span>
                   </div>
                 </div>
@@ -143,35 +150,7 @@ const ContactUs = () => {
         </div>
       </section>
 
-      {/* <section className="map_sec">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-10 offset-md-1">
-              <div className="map_inner">
-                <h4>Find Us on Google Map</h4>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Tempore quo beatae quasi assumenda, expedita aliquam minima
-                  tenetur maiores neque incidunt repellat aut voluptas hic
-                  dolorem sequi ab porro, quia error.
-                </p>
-                <div className="map_bind">
-                  <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d471220.5631094339!2d88.04952462217592!3d22.6757520733225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f882db4908f667%3A0x43e330e68f6c2cbc!2sKolkata%2C%20West%20Bengal!5e0!3m2!1sen!2sin!4v1596988408134!5m2!1sen!2sin"
-                    width="100%"
-                    height="450"
-                    frameBorder="0"
-                    style={{ border: 0 }}
-                    allowFullScreen=""
-                    aria-hidden="false"
-                    tabIndex="0"
-                  ></iframe>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
+      <Footer />
     </>
   );
 };

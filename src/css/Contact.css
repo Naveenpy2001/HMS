@@ -81,6 +81,9 @@
 
 .info_single {
     margin: 30px 0px;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
 }
 
 .info_single i {

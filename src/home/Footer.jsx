@@ -1,11 +1,11 @@
 import React from "react";
-
+import HMS from '../media/HMS-Transparent.png'
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-logo">
-          <img src="your-logo.png" alt="Logo" />
+          <img src={HMS} alt="hms" />
         </div>
         <div className="footer-links">
           <a href="/about" className="footer-link">

@@ -1,5 +1,6 @@
 import React from "react";
 import '../../css/navbar.css';
+import HMS from '../../media/HMS.png'
 
 const Navbar = () => {
   const toggleMenu = () => {
@@ -16,7 +17,7 @@ const Navbar = () => {
           <div className="header-item item-left">
             <div className="logo-tsar">
               <a href="/">
-                <img src="" alt="HMS" />
+                <img src={HMS} alt="HMS" />
               </a>
             </div>
           </div>
@@ -40,11 +41,9 @@ const Navbar = () => {
                   <a href="/Services">Services</a>
                 </li>
                 <li>
-                  <a href="/pricing">Pricing</a>
+                  <a href="/#pricing">Pricing</a>
                 </li>
-                <li>
-                  <a href="/Support">Support</a>
-                </li>
+
                 <li>
                   <a href="/ContactUs">Contact Us</a>
                 </li>
@@ -65,7 +64,7 @@ const Navbar = () => {
           <div className="header-item item-right">
             {/* Invisible globe icon placeholder */}
             <a
-              href="#"
+              href="!#"
               style={{ color: "#000", fontSize: "20px", visibility: "hidden" }}
             >
               <i className="fa-solid fa-globe"></i>

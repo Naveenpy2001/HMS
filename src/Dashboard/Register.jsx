@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../css/register.css";
+import HMS from '../media/HMS.png'
+
 
 import OtpVerification from "../home/HomeComponents/OTP";
 import { useNavigate } from "react-router-dom";
+import Footer from "../home/Footer";
+import Navbar from "../home/HomeComponents/Nav";
 const Register = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
@@ -55,9 +59,15 @@ const [otpVerify,setOtpVerify] = useState(false)
   };
 
   return (
+    <>
+    <Navbar />
     <div className="flex-center">
       <form className="form_container" onSubmit={handleSubmit}>
-        <div className="logo_container"></div>
+      <div className="flexCenter">
+          <div className="logo_container">
+            <img src={HMS} alt="hms"/>
+          </div>
+          </div>
         <div className="title_container">
           <p className="title">Create a New Account</p>
           <span className="subtitle">
@@ -267,6 +277,8 @@ const [otpVerify,setOtpVerify] = useState(false)
         hospitalname={hospitalname} phonenumber={phonenumber} password={password}  repetepassword={repetepassword}/>
       </div>
     </div>
+    <Footer />
+    </>
   );
 };
 

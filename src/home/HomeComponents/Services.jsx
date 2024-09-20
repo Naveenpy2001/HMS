@@ -1,14 +1,19 @@
 import React from "react";
-import '../../css/services.css'
+import '../../css/services.css';
+
+import Navbar from "./Nav";
+import Footer from "../Footer";
 const Services = () => {
   return (
+    <>
+    <Navbar />
     <section className="srvs-services">
       <div className="srvs-container">
         <h2 className="srvs-section-title">Our Services</h2>
         <div className="srvs-service-cards">
           <div className="srvs-service-card">
             <img
-              src="path/to/patient-management.jpg"
+              src="https://www.leadsquared.com/wp-content/uploads/2022/06/patient-management-system-features-and-benefits-1.png"
               alt="Patient Management"
               className="srvs-card-image"
             />
@@ -31,7 +36,7 @@ const Services = () => {
           </div>
           <div className="srvs-service-card">
             <img
-              src="path/to/doctor-scheduling.jpg"
+              src="https://mobisoftinfotech.com/resources/wp-content/uploads/2018/07/Banner-1.png"
               alt="Doctor Scheduling"
               className="srvs-card-image"
             />
@@ -53,7 +58,7 @@ const Services = () => {
           </div>
           <div className="srvs-service-card">
             <img
-              src="path/to/inventory-management.jpg"
+              src="https://www.simplilearn.com/ice9/free_resources_article_thumb/What_Is_Inventory_Management.jpg"
               alt="Inventory Management"
               className="srvs-card-image"
             />
@@ -75,7 +80,7 @@ const Services = () => {
           </div>
           <div className="srvs-service-card">
             <img
-              src="path/to/billing-insurance.jpg"
+              src="https://www.kauveryhospital.com/wp-content/uploads/2023/06/billing.jpg"
               alt="Billing and Insurance"
               className="srvs-card-image"
             />
@@ -98,7 +103,7 @@ const Services = () => {
           </div>
           <div className="srvs-service-card">
             <img
-              src="path/to/telemedicine.jpg"
+              src="https://devabit.com/uploads/the-future-of-telemedicine-cover-devabit.webp"
               alt="Telemedicine"
               className="srvs-card-image"
             />
@@ -121,6 +126,8 @@ const Services = () => {
         </div>
       </div>
     </section>
+    <Footer />
+    </>
   );
 };
 

@@ -131,34 +131,92 @@ function MedicalTests({ token }) {
         </div>
 
         <table className="tracking-table">
-          <thead>
-            <tr>
-              <th>Patient Name</th>
-              <th>Disease</th>
-              <th>Age</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPatients.length > 0 ? (
-              filteredPatients.map((patient, index) => (
-                <tr key={index}>
-                  <td>
-                    {patient.firstName} {patient.lastName}
-                  </td>
-                  <td>{patient.disease}</td>
-                  <td>{patient.age}</td>
-                  <td>{patient.visited ? "Visited" : "Not Visited"}</td>
-                  <td>{patient.date}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5">No patients found</td>
-              </tr>
-            )}
-          </tbody>
+        <thead>
+  <tr>
+    <th className="patients-id">ID</th>
+    <th className="patients-firstName">First Name</th>
+    <th className="patients-lastName">Last Name</th>
+    <th className="patients-email">Email</th>
+    <th className="patients-phoneNumber">Phone Number</th>
+    <th className="patients-aadharNumber">Aadhar Number</th>
+    <th className="patients-address">Address</th>
+    <th className="patients-gender">Gender</th>
+    <th className="patients-disease">Disease</th>
+    <th className="patients-otherDisease">Other Disease</th>
+    <th className="patients-day">Date of birth</th>
+
+    <th className="patients-age">Age</th>
+    <th className="patients-modeOfPayment">Mode of Payment</th>
+    <th className="patients-amount">Amount</th>
+    <th className="patients-upiTransactionNo">UPI Transaction No</th>
+    <th className="patients-netBankingTransactionId">Net Banking Transaction ID</th>
+    <th className="patients-netBankingScreenshot">Net Banking Screenshot</th>
+    <th className="patients-accountTransactionId">Account Transaction ID</th>
+    <th className="patients-accountDocument">Account Document</th>
+    <th className="patients-reference">Reference</th>
+    <th className="patients-insurance">Insurance</th>
+    <th className="patients-otherPayment">Other Payment</th>
+    <th className="patients-weight">Weight</th>
+    <th className="patients-bp">BP</th>
+    <th className="patients-appointmentTaken">Appointment Taken</th>
+    <th className="patients-appointmentDetails">Appointment Details</th>
+    <th className="patients-modeOfPatient">Mode of Patient</th>
+    <th className="patients-bedAssign">Bed Assign</th>
+    <th className="patients-bedDetails">Bed Details</th>
+    <th className="patients-bedNo">Bed No</th>
+    <th className="patients-bedDays">Bed Days</th>
+    <th className="patients-date">Date</th>
+    <th className="patients-time">Time</th>
+  </tr>
+</thead>
+
+<tbody>
+  {filteredPatients.length > 0 ? (
+    filteredPatients.map((patient, index) => (
+      <tr key={index}>
+        <td className="patients-id">{patient.id}</td>
+        <td className="patients-firstName">{patient.firstName}</td>
+        <td className="patients-lastName">{patient.lastName}</td>
+        <td className="patients-email">{patient.email}</td>
+        <td className="patients-phoneNumber">{patient.phoneNumber}</td>
+        <td className="patients-aadharNumber">{patient.aadharNumber}</td>
+        <td className="patients-address">{patient.address}</td>
+        <td className="patients-gender">{patient.gender}</td>
+        <td className="patients-disease">{patient.disease}</td>
+        <td className="patients-otherDisease">{patient.otherDisease}</td>
+        <td className="patients-day">{patient.day} / {patient.month} / {patient.year}</td>
+
+        <td className="patients-age">{patient.age}</td>
+        <td className="patients-modeOfPayment">{patient.modeOfPayment}</td>
+        <td className="patients-amount">{patient.amount}</td>
+        <td className="patients-upiTransactionNo">{patient.upiTransactionNo}</td>
+        <td className="patients-netBankingTransactionId">{patient.netBankingTransactionId}</td>
+        <td className="patients-netBankingScreenshot">{patient.netBankingScreenshot}</td>
+        <td className="patients-accountTransactionId">{patient.accountTransactionId}</td>
+        <td className="patients-accountDocument">{patient.accountDocument}</td>
+        <td className="patients-reference">{patient.reference}</td>
+        <td className="patients-insurance">{patient.insurance}</td>
+        <td className="patients-otherPayment">{patient.otherPayment}</td>
+        <td className="patients-weight">{patient.weight}</td>
+        <td className="patients-bp">{patient.bp}</td>
+        <td className="patients-appointmentTaken">{patient.appointmentTaken}</td>
+        <td className="patients-appointmentDetails">{patient.appointmentDetails}</td>
+        <td className="patients-modeOfPatient">{patient.modeOfPatient}</td>
+        <td className="patients-bedAssign">{patient.bedAssign}</td>
+        <td className="patients-bedDetails">{patient.bedDetails}</td>
+        <td className="patients-bedNo">{patient.bedNo}</td>
+        <td className="patients-bedDays">{patient.bedDays}</td>
+        <td className="patients-date">{patient.date}</td>
+        <td className="patients-time">{patient.time}</td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="38" className="patients-noData">No patients found</td>
+    </tr>
+  )}
+</tbody>
+
         </table>
       </div>
     </div>

@@ -5,8 +5,8 @@
     align-items: center;
 }
 .form_container {
-    width: fit-content;
-    height: fit-content;
+    /* width: fit-content; */
+    /* height: fit-content; */
     display: flex;
     margin: 10px;
     flex-direction: column;
@@ -19,6 +19,7 @@
         0px 7px 15px rgba(0, 0, 0, 0.1), 0px 0px 0px rgba(0, 0, 0, 0.1);
     border-radius: 11px;
     font-family: "Inter", sans-serif;
+    margin: 10px 0;
 }
 
 .flex-row {
@@ -38,7 +39,7 @@
 
 .logo_container {
     box-sizing: border-box;
-    width: 80px;
+    width: 180px;
     height: 80px;
     background: linear-gradient(180deg, rgba(248, 248, 248, 0) 50%, #F8F8F888 100%);
     border: 1px solid #F7F7F8;
@@ -62,8 +63,8 @@
 }
 
 .subtitle {
-    font-size: 0.725rem;
-    max-width: 80%;
+    font-size: 0.42rem;
+    width: 100%;
     text-align: center;
     line-height: 1.1rem;
     color: #8B8E98

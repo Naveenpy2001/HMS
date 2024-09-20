@@ -1,15 +1,21 @@
 import React from "react";
 import { BsArrowRightCircle } from "react-icons/bs";
-import '../../css/Pricing.css'
+import '../../css/Pricing.css';
+import Primary from '../../media/Primary.png';
+import Corporate from '../../media/corporate-hospital.png';
+import Multi from '../../media/multi.png';
 
 const Pricing = () => {
   return (
-    <section className="pricing">
+    <section className="pricing" id="pricing">
       <h2 className="pricing-heading">Our Pricing Plans</h2>
       <div className="pricing-container">
         <div className="pricing-plan">
           <div className="plan-details">
+            <div className="flexCenterImg">
+              <img src={Primary} alt="" className="hsLogo" />
             <h1 className="plan-title">Primary Hospital</h1>
+            </div>
             <p className="price-strike">
               <strike>₹21</strike>
               <span className="save"> Save 30%</span>
@@ -67,7 +73,11 @@ const Pricing = () => {
 
         <div className="pricing-plan">
           <div className="plan-details">
+            <div className="flexCenterImg">
+              <img src={Multi} alt="" className="hsLogo" />
             <h1 className="plan-title">Multi-Hospital</h1>
+            
+            </div>
             <p className="price-strike">
               <strike>₹150</strike>
               <span className="save"> Save 20%</span>
@@ -117,7 +127,10 @@ const Pricing = () => {
 
         <div className="pricing-plan">
           <div className="plan-details">
+            <div className="flexCenterImg">
+              <img src={Corporate} alt="" className="hsLogo" />
             <h1 className="plan-title">Corporate Hospital</h1>
+            </div>
           </div>
           <div className="features-col" style={{ marginTop: "120px" }}>
             <h1 className="features-title">Features</h1>
@@ -145,7 +158,7 @@ const Pricing = () => {
           </div>
         </div>
 
-        <div className="pricing-plan">
+        {/* <div className="pricing-plan">
           <div className="plan-details">
             <h1 className="plan-title">Pharmacy Software</h1>
             <p className="price-strike">
@@ -167,7 +180,7 @@ const Pricing = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../css/login.css"; 
+import HMS from '../media/HMS.png'
 
 import { useNavigate } from "react-router-dom";
 
 import ForgotPswd from "./components/ForgotPswd";
 import App from "./dashboard";
+
+import Navbar from "../home/HomeComponents/Nav";
+import Footer from "../home/Footer";
 
 const Login = () => {
   const [emailid, setEmail] = useState("");
@@ -45,13 +49,18 @@ const Login = () => {
 
   return (
     <>
+    <Navbar />
       <div className="flex-center">
         <form
           className="form_container"
           action="/Dashboard"
           onSubmit={handleSubmit}
         >
-          <div className="logo_container">logo</div>
+          <div className="flexCenter">
+          <div className="logo_container">
+            <img src={HMS} alt="hms"/>
+          </div>
+          </div>
           <div className="title_container">
             <p className="title">Login to your Account</p>
             <span className="subtitle">
@@ -159,6 +168,7 @@ const Login = () => {
           {/* <App token={token} /> */}
         </div>
       </div>
+      <Footer />
     </>
   );
 };
