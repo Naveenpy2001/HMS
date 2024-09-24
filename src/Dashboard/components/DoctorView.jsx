@@ -41,6 +41,7 @@ const DoctorView = () => {
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName+" "+data.lastName);
       setPtDiseases(data.disease);
+      setAge(data.age);
     } catch (error) {
       console.error("Error fetching patient data:", error);
       alert("Failed to fetch patient data. Please try again.");

@@ -208,6 +208,27 @@ const Billing = () => {
     fullName: '',
     phoneNumber: '',
   });
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("https://hms.tsaritservices.com/dashboard", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            // "Authorization": `Bearer ${localStorage.getItem(token)}`,
+          },
+        });
+        const result = await response.json();
+        setTotalPatients(result.TotalpatientCount)
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle error, e.g., show a notification or retry fetching
+      }
+    };
+
+    fetchData();
+  });
 
   const popupRef = useRef();
 
