@@ -16,7 +16,7 @@ const Register = () => {
   const [phonenumber,setPhone] = useState('')
   const [password, setPassword] = useState("");
   const [repetepassword, setConfirmPassword] = useState("");
-  // const [gender, setGender] = useState("");
+  const [address, setAddress] = useState("");
   const navigate = useNavigate();
 
 
@@ -36,12 +36,13 @@ const [otpVerify,setOtpVerify] = useState(false)
 
     try {
       setLoading(true)
-      const response = await axios.post("https://hms.tsaritservices.com/register-react", {
+      const response = await axios.post("http://localhost:8080/register-react", {
         firstname,
         lastname,
         hospitalname,
         emailid,
         phonenumber,
+        address,
         password,
         repetepassword,
         // gender,
@@ -164,8 +165,23 @@ const [otpVerify,setOtpVerify] = useState(false)
             value={emailid}
             onChange={(e) => setEmail(e.target.value)}
           />
+         
         </div>
+        <div className="input_container">
+          <label className="input_label" htmlFor="username_field">
+           Address(city,zipcode,street)
+          </label>
 
+        <input
+            placeholder="address"
+            name="address"
+            type="text"
+            className="input_field"
+            id="email_field"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+          </div>
         <div className="input_container">
           <label className="input_label" htmlFor="username_field">
             Phone No.

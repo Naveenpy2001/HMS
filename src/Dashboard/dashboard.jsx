@@ -217,7 +217,7 @@ function App(token) {
 
   const UserDataFetch = async () => {
     try {
-      const response = await fetch("https://hms.tsaritservices.com/dashboard", {
+      const response = await fetch("http://localhost:8080/dashboard", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -239,12 +239,15 @@ function App(token) {
   const handleLogout = async () => {
     localStorage.removeItem('token');
     try {
-      await axios.post("https://hms.tsaritservices.com/reactlogout", {
+      await axios.post("http://localhost:8080/reactlogout", {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+
       });
+      alert("Logout successful")
       console.log("Logout successful:");
       navigate("/login");
     } catch (error) {
+      alert("Error logging out:", error)
       console.error("Error logging out:", error);
     }
   };

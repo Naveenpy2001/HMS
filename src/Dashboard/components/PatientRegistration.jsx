@@ -71,7 +71,7 @@ const PatientRegistration = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://hms.tsaritservices.com/saveAthentication", formData, {
+      await axios.post("http://localhost:8080/saveAthentication", formData, {
         headers: {
           "Content-Type": "application/json",
         },

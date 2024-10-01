@@ -211,7 +211,7 @@ const Billing = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://hms.tsaritservices.com/dashboard", {
+        const response = await fetch("http://localhost:8080/dashboard", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -237,7 +237,7 @@ const Billing = () => {
 
   useEffect(() => {
     // Fetch today's payments
-    axios.get('https://hms.tsaritservices.com/api/payments/today')
+    axios.get('http://localhost:8080/api/payments/today')
       .then(response => {
         setTodaysPayments(response.data || []);
         // Update total patients count
@@ -246,7 +246,7 @@ const Billing = () => {
       .catch(error => console.error('Error fetching today\'s payments:', error));
 
     // Fetch total payments
-    axios.get('https://hms.tsaritservices.com/monthly-total')
+    axios.get('http://localhost:8080/monthly-total')
       .then(response => setMonthlyTotalPayments(response.data || { monthWise: [], yearWise: [] }))
       .catch(error => console.error('Error fetching total payments:', error));
   }, []);

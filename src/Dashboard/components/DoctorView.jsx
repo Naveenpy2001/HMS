@@ -8,10 +8,10 @@ const DoctorView = () => {
   const [ptDiseases, setPtDiseases] = useState("");
   const [patientTreatment, setPatientTreatment] = useState("");
   const [prescription, setPrescription] = useState("");
-  const [tabletName, setTabletName] = useState("");
+  const [tabletName1, setTabletName1] = useState("");
   const [otherTabletName, setOtherTabletName] = useState("");
   const [injection, setInjection] = useState("");
-  const [mg, setMg] = useState("");
+  // const [mg, setMg] = useState("");
   const [tests, setTests] = useState("");
   const [doctorAdvice, setDoctorAdvice] = useState("");
   
@@ -37,7 +37,7 @@ const DoctorView = () => {
   const fetchPatientData = async () => {
     try {
       // Replace with your fetch API endpoint
-      const response = await axios.get(`https://hms.tsaritservices.com/api/record/${patientId}`);
+      const response = await axios.get(`http://localhost:8080/api/record/${patientId}`);
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName+" "+data.lastName);
       setPtDiseases(data.disease);
@@ -58,10 +58,11 @@ const DoctorView = () => {
       ptDiseases,
       // patientTreatment,
       prescription,
-      tabletName,
+      tabletName1,
       otherTabletName,
-      injection,
-      mg,
+      injectionSize,
+      injectionName,
+      injectionMg,
       tabletCount,
       tests,
       doctorAdvice,
@@ -71,7 +72,7 @@ const DoctorView = () => {
     try {
       // Replace with your Spring Boot endpoint URL
       const response = await axios.post(
-        "https://hms.tsaritservices.com/savetreatment", // Update with your actual Spring Boot endpoint
+        "http://localhost:8080/savetreatment", // Update with your actual Spring Boot endpoint
         formData,
         {
           headers: {
@@ -80,7 +81,7 @@ const DoctorView = () => {
         }
       );
       console.log("Form Data Submitted:", response.data);
-      alert("Data submitted successfully!");
+      alert("Data submitted successfully!",response.data);
 
       // Clear form after submission
       setPatientId("");
@@ -88,10 +89,11 @@ const DoctorView = () => {
       // setPtDiseases("");
       setPatientTreatment("");
       setPrescription("");
-      setTabletName("");
+      setTabletName1("");
       setOtherTabletName("");
-      setInjection("");
-      setMg("");
+      setInjectionSize("");
+      setInjectionName("");
+      setInjectionMg("");
       setTabletCount("");
       setTests("");
       setDoctorAdvice("");
@@ -100,9 +102,29 @@ const DoctorView = () => {
       console.error("Error submitting form data:", error);
       alert("Failed to submit data. Please try again.");
     }
-
+    // try {
+    //   // Replace with your Spring Boot endpoint URL
+    //   const printCertificate = (patientId) => {
+    //     fetch(`http://localhost:8080/api/generate-certificate/${patientId}`)
+    //       .then(response => response.blob())
+    //       .then(blob => {
+    //         const url = window.URL.createObjectURL(blob);
+    //         const newWindow = window.open(url);
+    //         newWindow.print();  // Automatically opens the print dialog
+    //       });
+    //   };
+    //   console.log("certificate created ");
+      
+    // } catch (error) {
+    //     console.error("certificate not suessfull");
+    //     // alert("Failed to submit data. Please try again.");
+    //   }
     
   };
+
+  
+
+  
 
   // try {
   //   const newMedicines = tabletMedicines
@@ -154,11 +176,39 @@ const DoctorView = () => {
   };
 
   const handleTabletCountChange = (e) => {
-    const count = parseInt(e.target.value, 10) || 0;
+    const count = Math.min(e.target.value, 10) || 0;
     setTabletCount(count);
     setTabletMedicines(Array.from({ length: count }, () => ({ medicine: "", otherName: "" })));
   };
+  const printCertificate = async () => {
+    try {
+      // Make API call to generate the certificate
+      const response = await fetch(`http://localhost:8080/api/generate-certificate/${patientId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/pdf',
+        },
+      });
 
+      // Convert the response to a Blob
+      const blob = await response.blob();
+
+      // Create a URL from the Blob
+      const url = window.URL.createObjectURL(blob);
+
+      // Open the PDF in a new browser window/tab
+      const newWindow = window.open(url);
+
+      // Automatically trigger the print dialog once the PDF is loaded
+      if (newWindow) {
+        newWindow.onload = () => {
+          newWindow.print();
+        };
+      }
+    } catch (error) {
+      console.error("Error printing the certificate:", error);
+    }
+  }
   return (
     <div className="dct-view">
       <h1 className="dct-heading">Doctor View</h1>
@@ -295,6 +345,18 @@ const DoctorView = () => {
                   {medicine.name}
                 </option>
               ))}
+              <option value="Paracetamol">Paracetamol
+                
+              </option>
+              <option value="Ibuprofen">Ibuprofen</option>
+              <option value="Aspirin">Aspirin</option>
+              <option value="Amoxicillin">Amoxicillin</option>
+              <option value="Metformin">Metformin</option>
+              <option value="Atorvastatin">Atorvastatin</option>
+              <option value="Omeprazole">Omeprazole</option>
+              <option value="Amlodipine">Amlodipine</option>
+              <option value="Losartan">Losartan</option>
+              <option value="Cetirizine">Cetirizine</option>
               <option value="Other">Other</option>
             </select>
             {tablet.medicine === "Other" && (
@@ -407,10 +469,14 @@ const DoctorView = () => {
             required
           />
         </div>
-
+        <div>
         <button type="submit" className="dct-submit-button">
           Submit
         </button>
+        <button onClick={printCertificate} type="submit" className="dct-submit-button">
+          download prescription
+    </button>
+        </div>
       </form>
     </div>
   );
