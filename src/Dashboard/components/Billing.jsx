@@ -208,6 +208,8 @@ const Billing = () => {
     fullName: '',
     phoneNumber: '',
   });
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -282,6 +284,18 @@ const Billing = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // Submit the bank details via an API
+    try {
+      // Make an API request to save the bank details
+      const response =  axios.post('http://localhost:8080/save-bank-details', bankDetails);
+
+      // Handle success response
+      console.log('Bank details saved successfully:', response.data);
+      alert('Bank details saved successfully!');
+    } catch (error) {
+      // Handle error
+      console.error('Error saving bank details:', error);
+      alert('Failed to save bank details. Please try again.');
+    }
     console.log(bankDetails);
     setShowPopup(false); // Close popup after submission
   };

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import {  useEffect } from 'react';
 const DoctorView = () => {
   // State to hold form values
   const [patientId, setPatientId] = useState("");
@@ -26,7 +26,8 @@ const DoctorView = () => {
   const [injectionMg, setInjectionMg] = useState("");
 
   const [age,setAge] = useState('')
-
+  const[treatmentId,setTreatmentId]=useState("")
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -79,10 +80,18 @@ const DoctorView = () => {
             "Content-Type": "application/json",
           },
         }
+        
       );
-      console.log("Form Data Submitted:", response.data);
-      alert("Data submitted successfully!",response.data);
 
+      const newTreatmentId = response.data;
+      
+        setTreatmentId(newTreatmentId); // Only set state if response.data exists
+     
+      
+      console.log(response.data)
+      console.log("Form Data Submitted with id:", response.data);
+      alert("Data submitted successfully!",response.data);
+      console.log(treatmentId)
       // Clear form after submission
       setPatientId("");
       // setPatientName("");
@@ -98,6 +107,7 @@ const DoctorView = () => {
       setTests("");
       setDoctorAdvice("");
       setAge('')
+      await printCertificate();
     } catch (error) {
       console.error("Error submitting form data:", error);
       alert("Failed to submit data. Please try again.");
@@ -123,7 +133,11 @@ const DoctorView = () => {
   };
 
   
-
+  useEffect(() => {
+    if (treatmentId) {
+      console.log("Updated treatmentId:", treatmentId);
+    }
+  }, [treatmentId]);
   
 
   // try {
@@ -185,9 +199,9 @@ const DoctorView = () => {
       // Make API call to generate the certificate
       const response = await fetch(`http://localhost:8080/api/generate-certificate/${patientId}`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/pdf',
-        },
+        // headers: {
+        //   'Content-Type': 'application/pdf',
+        // },
       });
 
       // Convert the response to a Blob
@@ -470,12 +484,12 @@ const DoctorView = () => {
           />
         </div>
         <div>
-        <button type="submit" className="dct-submit-button">
+        <button  type="submit" className="dct-submit-button">
           Submit
         </button>
-        <button onClick={printCertificate} type="submit" className="dct-submit-button">
+        {/* <button onClick={printCertificate} type="submit" className="dct-submit-button">
           download prescription
-    </button>
+    </button> */}
         </div>
       </form>
     </div>

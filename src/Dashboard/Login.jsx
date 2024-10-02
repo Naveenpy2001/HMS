@@ -32,11 +32,19 @@ const Login = () => {
         emailid, 
         password,
       });
-      navigate(`/dashboard`);
-      console.log("Login successful:", response.data);
+      const token = response.data.token;
+      if (token) {
+        localStorage.setItem('token', token); // Store the token
+        console.log("Login successful:", response.data);
+        navigate('/dashboard'); // Redirect to dashboard
+      } else {
+        console.error("Login failed: Token not received");
+      }
+      
       // setToken=response.data
      
       setToken(response.data);
+      // localStorage.setItem("token", token);
     } catch (error) {
       alert("Error logging in:")
       console.error("Error logging in:", error);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import { Navigate } from "react-router-dom";
 const Dashboard = ({ emailid, setActiveTab, token }) => {
   const [data, setData] = useState({
     TodaypatientCount: 0,
@@ -13,8 +13,13 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [filterVisited, setFilterVisited] = useState("all");
-
+  
   useEffect(() => {
+    // const isAuthenticated = localStorage.getItem("token"); 
+    // if (!isAuthenticated) {
+    //   // If user is not authenticated, redirect to login page
+    //   return <Navigate to="/login" />;
+    // }
     const fetchData = async () => {
       try {
         const response = await fetch("http://localhost:8080/dashboard", {
