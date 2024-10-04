@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
+const API_URL = "http://localhost:8080/get/api/"; // Replace with your actual API URL
 
 const HospitalData = () => {
   const [profilePhoto, setProfilePhoto] = useState(null);

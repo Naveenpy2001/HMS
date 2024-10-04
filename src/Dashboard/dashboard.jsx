@@ -48,7 +48,7 @@ function App(token) {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 
       });
-      alert("Logout successful")
+      alert("if you want Logout click OK")
       console.log("Logout successful:");
       navigate("/login");
     } catch (error) {

@@ -14,10 +14,15 @@ const Billing = () => {
     fullName: '',
     phoneNumber: '',
   });
+<<<<<<< HEAD
   const [isBankDetailsExist, setIsBankDetailsExist] = useState(false); // Track if bank details exist
   const [showForm, setShowForm] = useState(true); // Control form visibility
 
   // Fetch the bank details when the component loads
+=======
+
+  
+>>>>>>> 45235c01356a72dcd5ae6ed6e8c9bde4469645ce
   useEffect(() => {
     axios.get('http://localhost:8080/api/bank-details')
       .then(response => {
@@ -55,6 +60,7 @@ const Billing = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+<<<<<<< HEAD
 
     // Submit or update bank details
     if (isBankDetailsExist) {
@@ -73,6 +79,23 @@ const Billing = () => {
         })
         .catch(error => console.error('Error submitting bank details:', error));
     }
+=======
+    // Submit the bank details via an API
+    try {
+      // Make an API request to save the bank details
+      const response =  axios.post('http://localhost:8080/save-bank-details', bankDetails);
+
+      // Handle success response
+      console.log('Bank details saved successfully:', response.data);
+      alert('Bank details saved successfully!');
+    } catch (error) {
+      // Handle error
+      console.error('Error saving bank details:', error);
+      alert('Failed to save bank details. Please try again.');
+    }
+    console.log(bankDetails);
+    setShowPopup(false); // Close popup after submission
+>>>>>>> 45235c01356a72dcd5ae6ed6e8c9bde4469645ce
   };
 
   // Calculate total commission

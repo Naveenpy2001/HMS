@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import axios from "axios";
-
+import {  useEffect } from 'react';
 const DoctorView = () => {
   // State to hold form values
   const [patientId, setPatientId] = useState("");
@@ -31,9 +31,15 @@ const DoctorView = () => {
   const [visitedPatientsList, setVisitedPatientsList] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
+<<<<<<< HEAD
   const handleTabChange = (tabIndex) => {
     setActiveTab(tabIndex);
   };
+=======
+  const [age,setAge] = useState('')
+  const[treatmentId,setTreatmentId]=useState("")
+  
+>>>>>>> 45235c01356a72dcd5ae6ed6e8c9bde4469645ce
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
@@ -42,7 +48,135 @@ const DoctorView = () => {
   };
 
 
+<<<<<<< HEAD
     const handleInjectionChange = (e) => {
+=======
+  // Function to handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Form data to be sent to the backend
+    const formData = {
+      patientId,
+      patientName,
+      ptDiseases,
+      // patientTreatment,
+      prescription,
+      tabletName1,
+      otherTabletName,
+      injectionSize,
+      injectionName,
+      injectionMg,
+      tabletCount,
+      tests,
+      doctorAdvice,
+      age,
+    };
+
+    try {
+      // Replace with your Spring Boot endpoint URL
+      const response = await axios.post(
+        "http://localhost:8080/savetreatment", // Update with your actual Spring Boot endpoint
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+        
+      );
+
+      const newTreatmentId = response.data;
+      
+        setTreatmentId(newTreatmentId); // Only set state if response.data exists
+     
+      
+      console.log(response.data)
+      console.log("Form Data Submitted with id:", response.data);
+      alert("Data submitted successfully!",response.data);
+      console.log(treatmentId)
+      // Clear form after submission
+      setPatientId("");
+      // setPatientName("");
+      // setPtDiseases("");
+      setPatientTreatment("");
+      setPrescription("");
+      setTabletName1("");
+      setOtherTabletName("");
+      setInjectionSize("");
+      setInjectionName("");
+      setInjectionMg("");
+      setTabletCount("");
+      setTests("");
+      setDoctorAdvice("");
+      setAge('')
+      await printCertificate();
+    } catch (error) {
+      console.error("Error submitting form data:", error);
+      alert("Failed to submit data. Please try again.");
+    }
+    // try {
+    //   // Replace with your Spring Boot endpoint URL
+    //   const printCertificate = (patientId) => {
+    //     fetch(`http://localhost:8080/api/generate-certificate/${patientId}`)
+    //       .then(response => response.blob())
+    //       .then(blob => {
+    //         const url = window.URL.createObjectURL(blob);
+    //         const newWindow = window.open(url);
+    //         newWindow.print();  // Automatically opens the print dialog
+    //       });
+    //   };
+    //   console.log("certificate created ");
+      
+    // } catch (error) {
+    //     console.error("certificate not suessfull");
+    //     // alert("Failed to submit data. Please try again.");
+    //   }
+    
+  };
+
+  
+  useEffect(() => {
+    if (treatmentId) {
+      console.log("Updated treatmentId:", treatmentId);
+    }
+  }, [treatmentId]);
+  
+
+  // try {
+  //   const newMedicines = tabletMedicines
+  //     .filter(m => m.medicine === "Other" && m.otherName)
+  //     .map(m => ({ name: m.otherName }));
+
+  //   // Submit prescription details
+  //    axios.post('', {
+  //     tablets: tabletMedicines.map(({ medicine, otherName }) => ({
+  //       medicine: medicine === "Other" ? otherName : medicine,
+  //     })),
+  //     injection: needsInjection === "Yes" ? {
+  //       size: injectionSize,
+  //       name: injectionName,
+  //       mg: injectionMg,
+  //     } : null,
+  //   });
+
+  //   // Add new medicines to the database if any
+  //   if (newMedicines.length > 0) {
+  //      axios.post('', newMedicines);
+  //     // Refresh the medicine options
+  //     const response =  axios.get('');
+  //     setMedicineOptions(response.data);
+  //   }
+
+  //   console.log('Prescription submitted successfully!');
+  //   // alert('Prescription submitted successfully!');
+  // } catch (error) {
+  //   console.error('Error submitting prescription:', error);
+  //   // alert('There was an error submitting the prescription!');
+  // }
+
+
+  const handleInjectionChange = (e) => {
+>>>>>>> 45235c01356a72dcd5ae6ed6e8c9bde4469645ce
     setNeedsInjection(e.target.value);
   };
 
@@ -146,6 +280,7 @@ const DoctorView = () => {
 
   const printCertificate = async () => {
     try {
+<<<<<<< HEAD
       const response = await fetch(
         `http://localhost:8080/api/generate-certificate/${patientId}`,
         {
@@ -155,6 +290,17 @@ const DoctorView = () => {
           },
         }
       );
+=======
+      // Make API call to generate the certificate
+      const response = await fetch(`http://localhost:8080/api/generate-certificate/${patientId}`, {
+        method: 'GET',
+        // headers: {
+        //   'Content-Type': 'application/pdf',
+        // },
+      });
+
+      // Convert the response to a Blob
+>>>>>>> 45235c01356a72dcd5ae6ed6e8c9bde4469645ce
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const newWindow = window.open(url);
@@ -171,6 +317,7 @@ const DoctorView = () => {
   return (
     <div className="dct-view">
       <h1 className="dct-heading">Doctor View</h1>
+<<<<<<< HEAD
       <div className="billing-navigation">
         <button
           className={`dct-tab-button ${activeTab === 1 ? "active" : ""}`}
@@ -222,6 +369,272 @@ const DoctorView = () => {
               ))}
             </tbody>
           </table>
+=======
+      <form onSubmit={handleSubmit} className="dct-form">
+        <div className="dct-form-group">
+          <label htmlFor="patientId" className="dct-label">
+            Patient ID:
+          </label>
+          <input
+            type="text"
+            id="patientId"
+            className="dct-input"
+            value={patientId}
+            onChange={(e) => setPatientId(e.target.value)}
+            // onKeyDown={handleKeyDown}
+            onBlur={fetchPatientData}
+            required
+          />
+           {/* <button type="button" onClick={fetchPatientData} className="dct-fetch-button">
+            Fetch Patient Data
+          </button> */}
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="patientName" className="dct-label">
+            Patient Name:
+          </label>
+          <input
+            type="text"
+            id="patientName"
+            className="dct-input"
+            value={patientName}
+            onChange={(e) => setPatientName(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Diseases:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={ptDiseases}
+            onChange={(e) => setPtDiseases(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Age:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+<hr />
+<hr />
+        <h2 className="dct-subheading">Patient Treatment</h2>
+
+        <div className="dct-form-group">
+          <label htmlFor="prescription" className="dct-label">
+            Doctor's Prescription:
+          </label>
+        
+        </div>
+
+        {/* <div className="dct-form-group">
+          <label htmlFor="tabletName" className="dct-label">
+            Select Tablet Name:
+          </label>
+          <select
+            id="tabletName"
+            className="dct-select"
+            value={tabletName}
+            onChange={(e) => {
+              setTabletName(e.target.value);
+              if (e.target.value !== "others") {
+                setOtherTabletName("");
+              }
+            }}
+            required
+          >
+            <option value="">Select...</option>
+            <option value="dolo">Dolo</option>
+            <option value="paracetamol">Paracetamol</option>
+            <option value="others">Others</option>
+          </select>
+          {tabletName === "others" && (
+            <input
+              type="text"
+              id="otherTabletName"
+              className="dct-input"
+              value={otherTabletName}
+              onChange={(e) => setOtherTabletName(e.target.value)}
+              placeholder="Enter tablet name"
+            />
+          )}
+        </div> */}
+
+         {/* Tablets */}
+        
+         <label>Number of Tablets:</label>
+        <input
+          type="number"
+          value={tabletCount}
+          onChange={handleTabletCountChange}
+          className="dct-input"
+        />
+        <br />
+
+        {tabletCount > 0 && tabletMedicines.map((tablet, index) => (
+          <div key={index}>
+            <label>Select Medicine for Tablet {index + 1}:</label>
+            <select
+              value={tablet.medicine}
+              onChange={(e) => handleMedicineChange(index, e.target.value)}
+              className="dct-input"
+            >
+              <option value="">Select Medicine</option>
+              {medicineOptions.map((medicine) => (
+                <option key={medicine.id} value={medicine.name}>
+                  {medicine.name}
+                </option>
+              ))}
+              <option value="Paracetamol">Paracetamol
+                
+              </option>
+              <option value="Ibuprofen">Ibuprofen</option>
+              <option value="Aspirin">Aspirin</option>
+              <option value="Amoxicillin">Amoxicillin</option>
+              <option value="Metformin">Metformin</option>
+              <option value="Atorvastatin">Atorvastatin</option>
+              <option value="Omeprazole">Omeprazole</option>
+              <option value="Amlodipine">Amlodipine</option>
+              <option value="Losartan">Losartan</option>
+              <option value="Cetirizine">Cetirizine</option>
+              <option value="Other">Other</option>
+            </select>
+            {tablet.medicine === "Other" && (
+              <div>
+                <label>Enter Tablet Name:</label>
+                <input
+                  type="text"
+                  value={tablet.otherName}
+                  onChange={(e) => handleOtherMedicineChange(index, e.target.value)}
+                  className="dct-input"
+                />
+              </div>
+            )}
+            <br />
+          </div>
+        ))}
+
+
+        
+        <br />
+
+        {/* Injection */}
+        
+
+        <label>Need Injection:</label>
+        <div>
+          <input
+            type="radio"
+            name="needsInjection"
+            value="Yes"
+            checked={needsInjection === 'Yes'}
+            onChange={handleInjectionChange}
+          /> Yes
+          <input
+            type="radio"
+            name="needsInjection"
+            value="No"
+            checked={needsInjection === 'No'}
+            onChange={handleInjectionChange}
+          /> No
+        </div>
+        <br />
+
+        {/* Injection Details */}
+        {needsInjection === "Yes" && (
+          <div>
+            <label>Select Injection Size:</label>
+            <div>
+              <input
+                type="radio"
+                name="injectionSize"
+                value="Small"
+                checked={injectionSize === 'Small'}
+                onChange={(e) => setInjectionSize(e.target.value)}
+              /> Small
+              <input
+                type="radio"
+                name="injectionSize"
+                value="Big"
+                checked={injectionSize === 'Big'}
+                onChange={(e) => setInjectionSize(e.target.value)}
+              /> Big
+            </div>
+            <br />
+
+            <label>Injection Name:</label>
+            <input
+              type="text"
+              value={injectionName}
+              onChange={(e) => setInjectionName(e.target.value)}
+            />
+            <br />
+
+            <label>Injection mg:</label>
+            <input
+              type="text"
+              value={injectionMg}
+              onChange={(e) => setInjectionMg(e.target.value)}
+            />
+            <br />
+
+            <button type="button" onClick={() => alert('Injection details updated!')}>Update</button>
+            <br />
+          </div>
+        )}
+
+        <div className="dct-form-group">
+          <label htmlFor="tests" className="dct-label">
+            Tests:
+          </label>
+          <input
+            type="text"
+            id="tests"
+            className="dct-input"
+            value={tests}
+            onChange={(e) => setTests(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="doctorAdvice" className="dct-label">
+            Doctor's Advice:
+          </label>
+          <textarea
+            id="doctorAdvice"
+            className="dct-textarea"
+            value={doctorAdvice}
+            onChange={(e) => setDoctorAdvice(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+        <button  type="submit" className="dct-submit-button">
+          Submit
+        </button>
+        {/* <button onClick={printCertificate} type="submit" className="dct-submit-button">
+          download prescription
+    </button> */}
+>>>>>>> 45235c01356a72dcd5ae6ed6e8c9bde4469645ce
         </div>
       )}
 

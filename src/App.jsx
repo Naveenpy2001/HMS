@@ -15,6 +15,7 @@ import ContactUs from "./home/HomeComponents/ContactUSMain";
 import AboutUs from "./home/HomeComponents/AboutUsMain";
 import Support from "./home/HomeComponents/Support";
 import PrivateRoute from './home/HomeComponents/PrivateRoute';
+import ProtectedRoute from './Dashboard/ProtectedRoute';
 
 import DashboardHms from "./Dashboard-hms";
 
@@ -24,11 +25,11 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<IndexPage />} />
-        {/* <Route path="/Dashboard" element={<PrivateRoute>
+        <Route path="/Dashboard" element={<ProtectedRoute>
                                          <DashboardHMS />
-                                         </PrivateRoute>
-                                         } /> */}
-        <Route path="/Dashboard" element={<DashboardHMS />} />
+                                         </ProtectedRoute>
+                                         } />
+        {/* <Route path="/Dashboard" element={<DashboardHMS />} /> */}
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/pswd" element={<ForgotPswd />} />
