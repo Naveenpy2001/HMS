@@ -17,38 +17,21 @@ const PatientRegistration = () => {
     month: "",
     year: "",
     age: "",
-    paymentType: "", // New dropdown for payment type
+    paymentType: "",
     modeOfPayment: "",
     amount: "",
-    upiTransactionNo: "",
-    netBankingTransactionId: "",
-    netBankingScreenshot: "",
-    accountTransactionId: "",
-    accountDocument: "",
-    reference: "",
-    insurance: "",
-    otherPayment: "",
-    weight: "",
-    bp: "",
-    appointmentTaken: "",
-    appointmentDetails: "",
-    modeOfPatient: "",
-    bedAssign: "",
-    bedDetails: "",
-    bedNo: "",
-    bedDays: "",
     tsarItAmount: "", // TSAR-IT amount
   });
 
+  const [loading, setLoading] = useState(false); // Loading state
+  const [successData, setSuccessData] = useState(null); // Success state to hold user details
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-
-    // Trigger age calculation when day, month, or year changes
     if (["day", "month", "year"].includes(name)) {
       calculateAge({ ...formData, [name]: value });
     }
@@ -70,25 +53,35 @@ const PatientRegistration = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
     try {
-      await axios.post("http://localhost:8080/saveAthentication", formData, {
+      const response = await axios.post("http://localhost:8080/saveAthentication", formData, {
         headers: {
           "Content-Type": "application/json",
         },
+      });
+      const savedUserData = response.data; // Assuming response has user data including ID
+      setSuccessData({
+        id: savedUserData.id, // Adjust based on the response data structure
+        name: `${formData.firstName} ${formData.lastName}`,
+        email: formData.email,
+        phone: formData.phoneNumber,
+        age: formData.age,
       });
       console.log("Form submitted successfully!");
       alert("Form submitted successfully!");
     } catch (error) {
       alert("There was an error submitting the form!");
       console.error("There was an error submitting the form!", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
-  // Razorpay Payment Handler for TSAR-IT
   const handleTSARITPayment = () => {
     const options = {
-      key: "your_razorpay_key", // Replace with your Razorpay key
-      amount: formData.tsarItAmount * 100, // Razorpay requires amount in paise
+      key: "rzp_live_oRtGw5y3RbD9MH",
+      amount: formData.tsarItAmount * 100,
       currency: "INR",
       name: "TSAR-IT Services",
       description: "Payment for services",
@@ -114,6 +107,9 @@ const PatientRegistration = () => {
   return (
     <div className="pr-forms">
       <h1>Patient Registration Form</h1>
+      {loading && <div className="loading-spinner">Submitting...</div>}
+
+      {!successData ? (
       <form onSubmit={handleSubmit}>
         {/* Form fields for patient details */}
         <label>First name:</label>
@@ -193,7 +189,9 @@ const PatientRegistration = () => {
           onChange={handleInputChange}
           className="pr-radio"
         />{" "}
+
         Others
+        <br />
         <br />
         <label>Disease:</label>
         <select
@@ -220,6 +218,7 @@ const PatientRegistration = () => {
         )}
         <br />
         <label>Date of Birth:</label>
+        <div className="flexCenter">
         <select
           name="day"
           value={formData.day}
@@ -259,6 +258,7 @@ const PatientRegistration = () => {
             </option>
           ))}
         </select>
+        </div>
         <br />
         {formData.age && (
           <div>
@@ -273,8 +273,130 @@ const PatientRegistration = () => {
           </div>
         )}
 
-        {/* Payment Type Dropdown */}
-        <label>Select Payment Type:</label>
+       
+        
+         <label>Weight:</label>
+         <input
+           type="text"
+           name="weight"
+           value={formData.weight}
+           onChange={handleInputChange}
+           className="pr-input"
+         />
+         <br />
+         <label>Blood Pressure:</label>
+         <input
+           type="text"
+           name="bp"
+           value={formData.bp}
+           onChange={handleInputChange}
+           className="pr-input"
+         />
+         <br />
+
+         <label htmlFor="temp">Temparature : </label>
+         <input type="text"  className="pr-input" name="temp" id="temp"/>
+
+         <br />
+         <label>Already Taken Any Appointment:</label> 
+         <br />
+         <input
+           type="radio"
+           name="appointmentTaken"
+           value="Yes"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         Yes
+         <input
+           type="radio"
+           name="appointmentTaken"
+           value="No"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         No
+         <br />
+         {formData.appointmentTaken === "Yes" && (
+           <div>
+             <label>Details (Phone/Email/Token No.):</label>
+             <input
+               type="text"
+               name="appointmentDetails"
+               value={formData.appointmentDetails}
+               onChange={handleInputChange}
+               className="pr-input"
+             />
+           </div>
+         )}
+         <br />
+         <label>Mode of Patient:</label>
+         <select
+           name="modeOfPatient"
+           value={formData.modeOfPatient}
+           onChange={handleInputChange}
+           className="pr-select"
+         >
+           <option value="">Select Mode</option>
+           <option value="OPD">OPD</option>
+           <option value="IPD">IPD</option>
+           <option value="Emergency">Emergency</option>
+         </select>
+         <br />
+         <label>Bed Assigned:</label>
+         <input
+           type="radio"
+           name="bedAssign"
+           value="Yes"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         Yes
+         <input
+           type="radio"
+           name="bedAssign"
+           value="No"
+           onChange={handleInputChange}
+           className="pr-radio"
+         />{" "}
+         No
+         <br />
+         {formData.bedAssign === "Yes" && (
+           <div>
+             <label>Select Bed:</label>
+             <input
+               type="text"
+               name="bedDetails"
+               value={formData.bedDetails}
+               onChange={handleInputChange}
+               className="pr-input"
+               placeholder="Bed details"
+             />
+             <br />
+             <label>Bed No:</label>
+             <input
+               type="text"
+               name="bedNo"
+               value={formData.bedNo}
+               onChange={handleInputChange}
+               className="pr-input"
+             />
+             <br />
+             <label>How Many Days:</label>
+             <input
+               type="text"
+               name="bedDays"
+               value={formData.bedDays}
+               onChange={handleInputChange}
+               className="pr-input"
+               placeholder="Number of days"
+             />
+           </div>
+         )}
+        <br />
+
+         <br />
+         <label>Select Payment Type:</label>
         <select
           name="paymentType"
           value={formData.paymentType}
@@ -470,122 +592,25 @@ const PatientRegistration = () => {
           </div>
         )}
 
-        
-         <label>Weight:</label>
-         <input
-           type="text"
-           name="weight"
-           value={formData.weight}
-           onChange={handleInputChange}
-           className="pr-input"
-         />
-         <br />
-         <label>Blood Pressure:</label>
-         <input
-           type="text"
-           name="bp"
-           value={formData.bp}
-           onChange={handleInputChange}
-           className="pr-input"
-         />
-         <br />
-         <label>Already Taken Any Appointment:</label>
-         <input
-           type="radio"
-           name="appointmentTaken"
-           value="Yes"
-           onChange={handleInputChange}
-           className="pr-radio"
-         />{" "}
-         Yes
-         <input
-           type="radio"
-           name="appointmentTaken"
-           value="No"
-           onChange={handleInputChange}
-           className="pr-radio"
-         />{" "}
-         No
-         <br />
-         {formData.appointmentTaken === "Yes" && (
-           <div>
-             <label>Details (Phone/Email/Token No.):</label>
-             <input
-               type="text"
-               name="appointmentDetails"
-               value={formData.appointmentDetails}
-               onChange={handleInputChange}
-               className="pr-input"
-             />
-           </div>
-         )}
-         <br />
-         <label>Mode of Patient:</label>
-         <select
-           name="modeOfPatient"
-           value={formData.modeOfPatient}
-           onChange={handleInputChange}
-           className="pr-select"
-         >
-           <option value="">Select Mode</option>
-           <option value="OPD">OPD</option>
-           <option value="IPD">IPD</option>
-           <option value="Emergency">Emergency</option>
-         </select>
-         <br />
-         <label>Bed Assigned:</label>
-         <input
-           type="radio"
-           name="bedAssign"
-           value="Yes"
-           onChange={handleInputChange}
-           className="pr-radio"
-         />{" "}
-         Yes
-         <input
-           type="radio"
-           name="bedAssign"
-           value="No"
-           onChange={handleInputChange}
-           className="pr-radio"
-         />{" "}
-         No
-         <br />
-         {formData.bedAssign === "Yes" && (
-           <div>
-             <label>Select Bed:</label>
-             <input
-               type="text"
-               name="bedDetails"
-               value={formData.bedDetails}
-               onChange={handleInputChange}
-               className="pr-input"
-               placeholder="Bed details"
-             />
-             <br />
-             <label>Bed No:</label>
-             <input
-               type="text"
-               name="bedNo"
-               value={formData.bedNo}
-               onChange={handleInputChange}
-               className="pr-input"
-             />
-             <br />
-             <label>How Many Days:</label>
-             <input
-               type="text"
-               name="bedDays"
-               value={formData.bedDays}
-               onChange={handleInputChange}
-               className="pr-input"
-               placeholder="Number of days"
-             />
-           </div>
-         )}
         <br />
+
         <button type="submit" className="pr-button">Submit</button>
       </form>
+
+) : (
+  <div className="success-message">
+    <h2>Registration Successful!</h2>
+    <p><strong>User ID:</strong> {successData.id}</p>
+    <p><strong>Name:</strong> {successData.name}</p>
+    <p><strong>Email:</strong> {successData.email}</p>
+    <p><strong>Phone:</strong> {successData.phone}</p>
+    <p><strong>Age:</strong> {successData.age}</p>
+    <button onClick={() => setSuccessData(null)} className="pr-button">
+      Register Another Patient
+    </button>
+  </div>
+)}
+
     </div>
   );
 };

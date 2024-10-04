@@ -16,6 +16,8 @@ import AboutUs from "./home/HomeComponents/AboutUsMain";
 import Support from "./home/HomeComponents/Support";
 import PrivateRoute from './home/HomeComponents/PrivateRoute';
 
+import DashboardHms from "./Dashboard-hms";
+
 const App = () => {
   return (
     <>
@@ -34,6 +36,7 @@ const App = () => {
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/Support" element={<Support />} />
+        <Route path="/dashboard-hms" element={<DashboardHms />} />
       </Routes>
 
     </>
