@@ -18,6 +18,7 @@ import PrivateRoute from './home/HomeComponents/PrivateRoute';
 import ProtectedRoute from './Dashboard/ProtectedRoute';
 
 import DashboardHms from "./Dashboard-hms";
+import LoginDashboard from "./LoginDashboard";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
         <Route path="/AboutUs" element={<AboutUs />} />
         <Route path="/Support" element={<Support />} />
         <Route path="/dashboard-hms" element={<DashboardHms />} />
+        <Route path='/Admin' element={<LoginDashboard />} />
       </Routes>
 
     </>

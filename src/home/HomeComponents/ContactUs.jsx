@@ -20,7 +20,10 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+
+
       const response = await axios.post("http://localhost:8080/api/contact", formData);
+
       if (response.status === 200) {
         setSuccessMessage("Message sent successfully!");
         setErrorMessage(""); 

@@ -31,6 +31,7 @@ const ForgotPswd = ({setForgot}) => {
             const response = await axios.post(`${API_URL}/verify-otp`, {  emailid, otp });
             setStep(3); // Move to password reset step
             console.log(response.data);
+            
         } catch (error) {
             console.error('Error verifying OTP:', error);
             alert('Invalid OTP. Please try again.');

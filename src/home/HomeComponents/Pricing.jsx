@@ -17,10 +17,10 @@ const Pricing = () => {
             <h1 className="plan-title">Primary Hospital</h1>
             </div>
             <p className="price-strike">
-              <strike>₹21</strike>
+              <strike>₹35</strike>
               <span className="save"> Save 30%</span>
             </p>
-            <h2 className="price">₹15.00/patient</h2>
+            <h2 className="price">₹20.00/patient</h2>
             <p className="charge-det">We will charge</p>
           </div>
           <div className="features-col">
