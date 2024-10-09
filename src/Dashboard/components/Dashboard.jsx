@@ -22,7 +22,7 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
     // }
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/dashboard", {
+        const response = await fetch("https://hms.tsaritservices.com/api/dashboard", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

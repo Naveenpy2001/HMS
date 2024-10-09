@@ -28,7 +28,7 @@ const Login = () => {
 
     try {
         // 'URL'
-      const response = await axios.post("http://localhost:8080/auth/login", {
+      const response = await axios.post("https://hms.tsaritservices.com/auth/login", {
         emailid, 
         password,
       });
@@ -172,8 +172,10 @@ const Login = () => {
           <span className="cancel" onClick={() => setForgot(false)}>
             ×
           </span>
+
           <ForgotPswd setForgot={setForgot}/>
           {/* <App token={token} /> */}
+          
         </div>
       </div>
       <Footer />

@@ -22,8 +22,9 @@ function Support() {
   const fetchTickets = async () => {
     setLoading(true); // Start loading animation
     try {
-      const response = await axios.get("https://hms.tsaritservices.com/support/tickets");
-      setRaisedTickets(response.data.tickets);
+      const response = await axios.get("http://localhost:8080/support/tickets");
+      console.log(response.data); // Log the full response to check the structure
+      setRaisedTickets(response.data || []);
     } catch (error) {
       console.error("Error fetching tickets:", error);
     }
@@ -39,16 +40,17 @@ function Support() {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("https://hms.tsaritservices.com/support", {
+      await axios.post("http://localhost:8080/support", {
         subject,
         priority,
-        issue: issueDescription,
+        issueDescription,
       });
       setStatusMessage("Ticket raised successfully. Our team will contact you shortly.");
       setSubject("");
       setPriority("low");
       setIssueDescription(""); // Clear form fields after submission
       fetchTickets(); // Fetch updated tickets
+      console.log("Ticket raised successfully!");
     } catch (error) {
       setStatusMessage("There was an error submitting your ticket. Please try again later.");
       console.error("Error raising ticket:", error);
@@ -64,9 +66,16 @@ function Support() {
   });
 
   // Search tickets by description
-  const searchedTickets = filteredTickets.filter((ticket) =>
-    ticket.issue ? ticket.issue.toLowerCase().includes(search.toLowerCase()) : false
-  );
+
+  // const searchedTickets = filteredTickets.filter((ticket) =>
+  //   ticket.issue ? ticket.issue.toLowerCase().includes(search.toLowerCase()) : false
+  // );
+
+  const searchedTickets = filteredTickets.filter((ticket) => {
+    const issue = ticket.issue || ""; // If issue is undefined, use an empty string
+    return issue.toLowerCase().includes(search.toLowerCase());
+  });
+
 
   return (
     <div className="support-container">

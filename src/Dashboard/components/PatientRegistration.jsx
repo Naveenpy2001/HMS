@@ -61,8 +61,9 @@ const PatientRegistration = () => {
         },
       });
       const savedUserData = response.data; // Assuming response has user data including ID
+      console.log(savedUserData)
       setSuccessData({
-        id: savedUserData.id, // Adjust based on the response data structure
+        id: savedUserData, // Adjust based on the response data structure
         name: `${formData.firstName} ${formData.lastName}`,
         email: formData.email,
         phone: formData.phoneNumber,

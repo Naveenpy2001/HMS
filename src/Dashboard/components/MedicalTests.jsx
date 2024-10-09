@@ -14,7 +14,7 @@ function MedicalTests({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:8080/api/records", {
+        const response = await fetch("https://hms.tsaritservices.com/api/records", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -31,14 +31,15 @@ function MedicalTests({ token }) {
 
         // Wrap single patient object in an array if necessary
         const patientTrackingData = Array.isArray(result) ? result : [result];
-
+        const records = result.records || [];
         // Update state
         setData({
-          TodaypatientCount: patientTrackingData.length, // Assuming today's patient count is based on returned records
-          TotalpatientCount: patientTrackingData.length, // Assuming total patient count is based on returned records
-          patientTracking: patientTrackingData,
+          TodaypatientCount:  result.TodaypatientCount || 0, // Assuming today's patient count is based on returned records
+          TotalpatientCount: result.TotalpatientCount || 0, // Assuming total patient count is based on returned records
+          patientTracking: records,
         });
-        setFilteredPatients(patientTrackingData);
+        setFilteredPatients(records);
+       
       } catch (error) {
         console.error("Error fetching data:", error.message);
         // Handle error, e.g., show a notification or retry fetching
