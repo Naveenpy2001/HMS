@@ -34,12 +34,18 @@ const Billing = () => {
 
   // Fetch payments data
   useEffect(() => {
-    axios.get('https://hms.tsaritservices.com/api/payments/today')
+    axios.get('http://localhost:8080/api/payments/today')
       .then(response => {
-        setTodaysPayments(response.data || []);
         setTotalPatients(response.data.length);
       })
       .catch(error => console.error('Error fetching today\'s payments:', error));
+
+      axios.get('http://localhost:8080/api/today')
+      .then(response => {
+        setTodaysPayments(response.data || []);
+      })
+      .catch(error => console.error('Error fetching today\'s payments:', error));
+
 
     axios.get('https://hms.tsaritservices.com/monthly-total')
       .then(response => setMonthlyTotalPayments(response.data || { monthWise: [], yearWise: [] }))
