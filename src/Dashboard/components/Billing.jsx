@@ -21,7 +21,7 @@ const Billing = () => {
   // Fetch the bank details when the component loads
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/bank-details')
+    axios.get('https://hms.tsaritservices.com/api/bank-details')
       .then(response => {
         if (response.data) {
           setBankDetails(response.data);
@@ -34,14 +34,14 @@ const Billing = () => {
 
   // Fetch payments data
   useEffect(() => {
-    axios.get('http://localhost:8080/api/payments/today')
+    axios.get('https://hms.tsaritservices.com/api/payments/today')
       .then(response => {
         setTodaysPayments(response.data || []);
         setTotalPatients(response.data.length);
       })
       .catch(error => console.error('Error fetching today\'s payments:', error));
 
-    axios.get('http://localhost:8080/monthly-total')
+    axios.get('https://hms.tsaritservices.com/monthly-total')
       .then(response => setMonthlyTotalPayments(response.data || { monthWise: [], yearWise: [] }))
       .catch(error => console.error('Error fetching total payments:', error));
   }, []);
@@ -61,14 +61,14 @@ const Billing = () => {
 
     // Submit or update bank details
     if (isBankDetailsExist) {
-      axios.put('http://localhost:8080/api/bank-details', bankDetails)
+      axios.put('https://hms.tsaritservices.com/api/bank-details', bankDetails)
         .then(response => {
           console.log('Bank details updated:', response.data);
           setShowForm(false); // Hide form after successful update
         })
         .catch(error => console.error('Error updating bank details:', error));
     } else {
-      axios.post('http://localhost:8080/api/bank-details', bankDetails)
+      axios.post('https://hms.tsaritservices.com/api/bank-details', bankDetails)
         .then(response => {
           console.log('Bank details submitted:', response.data);
           setIsBankDetailsExist(true); // Mark as existing details
@@ -80,7 +80,7 @@ const Billing = () => {
     // Submit the bank details via an API
     try {
       // Make an API request to save the bank details
-      const response =  axios.post('http://localhost:8080/save-bank-details', bankDetails);
+      const response =  axios.post('https://hms.tsaritservices.com/save-bank-details', bankDetails);
 
       // Handle success response
       console.log('Bank details saved successfully:', response.data);

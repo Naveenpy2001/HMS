@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../css/forgot.css';
 import { useNavigate } from "react-router-dom";
-const API_URL = 'http://localhost:8080'; // Replace with your actual API URL
+const API_URL = 'https://hms.tsaritservices.com'; // Replace with your actual API URL
 
-const ForgotPswd = () => {
+const ForgotPswd = ({setForgot}) => {
     const [step, setStep] = useState(1); // Track form step
     const [emailid, setEmail] = useState('');
     const [otp, setOtp] = useState('');
@@ -49,6 +49,7 @@ const ForgotPswd = () => {
             alert('Password reset successfully!');
             // Optionally, redirect to login or another page
            navigate('/Login')
+           setForgot(false)
         } catch (error) {
             console.error('Error resetting password:', error);
             alert('Failed to reset password. Please try again.');

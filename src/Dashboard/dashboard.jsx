@@ -22,7 +22,7 @@ function App(token) {
 
   const UserDataFetch = async () => {
     try {
-      const response = await fetch("http://localhost:8080/dashboard", {
+      const response = await fetch("https://hms.tsaritservices.com/api/dashboard", {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -44,7 +44,7 @@ function App(token) {
   const handleLogout = async () => {
     localStorage.removeItem('token');
     try {
-      await axios.post("http://localhost:8080/reactlogout", {
+      await axios.post("https://hms.tsaritservices.com/reactlogout", {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 
       });

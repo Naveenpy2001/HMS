@@ -71,7 +71,7 @@ const DoctorView = () => {
     try {
       // Replace with your fetch API endpoint
       const response = await axios.get(
-        `http://localhost:8080/api/record/${patientId}`
+        `https://hms.tsaritservices.com/api/record/${patientId}`
       );
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName + " " + data.lastName);
@@ -104,7 +104,7 @@ const DoctorView = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/savetreatment", // Update with your actual Spring Boot endpoint
+        "https://hms.tsaritservices.com/savetreatment", // Update with your actual Spring Boot endpoint
         formData,
         {
           headers: {
@@ -112,7 +112,9 @@ const DoctorView = () => {
           },
         }
       );
-      alert("Data submitted successfully!", response.data);
+      
+      // alert(response.data);
+      console.log("Data submitted successfully!", response.data);
       setPatientId("");
       setPatientTreatment("");
       setPrescription("");
@@ -156,7 +158,7 @@ const DoctorView = () => {
   const printCertificate = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/generate-certificate/${patientId}`,
+        `https://hms.tsaritservices.com/api/generate-certificate/${patientId}`,
         {
           method: "GET",
           headers: {
@@ -221,9 +223,9 @@ const DoctorView = () => {
             <tbody>
               {patientsList.map((patient) => (
                 <tr key={patient.id}>
-                  <td>{patient.name}</td>
-                  <td>{patient.age}</td>
-                  <td>{patient.disease}</td>
+                  <td>{patientName}</td>
+                  <td>{age}</td>
+                  <td>{ptDiseases}</td>
                   <td>
                     <button
                       className="dct-view-button"
