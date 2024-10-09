@@ -4,7 +4,7 @@ import '../../css/forgot.css';
 import { useNavigate } from "react-router-dom";
 const API_URL = 'http://localhost:8080'; // Replace with your actual API URL
 
-const ForgotPswd = () => {
+const ForgotPswd = ({setForgot}) => {
     const [step, setStep] = useState(1); // Track form step
     const [emailid, setEmail] = useState('');
     const [otp, setOtp] = useState('');
@@ -31,6 +31,7 @@ const ForgotPswd = () => {
             const response = await axios.post(`${API_URL}/verify-otp`, {  emailid, otp });
             setStep(3); // Move to password reset step
             console.log(response.data);
+            
         } catch (error) {
             console.error('Error verifying OTP:', error);
             alert('Invalid OTP. Please try again.');
@@ -49,6 +50,7 @@ const ForgotPswd = () => {
             alert('Password reset successfully!');
             // Optionally, redirect to login or another page
            navigate('/Login')
+           setForgot(false)
         } catch (error) {
             console.error('Error resetting password:', error);
             alert('Failed to reset password. Please try again.');

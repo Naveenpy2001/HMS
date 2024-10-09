@@ -13,6 +13,9 @@ import Support from "./components/Support";  // Import the new Support component
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import Lab from "./components/Lab";
+import Pharmacy from "./components/Pharmacy";
+
 import HMS from '../media/HMS-Transparent.png';
 
 function App(token) {
@@ -79,6 +82,10 @@ function App(token) {
         return <HospitalData />;
       case "Support": // Support tab handler
         return <Support />;
+        case "Lab": // Handle Lab component
+        return <Lab />;
+      case "Pharmacy": // Handle Pharmacy component
+        return <Pharmacy />;
       default:
         return <Dashboard token={token} />;
     }
@@ -124,6 +131,27 @@ function App(token) {
                <span className="links_name">Doctor View</span>
              </button>
            </li>
+           {/* lab */}
+           <li>
+            <button
+              className={activeTab === "Lab" ? "active" : ""}
+              onClick={() => setActiveTab("Lab")}
+            >
+              <i className="bx bx-test-tube"></i>
+             
+              <span className="links_name">Lab</span>
+            </button>
+          </li>
+          {/* pharmacy */}
+          <li>
+            <button
+              className={activeTab === "Pharmacy" ? "active" : ""}
+              onClick={() => setActiveTab("Pharmacy")}
+            >
+              <i className="bx bx-capsule"></i>
+              <span className="links_name">Pharmacy</span>
+            </button>
+          </li>
             <li>
              <button
                className={activeTab === "MedicalTests" ? "active" : ""}

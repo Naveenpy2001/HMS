@@ -200,6 +200,7 @@ const PatientRegistration = () => {
           onChange={handleInputChange}
           className="pr-select"
         >
+          <option selected>select</option>
           <option value="Fever">Fever</option>
           <option value="Headache">Headache</option>
           <option value="Cold">Cold</option>

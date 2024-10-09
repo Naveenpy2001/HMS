@@ -172,7 +172,7 @@ const Login = () => {
           <span className="cancel" onClick={() => setForgot(false)}>
             ×
           </span>
-          <ForgotPswd />
+          <ForgotPswd setForgot={setForgot}/>
           {/* <App token={token} /> */}
         </div>
       </div>
