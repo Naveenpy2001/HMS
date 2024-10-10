@@ -3,6 +3,10 @@ import axios from "axios";
 import '../../css/Lab.css'
 
 const Pharmacy = () => {
+  const [patientId, setPatientId] = useState("");
+  const [patientName, setPatientName] = useState("");
+  const [ptDiseases, setPtDiseases] = useState("");
+  const [age, setAge] = useState("");
   const [formData, setFormData] = useState({
     medicineName: "",
     quantity: "",
@@ -25,9 +29,9 @@ const Pharmacy = () => {
     // Fetch data from backend
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get("/api/pharmacy");
+        const response = await axios.get("http://localhost:8080/fetchpharmacy");
         setMedicines(response.data);
-        setMedicines(response.data.medicines || []);
+        setMedicines(response.data|| []);
       } catch (error) {
         console.error("Error fetching medicines:", error);
       }
@@ -35,6 +39,28 @@ const Pharmacy = () => {
 
     fetchMedicines();
   }, []);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      fetchPatientData();
+    }
+  };
+
+  const fetchPatientData = async () => {
+    try {
+      // Replace with your fetch API endpoint
+      const response = await axios.get(
+        `https://hms.tsaritservices.com/api/record/${patientId}`
+      );
+      const data = response.data[0]; // Assuming API returns an array with one object
+      setPatientName(data.firstName + " " + data.lastName);
+      setPtDiseases(data.disease);
+      setAge(data.age);
+    } catch (error) {
+      console.error("Error fetching patient data:", error);
+      alert("Failed to fetch patient data. Please try again.");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,7 +70,13 @@ const Pharmacy = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/pharmacy", formData);
+      const response = await axios.post("http://localhost:8080/savepharmacy", formData
+        , {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       setMedicines([...medicines, response.data]);
       setFormData({
         medicineName: "",
@@ -60,6 +92,8 @@ const Pharmacy = () => {
         discount: "",
         notes: "",
       });
+      console.log("saved",response.data)
+      alert("saved")
     } catch (error) {
       console.error("Error submitting pharmacy data:", error);
     }
@@ -94,6 +128,73 @@ const Pharmacy = () => {
       </div>
       {activeTab === 1 && (
         <form className="phrmcy-form" onSubmit={handleSubmit}>
+
+{/* <label htmlFor="patientId" className="dct-label">
+            Patient ID:
+          </label>
+        <input
+            type="text"
+            id="patientId"
+            className="dct-input"
+            value={patientId}
+            onChange={(e) => setPatientId(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={fetchPatientData}
+            required
+          />
+           <button type="button" onClick={fetchPatientData} className="dct-fetch-button">
+            Fetch Patient Data
+          </button>
+       
+
+        <div className="dct-form-group">
+          <label htmlFor="patientName" className="dct-label">
+            Patient Name:
+          </label>
+          <input
+            type="text"
+            id="patientName"
+            className="dct-input"
+            value={patientName}
+            onChange={(e) => setPatientName(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Diseases:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={ptDiseases}
+            onChange={(e) => setPtDiseases(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Age:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <hr/>
+        <hr /> */}
+
         <h1 className="phrmcy-h1">Pharmacy Inventory</h1>
 
         <div className="phrmcy-form-group">

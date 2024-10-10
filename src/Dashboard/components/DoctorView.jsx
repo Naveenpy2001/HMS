@@ -26,6 +26,9 @@ const DoctorView = () => {
     { id: 1, name: "John Doe", age: 35, disease: "Hypertension" },
     { id: 2, name: "Jane Doe", age: 29, disease: "Diabetes" },
   ]);
+  useEffect(() => {
+    fetchData(); // Fetch patients on component mount
+  }, []);
   const [visitedPatientsList, setVisitedPatientsList] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
@@ -66,6 +69,30 @@ const DoctorView = () => {
     updatedMedicines[index].otherName = value;
     setTabletMedicines(updatedMedicines);
   };
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/today", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP fetching error! status: ${response.status}`);
+      }
+  
+      const result = await response.json();
+
+      console.log(result);
+      setPatientsList(result);
+    } catch (error) {
+      console.error("Error fetching data:", error.message);
+    }
+  };
+  
+
 
   const fetchPatientData = async () => {
     try {
@@ -210,7 +237,7 @@ const DoctorView = () => {
 
       {activeTab === 1 && (
         <div className="dct-tab-content">
-          <h2 className="dct-subheading">Patients List</h2>
+          <h2 className="dct-subheading">Today  Patients List</h2>
           <table className="dct-table">
             <thead>
               <tr>
@@ -223,9 +250,10 @@ const DoctorView = () => {
             <tbody>
               {patientsList.map((patient) => (
                 <tr key={patient.id}>
-                  <td>{patientName}</td>
-                  <td>{age}</td>
-                  <td>{ptDiseases}</td>
+                  <td>{patient.id}</td>
+                  <td>{patient.firstName+ ' ' + patient.lastName}</td>
+                  <td>{patient.age}</td>
+                  <td>{patient.disease}</td>
                   <td>
                     <button
                       className="dct-view-button"
