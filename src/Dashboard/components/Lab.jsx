@@ -3,10 +3,19 @@ import axios from "axios";
 import '../../css/Lab.css'
 
 const Lab = () => {
+  const [patientId, setPatientId] = useState("");
+  const [patientName, setPatientName] = useState("");
+  const [ptDiseases, setPtDiseases] = useState("");
+  const [age, setAge] = useState("");
+  const [labtest, setLabTest] = useState("");
   const [formData, setFormData] = useState({
     testName: "",
     patientId: "",
-    testDate: "",
+    // patientName,
+    // ptDiseases,
+    // age,
+    testName: "",
+    // testDate: "",
     result: "",
     doctorName: "",
     technician: "",
@@ -16,7 +25,7 @@ const Lab = () => {
     status: "Pending",
     notes: "",
   });
-
+  
   const [labTests, setLabTests] = useState([]); // To store the data from backend
   const [selectedPatient, setSelectedPatient] = useState(null); // For view details
   const [data,setData] = useState()
@@ -24,10 +33,10 @@ const Lab = () => {
     // Fetch data from the backend
     const fetchLabTests = async () => {
       try {
-        const response = await axios.get("/api/labTests");
+        const response = await axios.get("http://localhost:8080/getlabtests");
         setLabTests(response.data);
         console.log(response.data); // Log the API response
-        setLabTests(response.data.labTests || []);
+        setLabTests(response.data || []);
       } catch (error) {
         console.error("Error fetching lab tests:", error);
       }
@@ -35,6 +44,29 @@ const Lab = () => {
 
     fetchLabTests();
   }, []);
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      fetchPatientData();
+    }
+  };
+
+  const fetchPatientData = async () => {
+    try {
+      // Replace with your fetch API endpoint
+      const response = await axios.get(
+        `https://hms.tsaritservices.com/api/record/${patientId}`
+      );
+      const data = response.data[0]; // Assuming API returns an array with one object
+      setPatientName(data.firstName + " " + data.lastName);
+      setPtDiseases(data.disease);
+      setAge(data.age);
+      setLabTest(data.tests);
+    } catch (error) {
+      console.error("Error fetching patient data:", error);
+      alert("Failed to fetch patient data. Please try again.");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,13 +77,19 @@ const Lab = () => {
     e.preventDefault();
     try {
       // Send data to backend
-      const response = await axios.post("/api/labTests", formData);
+      const response = await axios.post("http://localhost:8080/saveLab", formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       // Update the lab tests table with the new test
       setLabTests([...labTests, response.data]);
       setFormData({
         testName: "",
         patientId: "",
-        testDate: "",
+        // testDate: "",
         result: "",
         doctorName: "",
         technician: "",
@@ -61,6 +99,7 @@ const Lab = () => {
         status: "Pending",
         notes: "",
       });
+      alert("lab test succ")
     } catch (error) {
       console.error("Error submitting lab test:", error);
     }
@@ -147,7 +186,85 @@ const Lab = () => {
       {activeTab === 1 && (
         <form className="lab-form" onSubmit={handleSubmit}>
         <h1 className="lab-h1">Lab Test Form</h1>
+        <label htmlFor="patientId" className="dct-label">
+            Patient ID:
+          </label>
+        <input
+            type="text"
+            id="patientId"
+            className="dct-input"
+            value={patientId}
+            onChange={(e) => setPatientId(e.target.value)}
+            onKeyDown={handleKeyDown}
+            onBlur={fetchPatientData}
+            required
+          />
+           <button type="button" onClick={fetchPatientData} className="dct-fetch-button">
+            Fetch Patient Data
+          </button>
+       
 
+        <div className="dct-form-group">
+          <label htmlFor="patientName" className="dct-label">
+            Patient Name:
+          </label>
+          <input
+            type="text"
+            id="patientName"
+            className="dct-input"
+            value={patientName}
+            onChange={(e) => setPatientName(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Diseases:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={ptDiseases}
+            onChange={(e) => setPtDiseases(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+
+        <div className="dct-form-group">
+          <label htmlFor="ptDiseases" className="dct-label">
+            Patient Age:
+          </label>
+          <input
+            type="text"
+            id="ptDiseases"
+            className="dct-input"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+        <div className="dct-form-group">
+          <label htmlFor="pttests" className="dct-label">
+            Patient Tests:
+          </label>
+          <input
+            type="text"
+            id="pttests"
+            className="dct-input"
+            value={labtest}
+            onChange={(e) => setAge(e.target.value)}
+            required
+            readOnly
+          />
+        </div>
+        <hr />
+        <hr />
+        <h2 className="dct-subheading">Lab Treatment</h2>
         <div className="lab-form-group">
           <label className="lab-label">Test Name:</label>
           <input

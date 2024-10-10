@@ -8,11 +8,7 @@ function Support() {
   const [priority, setPriority] = useState("low");
   const [issueDescription, setIssueDescription] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
-  const [raisedTickets, setRaisedTickets] = useState([
-    { id: 1, subject: "Login Issue", priority: "high", issue: "Unable to log in to the account.", status: "unresolved" },
-    { id: 2, subject: "Payment Error", priority: "medium", issue: "Payment not processed successfully.", status: "resolved" },
-    { id: 3, subject: "Feature Request", priority: "low", issue: "Request for new feature in the dashboard.", status: "unresolved" },
-  ]);
+  const [raisedTickets, setRaisedTickets] = useState([ ]);
   const [loading, setLoading] = useState(true); 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState(""); 
