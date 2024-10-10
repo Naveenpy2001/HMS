@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import '../../css/Profile.css';
+
+import { FaArrowRightLong } from "react-icons/fa6";
 
 const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
 
 const HospitalData = () => {
+  const [activeTab, setActiveTab] = useState("personal");
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -14,13 +18,13 @@ const HospitalData = () => {
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [hospitalImages, setHospitalImages] = useState([]);
-  const [newImages, setNewImages] = useState([]);
   const [imageCount, setImageCount] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fileInputRef = useRef(null); // Reference for hidden file input
+  const [aboutHospital,setAboutHospital] = useState('')
 
-  // Fetch data from the backend
+  const fileInputRef = useRef(null);
+
   useEffect(() => {
     axios
       .get(API_URL)
@@ -35,6 +39,7 @@ const HospitalData = () => {
         setPassword(data.password);
         setConfirmPassword(data.repetepassword);
         setHospitalName(data.hospitalname);
+        setAboutHospital(data.aboutHospital)
         const existingImages = Array.isArray(data.hospitalImages) ? data.hospitalImages : [];
         setHospitalImages(existingImages);
         setImageCount(existingImages.length);
@@ -42,7 +47,6 @@ const HospitalData = () => {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // Handlers for input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "firstName") setFirstName(value);
@@ -53,35 +57,36 @@ const HospitalData = () => {
     if (name === "password") setPassword(value);
     if (name === "confirmPassword") setConfirmPassword(value);
     if (name === "hospitalName") setHospitalName(value);
+    if (name === "aboutHospital") setAboutHospital(value);
   };
 
-  // Trigger hidden file input when dummy image is clicked
-  const handleImageClick = () => {
-    fileInputRef.current.click(); // Trigger the file input
-  };
-
-  // Handle profile photo upload
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProfilePhoto(URL.createObjectURL(file)); // Preview the selected image
+      setProfilePhoto(URL.createObjectURL(file));
     }
   };
 
   const handleImagesChange = (e) => {
     const files = Array.from(e.target.files);
-    const totalImages = files.length + imageCount;
+    const totalImages = files.length + hospitalImages.length;
 
     if (totalImages > 4) {
       setErrorMessage("You can only upload up to 4 images.");
     } else {
-      setNewImages(files);
+      const newImages = files.map(file => URL.createObjectURL(file));
+      setHospitalImages([...hospitalImages, ...newImages]);
       setImageCount(totalImages);
       setErrorMessage("");
     }
   };
 
-  // Submit form data to backend
+  const handleRemoveImage = (index) => {
+    const updatedImages = hospitalImages.filter((_, i) => i !== index);
+    setHospitalImages(updatedImages);
+    setImageCount(updatedImages.length);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -100,8 +105,9 @@ const HospitalData = () => {
     formData.append("email", email);
     formData.append("phone", phone);
     formData.append("address", address);
+    formData.append('setAboutHospital',aboutHospital)
 
-    newImages.forEach((image, index) => {
+    hospitalImages.forEach((image, index) => {
       formData.append(`hospitalImage${index + 1}`, image);
     });
 
@@ -114,134 +120,129 @@ const HospitalData = () => {
       .catch((error) => console.error("Error:", error));
   };
 
-  return (
-    <div className="hospital-data">
-      <h1 className="hospital-data-heading">Profile</h1>
-
-      <form onSubmit={handleSubmit}>
-        <section className="hospital-data-section">
-          <h2 className="hospital-data-subheading">Profile Photo</h2>
-          <div onClick={handleImageClick} style={{ cursor: "pointer" }}>
-            {profilePhoto ? (
-              <img
-                src={profilePhoto}
-                alt="Profile"
-                className="hospital-data-photo"
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "personal":
+        return (
+          <section className="hospital-data-section">
+            <h2>Personal Information</h2>
+            <label>
+              First Name:
+              <input
+                type="text"
+                name="firstName"
+                value={firstName}
+                onChange={handleInputChange}
+                className="hospital-data-input"
               />
-            ) : (
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYnsoJKGMaangFJ0fH0LS_f-BhjwV8WEhdgg&s" // Dummy image URL
-                alt="Click to upload"
-                className="hospital-data-photo"
+            </label>
+            <label>
+              Last Name:
+              <input
+                type="text"
+                name="lastName"
+                value={lastName}
+                onChange={handleInputChange}
+                className="hospital-data-input"
               />
-            )}
-          </div>
-          <input
-            type="file"
-            accept="image/*"
-            ref={fileInputRef} // Reference to hidden file input
-            style={{ display: "none" }} // Hide file input
-            onChange={handleProfilePhotoChange}
-          />
-        </section>
-
-        <section className="hospital-data-section">
-          <h2 className="hospital-data-subheading">Personal Information</h2>
-          <label>
-            First Name:
+            </label>
+            <label>
+              Hospital Name:
+              <input
+                type="text"
+                name="hospitalName"
+                value={hospitalName}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+            <label>
+    About the Hospital:
+    <textarea
+      name="aboutHospital"
+      value={aboutHospital}
+      onChange={handleInputChange}
+      className="hospital-data-input"
+    />
+  </label>
+          </section>
+        );
+      case "contact":
+        return (
+          <section className="hospital-data-section">
+            <h2>Contact Information</h2>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+            <label>
+              Phone:
+              <input
+                type="text"
+                name="phone"
+                value={phone}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+            <label>
+              Address:
+              <input
+                type="text"
+                name="address"
+                value={address}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+          </section>
+        );
+      case "password":
+        return (
+          <section className="hospital-data-section">
+            <h2>Password</h2>
+            <label>
+              Password:
+              <input
+                type="password"
+                name="password"
+                value={password}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+            <label>
+              Confirm Password:
+              <input
+                type="password"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={handleInputChange}
+                className="hospital-data-input"
+              />
+            </label>
+          </section>
+        );
+      case "images":
+        return (
+          <section className="hospital-data-section">
+            <h2>Upload Images</h2>
             <input
-              type="text"
-              name="firstName"
-              value={firstName}
-              onChange={handleInputChange}
+              type="file"
+              name="hospitalImages"
+              accept="image/*"
+              multiple
+              onChange={handleImagesChange}
               className="hospital-data-input"
             />
-          </label>
-          <label>
-            Last Name:
-            <input
-              type="text"
-              name="lastName"
-              value={lastName}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Phone:
-            <input
-              type="text"
-              name="phone"
-              value={phone}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Address:
-            <input
-              type="text"
-              name="address"
-              value={address}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Password:
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Confirm Password:
-            <input
-              type="password"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-          <label>
-            Hospital Name:
-            <input
-              type="text"
-              name="hospitalName"
-              value={hospitalName}
-              onChange={handleInputChange}
-              className="hospital-data-input"
-            />
-          </label>
-        </section>
-
-        <section className="hospital-data-section">
-          <h2 className="hospital-data-subheading">Upload Doctor Images</h2>
-          <input
-            type="file"
-            name="doctorImages"
-            accept="image/*"
-            multiple
-            onChange={handleImagesChange}
-            className="hospital-data-input"
-          />
-          <p>{imageCount} / 4 images uploaded</p>
-          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-          {hospitalImages.length > 0 && (
+            <p>{imageCount} / 4 images uploaded</p>
+            {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
             <div className="hospital-data-images">
               {hospitalImages.map((img, index) => (
                 <div key={index} className="hospital-data-image-container">
@@ -250,17 +251,47 @@ const HospitalData = () => {
                     alt={`Hospital ${index}`}
                     className="hospital-data-image"
                   />
-                  <span>{index + 1}</span>
+                  <button
+                    type="button"
+                    className="hospital-data-remove-btn"
+                    onClick={() => handleRemoveImage(index)}
+                  >
+                    ×
+                  </button>
                 </div>
               ))}
             </div>
-          )}
-        </section>
+            <br />
+            
+          </section>
+        );
+      default:
+        return null;
+    }
+  };
 
-        <button className="hospital-data-button" type="submit">
-          Submit
-        </button>
-      </form>
+  return (
+    <div className="hospital-data-profile">
+      <h1 className="hospital-data-headings">Profile</h1>
+
+      <div className="hospital-data-tabs">
+        <button onClick={() => setActiveTab("personal")}>Personal Info</button>
+        <button onClick={() => setActiveTab("contact")}>Contact Info</button>
+        <button onClick={() => setActiveTab("password")}>Password</button>
+        <button onClick={() => setActiveTab("images")}>Upload Images</button>
+      </div>
+
+      <form onSubmit={handleSubmit}>{renderTabContent()}</form>
+
+      <button className="hospital-data-button" type="submit">
+        Submit
+      </button>
+
+      <center>
+      <a href="/HospitalProfile" className="profileVisit">
+        Hospital Profile <FaArrowRightLong />
+      </a>
+      </center>
     </div>
   );
 };

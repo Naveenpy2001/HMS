@@ -1,0 +1,51 @@
+.hospital-data-profile{
+    padding: 10px 100px;
+}
+.hospital-data-headings{
+    text-align: left;
+    font-weight: 600;
+}
+
+.hospital-data-tabs{
+    padding: 5px 0;
+    display: flex;
+    gap: 20px;
+}
+.hospital-data-tabs > button {
+    border: 0;
+    margin: 10px 0;
+    background: transparent;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+
+
+
+
+}
+.hospital-data-tabs > button:hover{
+    color: blue;
+    border-bottom: 1px solid #bbb;
+}
+
+.profileVisit{
+    color: #000;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin: 10px 0;
+    gap: 4px;
+    transition: all .2s linear;
+    position: relative;
+}
+.profileVisit:hover{
+    color: cadetblue;
+    gap: 10px;
+    text-decoration: underline;
+}
+
+.hospital-data-section > h2{
+    padding: 5px 0;
+    font-weight: 600;
+}

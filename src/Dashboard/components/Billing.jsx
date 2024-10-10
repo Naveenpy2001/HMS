@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+// import Razorpay from 'razorpay';
 
 const Billing = () => {
   const [todaysPayments, setTodaysPayments] = useState([]);
@@ -95,8 +96,50 @@ const Billing = () => {
 
   };
 
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleRazorpayPayment = async () => {
+    const isScriptLoaded = await loadRazorpayScript();
+
+    if (!isScriptLoaded) {
+      alert('Failed to load Razorpay SDK.');
+      return;
+    }
+
+    const options = {
+      key: 'rzp_live_oRtGw5y3RbD9MH', // Replace with your Razorpay Key ID
+      amount: totalCommission * 100, // Amount in paise (1 INR = 100 paise)
+      currency: 'INR',
+      name: 'Doctor Payment',
+      description: 'Commission Payment',
+      handler: function (response) {
+        alert(`Payment successful! Payment ID: ${response.razorpay_payment_id}`);
+        // Here, you can send the payment details to your server to update the status
+      },
+      prefill: {
+        name: bankDetails.fullName,
+        contact: bankDetails.phoneNumber,
+      },
+      theme: {
+        color: '#3399cc',
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+
+
   // Calculate total commission
-  const commissionRate = 15;
+  const commissionRate = 20;
   const totalCommission = totalPatients * commissionRate;
 
   return (
@@ -208,8 +251,8 @@ const Billing = () => {
         <section className="billing-section">
           <h2 className="billing-subheading">Your Wallet Amount</h2>
           <p>Total Patients: {totalPatients}</p>
-          <p>Total Commission: {totalCommission} INR (15 INR per patient)</p>
-          <button className="payCommission">Click to Pay</button>
+          <p>Total Commission: {totalCommission} INR (20 INR per patient)</p>
+          <button className="payCommission" onClick={handleRazorpayPayment}>Click to Pay</button>
           <hr />
           <p>Wallet Amount: {walletAmount} INR</p>
           <p>Doctor's Wallet Amount (after commission): {walletAmount - totalCommission} INR</p>

@@ -160,58 +160,6 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
           </p>
         </div>
       </div>
-
-      {/* <div className="tracking-container">
-        <h2>Patient Tracking</h2>
-        <div className="filter-container">
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search by name, disease, or age..."
-            className="search-input"
-          />
-
-          <select
-            value={filterVisited}
-            onChange={handleFilterVisitedChange}
-            className="filter-select"
-          >
-            <option value="all">All</option>
-            <option value="visited">Visited</option>
-            <option value="not_visited">Not Visited</option>
-          </select>
-        </div>
-
-        <table className="tracking-table">
-          <thead>
-            <tr>
-              <th>Patient Name</th>
-              <th>Disease</th>
-              <th>Age</th>
-              <th>Status</th>
-              <th>Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredPatients.length > 0 ? (
-              filteredPatients.map((patient, index) => (
-                <tr key={index}>
-                  <td>{patient.name}</td>
-                  <td>{patient.disease}</td>
-                  <td>{patient.age}</td>
-                  <td>{patient.visited ? "Visited" : "Not Visited"}</td>
-                  <td>Date</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="5">No patients found</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div> */}
     </div>
   );
 };

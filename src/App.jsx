@@ -20,17 +20,19 @@ import ProtectedRoute from './Dashboard/ProtectedRoute';
 import DashboardHms from "./Dashboard-hms";
 import LoginDashboard from "./LoginDashboard";
 
+import HospitalProfile from "./Dashboard/components/HospitalProfile";
+
 const App = () => {
   return (
     <>
 
       <Routes>
         <Route path="/" element={<IndexPage />} />
-        <Route path="/Dashboard" element={<ProtectedRoute>
+        {/* <Route path="/Dashboard" element={<ProtectedRoute>
                                          <DashboardHMS />
                                          </ProtectedRoute>
-                                         } />
-        {/* <Route path="/Dashboard" element={<DashboardHMS />} /> */}
+                                         } /> */}
+        <Route path="/Dashboard" element={<DashboardHMS />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/pswd" element={<ForgotPswd />} />
@@ -40,6 +42,7 @@ const App = () => {
         <Route path="/Support" element={<Support />} />
         <Route path="/dashboard-hms" element={<DashboardHms />} />
         <Route path='/Admin' element={<LoginDashboard />} />
+        <Route path='/HospitalProfile' element={<HospitalProfile />} />
       </Routes>
 
     </>
