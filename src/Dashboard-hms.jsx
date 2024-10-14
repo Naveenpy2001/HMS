@@ -1,30 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import './css/hms-dash.css';
 
 const DashboardHms = () => {
   const [hospitals, setHospitals] = useState([
-    { id: 1, name: 'City Hospital', paid: true, remainingFee: 0, clearedAmount: 10000, balanceAmount: 0 },
-    { id: 2, name: 'Green Valley Hospital', paid: false, remainingFee: 5000, clearedAmount: 2000, balanceAmount: 3000 },
+    // { id: 1, name: 'City Hospital', paid: true, remainingFee: 0, clearedAmount: 10000, balanceAmount: 0 },
+    // { id: 2, name: 'Green Valley Hospital', paid: false, remainingFee: 5000, clearedAmount: 2000, balanceAmount: 3000 },
   ]);
   const [selectedOption, setSelectedOption] = useState('dashboard');
   const [selectedHospital, setSelectedHospital] = useState(null);
   const [freezeStatus, setFreezeStatus] = useState({});
   const [contactMessages, setContactMessages] = useState([
-    { id: 1, message: 'Urgent: Need more beds!', replied: false },
-    { id: 2, message: 'Supply issues with medicines.', replied: true },
+    // { id: 1, message: 'Urgent: Need more beds!', replied: false },
+    // { id: 2, message: 'Supply issues with medicines.', replied: true },
   ]);
-  const [newsletterEmails, setNewsletterEmails] = useState(['user1@example.com', 'user2@example.com']);
+  const [newsletterEmails, setNewsletterEmails] = useState([]);
   const [tickets, setTickets] = useState([
-    { id: 1, subject: "Login Issue", priority: "high", issue: "Unable to log in to the account.", status: "unresolved" },
-    { id: 2, subject: "Payment Error", priority: "medium", issue: "Payment not processed successfully.", status: "resolved" },
-    { id: 3, subject: "Feature Request", priority: "low", issue: "Request for new feature in the dashboard.", status: "unresolved" },
+    // { id: 1, subject: "Login Issue", priority: "high", issue: "Unable to log in to the account.", status: "unresolved" },
+    // { id: 2, subject: "Payment Error", priority: "medium", issue: "Payment not processed successfully.", status: "resolved" },
+    // { id: 3, subject: "Feature Request", priority: "low", issue: "Request for new feature in the dashboard.", status: "unresolved" },
   ]);
   
   const [reply, setReply] = useState('');
   const [currentTicketId, setCurrentTicketId] = useState(null);
 
   const [currentMessage, setCurrentMessage] = useState(null);
-  const [currentTicket, setCurrentTicket] = useState(null);
+  const [currentTicket,   setCurrentTicket] = useState(null);
   const [currentEmail, setCurrentEmail] = useState(null);
 
   const handleLogout = () => {
@@ -65,6 +66,49 @@ const DashboardHms = () => {
     setReply('');
     setCurrentTicketId(null);
   };
+
+  useEffect(() => {
+    // Fetch data from backend
+    const fetchMedicines = async () => {
+      try {
+        const response = await axios.get("https://hms.tsaritservices.com/fetchAll-hospitals");
+        setHospitals(response.data)
+      } catch (error) {
+        console.error("Error fetching medicines:", error);
+      }
+    };
+    fetchMedicines();
+  }, []);
+
+  useEffect(() => {
+    // Fetch data from backend
+    const fetchTickets = async () => {
+      try {
+        const response = await axios.get("https://hms.tsaritservices.com/support/tickets");
+        setTickets(response.data)
+      } catch (error) {
+        console.error("Error fetching medicines:", error);
+      }
+    };
+    fetchTickets();
+  }, []);
+
+  
+  useEffect(() => {
+    // Fetch data from backend
+    const fetchTouchmessages
+    = async () => {
+      try {
+        const response = await axios.get("https://hms.tsaritservices.com/fetchTouchmessages");
+        setContactMessages(response.data)
+      } catch (error) {
+        console.error("Error fetching medicines:", error);
+      }
+    };
+    fetchTouchmessages
+  ();
+  }, []);
+
 
   const renderContent = () => {
     switch (selectedOption) {
@@ -133,10 +177,16 @@ const DashboardHms = () => {
                 <tr>
                   <th>ID</th>
                   <th>Hospital Name</th>
-                  <th>Paid/Not Paid</th>
-                  <th>Remaining Fee</th>
+                  <th>address</th>
+                  <th>emailid</th> 
+                  <th>full name</th>
+                  <th>phonnumber</th>
+                  <th>Hospital Total patents</th>
+                  <th>Hospital Today patents</th>
+                  <th>pending Amount</th>
                   <th>Cleared Amount</th>
-                  <th>Balance Amount</th>
+                  <th>Paid/Not Paid</th>
+                  {/* <th>Remaining Fee</th> */}
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -144,11 +194,17 @@ const DashboardHms = () => {
                 {hospitals.map((hospital) => (
                   <tr key={hospital.id}>
                     <td>{hospital.id}</td>
-                    <td>{hospital.name}</td>
-                    <td>{hospital.paid ? 'Paid' : 'Not Paid'}</td>
-                    <td>{hospital.remainingFee} INR</td>
+                    <td>{hospital.hospitalname}</td>
+                    <td>{hospital.address}</td>
+                    <td>{hospital.emailid}</td>
+                    <td>{hospital.firstname}{hospital.lastname}</td>
+                    <td>{hospital.phonenumber}</td>
+                    <td>{hospital.totalpatents}</td>
+                    <td>{hospital.todaypatents}</td>
+                    <td>{hospital.pendingAmount} INR</td>
                     <td>{hospital.clearedAmount} INR</td>
-                    <td>{hospital.balanceAmount} INR</td>
+                    <td>{hospital.paid ? 'Paid' : 'Not Paid'}</td>
+                    {/* <td>{hospital.remainingFee} INR</td> */}
                     <td>
                       <button
                         onClick={() => handleFreezeAccount(hospital.id)}
@@ -211,6 +267,8 @@ const DashboardHms = () => {
                   <thead>
                     <tr>
                       <th>ID</th>
+                      <th>name</th>
+                      <th>email</th>
                       <th>Message</th>
                       <th>Replied</th>
                       <th>Action</th>
@@ -220,6 +278,8 @@ const DashboardHms = () => {
                     {contactMessages.map((message) => (
                       <tr key={message.id}>
                         <td>{message.id}</td>
+                        <td>{message.name}</td>
+                        <td>{message.email}</td>
                         <td>{message.message}</td>
                         <td>{message.replied ? 'Yes' : 'No'}</td>
                         {!message.replied && (
@@ -299,6 +359,7 @@ const DashboardHms = () => {
                       <th>ID</th>
                       <th>Issue</th>
                       <th>Priority</th>
+                      <th>subject</th>
                       <th>Replied</th>
                       <th>Action</th>
                       <th>status</th>
@@ -308,9 +369,11 @@ const DashboardHms = () => {
                     {tickets.map((ticket) => (
                       <tr key={ticket.id}>
                         <td>{ticket.id}</td>
-                        <td>{ticket.issue}</td>
+                        <td>{ticket.issueDescription}</td>
                         <td>{ticket.priority}</td>
+                        <td>{ticket.subject}</td>
                         <td>{ticket.replied ? 'Yes' : 'No'}</td>
+                        {/* <td>{ticket.Action}</td> */}
                         <td>{ticket.status}</td>
                         {!ticket.replied && (
                           <td>

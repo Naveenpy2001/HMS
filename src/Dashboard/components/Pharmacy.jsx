@@ -29,7 +29,7 @@ const Pharmacy = () => {
     // Fetch data from backend
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/fetchpharmacy");
+        const response = await axios.get("https://hms.tsaritservices.com/fetchpharmacy");
         setMedicines(response.data);
         setMedicines(response.data|| []);
       } catch (error) {
@@ -70,7 +70,7 @@ const Pharmacy = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/savepharmacy", formData
+      const response = await axios.post("https://hms.tsaritservices.com/savepharmacy", formData
         , {
           headers: {
             "Content-Type": "application/json",
@@ -93,7 +93,7 @@ const Pharmacy = () => {
         notes: "",
       });
       console.log("saved",response.data)
-      alert("saved")
+      alert(response.data)
     } catch (error) {
       console.error("Error submitting pharmacy data:", error);
     }

@@ -55,7 +55,7 @@ const PatientRegistration = () => {
     e.preventDefault();
     setLoading(true); // Start loading
     try {
-      const response = await axios.post("http://localhost:8080/saveAthentication", formData, {
+      const response = await axios.post("https://hms.tsaritservices.com/saveAthentication", formData, {
         headers: {
           "Content-Type": "application/json",
         },

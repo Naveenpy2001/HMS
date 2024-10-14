@@ -22,7 +22,7 @@ const ContactForm = () => {
     try {
 
 
-      const response = await axios.post("http://localhost:8080/api/contact", formData);
+      const response = await axios.post("https://hms.tsaritservices.com/api/contact", formData);
 
       if (response.status === 200) {
         setSuccessMessage("Message sent successfully!");
