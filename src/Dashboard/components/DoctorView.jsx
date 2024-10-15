@@ -240,6 +240,7 @@ const DoctorView = () => {
           <table className="dct-table">
             <thead>
               <tr>
+                <th>ID</th>
                 <th>Patient Name</th>
                 <th>Age</th>
                 <th>Disease</th>
@@ -256,7 +257,7 @@ const DoctorView = () => {
                   <td>
                     <button
                       className="dct-view-button"
-                      onClick={() => handlePatientView(patient)}
+                      onClick={() => handlePatientView(patient.id)}
                     >
                       View
                     </button>
