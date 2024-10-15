@@ -35,13 +35,13 @@ const Billing = () => {
 
   // Fetch payments data
   useEffect(() => {
-    axios.get('http://localhost:8080/api/payments/today')
+    axios.get('https://hms.tsaritservices.com/api/payments/today')
       .then(response => {
         setTotalPatients(response.data.length);
       })
       .catch(error => console.error('Error fetching today\'s payments:', error));
 
-      axios.get('http://localhost:8080/api/today')
+      axios.get('https://hms.tsaritservices.com/api/today')
       .then(response => {
         setTodaysPayments(response.data || []);
       })

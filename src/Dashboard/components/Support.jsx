@@ -18,7 +18,7 @@ function Support() {
   const fetchTickets = async () => {
     setLoading(true); // Start loading animation
     try {
-      const response = await axios.get("http://localhost:8080/support/tickets");
+      const response = await axios.get("https://hms.tsaritservices.com/support/tickets");
       console.log(response.data); // Log the full response to check the structure
       setRaisedTickets(response.data || []);
     } catch (error) {
@@ -36,7 +36,7 @@ function Support() {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("http://localhost:8080/support", {
+      await axios.post("https://hms.tsaritservices.com/support", {
         subject,
         priority,
         issueDescription,

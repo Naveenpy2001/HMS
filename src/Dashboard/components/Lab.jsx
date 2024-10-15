@@ -33,7 +33,7 @@ const Lab = () => {
     // Fetch data from the backend
     const fetchLabTests = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/getlabtests");
+        const response = await axios.get("https://hms.tsaritservices.com/getlabtests");
         setLabTests(response.data);
         console.log(response.data); // Log the API response
         setLabTests(response.data || []);
@@ -77,7 +77,7 @@ const Lab = () => {
     e.preventDefault();
     try {
       // Send data to backend
-      const response = await axios.post("http://localhost:8080/saveLab", formData,
+      const response = await axios.post("https://hms.tsaritservices.com/saveLab", formData,
         {
           headers: {
             "Content-Type": "application/json",
@@ -99,7 +99,7 @@ const Lab = () => {
         status: "Pending",
         notes: "",
       });
-      alert("lab test succ")
+      alert(response.data)
     } catch (error) {
       console.error("Error submitting lab test:", error);
     }
@@ -186,7 +186,7 @@ const Lab = () => {
       {activeTab === 1 && (
         <form className="lab-form" onSubmit={handleSubmit}>
         <h1 className="lab-h1">Lab Test Form</h1>
-        <label htmlFor="patientId" className="dct-label">
+        {/* <label htmlFor="patientId" className="dct-label">
             Patient ID:
           </label>
         <input
@@ -247,8 +247,8 @@ const Lab = () => {
             required
             readOnly
           />
-        </div>
-        <div className="dct-form-group">
+        </div> */}
+        {/* <div className="dct-form-group">
           <label htmlFor="pttests" className="dct-label">
             Patient Tests:
           </label>
@@ -261,9 +261,9 @@ const Lab = () => {
             required
             readOnly
           />
-        </div>
+        </div> */}
         <hr />
-        <hr />
+        <hr /> 
         <h2 className="dct-subheading">Lab Treatment</h2>
         <div className="lab-form-group">
           <label className="lab-label">Test Name:</label>

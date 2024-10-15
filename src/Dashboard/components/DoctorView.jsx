@@ -71,7 +71,7 @@ const DoctorView = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/today", {
+      const response = await fetch("https://hms.tsaritservices.com/api/today", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -92,17 +92,18 @@ const DoctorView = () => {
   };
   
 
-
-  const fetchPatientData = async () => {
+  const [patientId2, setPatientId2] = useState("");
+  const fetchPatientData = async (patientId1) => {
     try {
       // Replace with your fetch API endpoint
       const response = await axios.get(
-        `https://hms.tsaritservices.com/api/record/${patientId}`
+        `https://hms.tsaritservices.com/api/record/${patientId1}`
       );
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName + " " + data.lastName);
       setPtDiseases(data.disease);
       setAge(data.age);
+      setPatientId2(patientId1)
     } catch (error) {
       console.error("Error fetching patient data:", error);
       alert("Failed to fetch patient data. Please try again.");
@@ -113,7 +114,7 @@ const DoctorView = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = {
-      patientId,
+      patientId2,
       patientName,
       ptDiseases,
       prescription,
@@ -169,6 +170,7 @@ const DoctorView = () => {
 
   const handlePatientView = (patient) => {
     setSelectedPatient(patient);
+    fetchPatientData(patient.id)
     setActiveTab(2); // Move to the second tab
   };
 
@@ -184,7 +186,7 @@ const DoctorView = () => {
   const printCertificate = async () => {
     try {
       const response = await fetch(
-        `https://hms.tsaritservices.com/api/generate-certificate/${patientId}`,
+        `https://hms.tsaritservices.com/api/generate-certificate/${patientId2}`,
         {
           method: "GET",
           headers: {
@@ -240,7 +242,11 @@ const DoctorView = () => {
           <table className="dct-table">
             <thead>
               <tr>
+
                 <th>ID</th>
+=======
+              <th>Patient id</th>
+
                 <th>Patient Name</th>
                 <th>Age</th>
                 <th>Disease</th>
@@ -276,6 +282,20 @@ const DoctorView = () => {
           <h2 className="dct-subheading">Patient Treatment</h2>
           <div className="dct-form-group">
             <label htmlFor="patientName" className="dct-label">
+              Patient id:
+            </label>
+            <input
+              type="text"
+              id="patientName"
+              className="dct-input"
+              value={patientId2}
+              onChange={(e) => setPatientName(e.target.value)}
+              required
+              readOnly
+            />
+          </div>
+          <div className="dct-form-group">
+            <label htmlFor="patientName" className="dct-label">
               Patient Name:
             </label>
             <input
@@ -285,6 +305,7 @@ const DoctorView = () => {
               value={patientName}
               onChange={(e) => setPatientName(e.target.value)}
               required
+              readOnly
             />
           </div>
           {/* Form Fields */}
@@ -299,6 +320,7 @@ const DoctorView = () => {
               value={ptDiseases}
               onChange={(e) => setPtDiseases(e.target.value)}
               required
+              readOnly
             />
           </div>
 
@@ -313,6 +335,7 @@ const DoctorView = () => {
               value={age}
               onChange={(e) => setAge(e.target.value)}
               required
+              readOnly
             />
           </div>
 
