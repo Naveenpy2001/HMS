@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
+import { API_URL } from './API';
+
+
 const LoginDashboard = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,7 +18,7 @@ const LoginDashboard = () => {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/login', { email, password });
+      const response = await axios.post(`${API_URL}/api/login`, { email, password });
       console.log('Login successful:', response.data);
       navigate('/dashboard-hms')
 
@@ -28,7 +31,7 @@ const LoginDashboard = () => {
     e.preventDefault();
     if (newPassword === confirmPassword) {
       try {
-        const response = await axios.post('/api/reset-password', { email, newPassword });
+        const response = await axios.post(`${API_URL}/api/reset-password`, { email, newPassword });
         console.log('Password reset successful:', response.data);
       } catch (error) {
         console.error('Password reset error:', error);

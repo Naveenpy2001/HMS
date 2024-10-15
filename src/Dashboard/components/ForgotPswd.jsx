@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../css/forgot.css';
 import { useNavigate } from "react-router-dom";
-const API_URL = 'https://hms.tsaritservices.com'; // Replace with your actual API URL
+// const API_URL = 'https://hms.tsaritservices.com'; // Replace with your actual API URL
+
+import { API_URL } from '../../API';
 
 const ForgotPswd = ({setForgot}) => {
     const [step, setStep] = useState(1); // Track form step

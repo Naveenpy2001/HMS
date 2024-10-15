@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+
+import { API_URL } from "../../API";
+
+
 const Dashboard = ({ emailid, setActiveTab, token }) => {
   const [data, setData] = useState({
     TodaypatientCount: 0,
@@ -22,7 +25,7 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
     // }
     const fetchData = async () => {
       try {
-        const response = await fetch("https://hms.tsaritservices.com/api/dashboard", {
+        const response = await fetch(`${API_URL}/api/dashboard`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

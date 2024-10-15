@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import '../../css/Lab.css'
+import '../../css/Lab.css';
+
+import { API_URL } from "../../API";
+
+
 
 const Pharmacy = () => {
   const [patientId, setPatientId] = useState("");
@@ -29,7 +33,7 @@ const Pharmacy = () => {
     // Fetch data from backend
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get("https://hms.tsaritservices.com/fetchpharmacy");
+        const response = await axios.get(`${API_URL}/fetchpharmacy`);
         setMedicines(response.data);
         setMedicines(response.data|| []);
       } catch (error) {
@@ -50,7 +54,7 @@ const Pharmacy = () => {
     try {
       // Replace with your fetch API endpoint
       const response = await axios.get(
-        `https://hms.tsaritservices.com/api/record/${patientId}`
+        `${API_URL}/api/record/${patientId}`
       );
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName + " " + data.lastName);
@@ -70,7 +74,7 @@ const Pharmacy = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://hms.tsaritservices.com/savepharmacy", formData
+      const response = await axios.post(`${API_URL}/savepharmacy`, formData
         , {
           headers: {
             "Content-Type": "application/json",

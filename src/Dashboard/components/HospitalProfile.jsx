@@ -8,7 +8,9 @@ import '../../css/HospitalProfile.css'
 
 import AppointmentForm from "./AppointmentForm";
 
-const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
+// const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
+
+import { API_URL } from "../../API";
 
 const HospitalProfile = () => {
   const [hospitalData, setHospitalData] = useState(null);
@@ -18,7 +20,7 @@ const HospitalProfile = () => {
   useEffect(() => {
     // Fetch the hospital data from API
     axios
-      .get(API_URL)
+      .get(`${API_URL}/get/api/`)
       .then((response) => {
         setHospitalData(response.data);
         setLoading(false);

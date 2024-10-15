@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { API_URL } from "../../API";
+
 function MedicalTests({ token }) {
   const [data, setData] = useState({
     TodaypatientCount: 0,
@@ -14,7 +16,7 @@ function MedicalTests({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://hms.tsaritservices.com/api/records", {
+        const response = await fetch(`${API_URL}/api/records`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

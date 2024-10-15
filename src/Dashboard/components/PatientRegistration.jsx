@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../../css/patientRegister.css";
 
+import { API_URL } from "../../API";
+
 const PatientRegistration = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -55,7 +57,7 @@ const PatientRegistration = () => {
     e.preventDefault();
     setLoading(true); // Start loading
     try {
-      const response = await axios.post("https://hms.tsaritservices.com/saveAthentication", formData, {
+      const response = await axios.post(`${API_URL}/saveAthentication`, formData, {
         headers: {
           "Content-Type": "application/json",
         },

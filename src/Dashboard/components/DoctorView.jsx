@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import {  useEffect } from 'react';
+
+import { API_URL } from "../../API";
+
 const DoctorView = () => {
   // State to hold form values
   const [patientId, setPatientId] = useState("");
@@ -71,7 +74,7 @@ const DoctorView = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://hms.tsaritservices.com/api/today", {
+      const response = await fetch(`${API_URL}/api/today`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -97,7 +100,7 @@ const DoctorView = () => {
     try {
       // Replace with your fetch API endpoint
       const response = await axios.get(
-        `https://hms.tsaritservices.com/api/record/${patientId1}`
+        `${API_URL}/api/record/${patientId1}`
       );
       const data = response.data[0]; // Assuming API returns an array with one object
       setPatientName(data.firstName + " " + data.lastName);
@@ -131,7 +134,7 @@ const DoctorView = () => {
 
     try {
       const response = await axios.post(
-        "https://hms.tsaritservices.com/savetreatment", // Update with your actual Spring Boot endpoint
+        `${API_URL}savetreatment`, // Update with your actual Spring Boot endpoint
         formData,
         {
           headers: {
@@ -186,7 +189,7 @@ const DoctorView = () => {
   const printCertificate = async () => {
     try {
       const response = await fetch(
-        `https://hms.tsaritservices.com/api/generate-certificate/${patientId2}`,
+        `${API_URL}/api/generate-certificate/${patientId2}`,
         {
           method: "GET",
           headers: {

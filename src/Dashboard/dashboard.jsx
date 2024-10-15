@@ -18,6 +18,8 @@ import Pharmacy from "./components/Pharmacy";
 
 import HMS from '../media/HMS-Transparent.png';
 
+import { API_URL } from "../API";
+
 function App(token) {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
@@ -25,7 +27,7 @@ function App(token) {
 
   const UserDataFetch = async () => {
     try {
-      const response = await fetch("https://hms.tsaritservices.com/api/dashboard", {
+      const response = await fetch(`${API_URL}/api/dashboard`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -47,7 +49,7 @@ function App(token) {
   const handleLogout = async () => {
     localStorage.removeItem('token');
     try {
-      await axios.post("https://hms.tsaritservices.com/reactlogout", {
+      await axios.post(`${API_URL}/reactlogout`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
 
       });

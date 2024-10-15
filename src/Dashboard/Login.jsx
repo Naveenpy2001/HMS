@@ -11,6 +11,8 @@ import App from "./dashboard";
 import Navbar from "../home/HomeComponents/Nav";
 import Footer from "../home/Footer";
 
+import { API_URL } from "../API";
+
 const Login = () => {
   const [emailid, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,7 +30,7 @@ const Login = () => {
 
     try {
         // 'URL'
-      const response = await axios.post("https://hms.tsaritservices.com/auth/login", {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         emailid, 
         password,
       });

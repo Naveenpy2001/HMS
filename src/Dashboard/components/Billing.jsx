@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // import Razorpay from 'razorpay';
 
+import { API_URL } from '../../API';
+
 const Billing = () => {
   const [todaysPayments, setTodaysPayments] = useState([]);
   const [monthlyTotalPayments, setMonthlyTotalPayments] = useState({ monthWise: [], yearWise: [] });
@@ -22,7 +24,7 @@ const Billing = () => {
   // Fetch the bank details when the component loads
 
   useEffect(() => {
-    axios.get('https://hms.tsaritservices.com/api/bank-details')
+    axios.get(`${API_URL}/api/bank-details`)
       .then(response => {
         if (response.data) {
           setBankDetails(response.data);
@@ -35,7 +37,7 @@ const Billing = () => {
 
   // Fetch payments data
   useEffect(() => {
-    axios.get('https://hms.tsaritservices.com/api/payments/today')
+    axios.get(`${API_URL}/api/payments/today`)
       .then(response => {
         setTotalPatients(response.data.length);
       })
@@ -68,14 +70,14 @@ const Billing = () => {
 
     // Submit or update bank details
     if (isBankDetailsExist) {
-      axios.put('https://hms.tsaritservices.com/api/bank-details', bankDetails)
+      axios.put(`${API_URL}/api/bank-details`, bankDetails)
         .then(response => {
           console.log('Bank details updated:', response.data);
           setShowForm(false); // Hide form after successful update
         })
         .catch(error => console.error('Error updating bank details:', error));
     } else {
-      axios.post('https://hms.tsaritservices.com/api/bank-details', bankDetails)
+      axios.post(`${API_URL}/api/bank-details`, bankDetails)
         .then(response => {
           console.log('Bank details submitted:', response.data);
           setIsBankDetailsExist(true); // Mark as existing details
@@ -87,7 +89,7 @@ const Billing = () => {
     // Submit the bank details via an API
     try {
       // Make an API request to save the bank details
-      const response =  axios.post('https://hms.tsaritservices.com/save-bank-details', bankDetails);
+      const response =  axios.post(`${API_URL}/save-bank-details`, bankDetails);
 
       // Handle success response
       console.log('Bank details saved successfully:', response.data);

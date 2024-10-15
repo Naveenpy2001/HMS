@@ -8,6 +8,10 @@ import OtpVerification from "../home/HomeComponents/OTP";
 import { useNavigate } from "react-router-dom";
 import Footer from "../home/Footer";
 import Navbar from "../home/HomeComponents/Nav";
+
+import { API_URL } from "../API";
+
+
 const Register = () => {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
@@ -36,7 +40,7 @@ const [otpVerify,setOtpVerify] = useState(false)
 
     try {
       setLoading(true)
-      const response = await axios.post("https://hms.tsaritservices.com/register-react", {
+      const response = await axios.post(`${API_URL}/register-react`, {
         firstname,
         lastname,
         hospitalname,

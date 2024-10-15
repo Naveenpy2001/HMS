@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import './css/hms-dash.css';
 
+import { API_URL } from "./API";
+
 const DashboardHms = () => {
   const [hospitals, setHospitals] = useState([
     // { id: 1, name: 'City Hospital', paid: true, remainingFee: 0, clearedAmount: 10000, balanceAmount: 0 },
@@ -71,7 +73,7 @@ const DashboardHms = () => {
     // Fetch data from backend
     const fetchMedicines = async () => {
       try {
-        const response = await axios.get("https://hms.tsaritservices.com/fetchAll-hospitals");
+        const response = await axios.get(`${API_URL}/fetchAll-hospitals`);
         setHospitals(response.data)
       } catch (error) {
         console.error("Error fetching medicines:", error);
@@ -84,7 +86,7 @@ const DashboardHms = () => {
     // Fetch data from backend
     const fetchTickets = async () => {
       try {
-        const response = await axios.get("https://hms.tsaritservices.com/support/tickets");
+        const response = await axios.get(`${API_URL}/support/tickets`);
         setTickets(response.data)
       } catch (error) {
         console.error("Error fetching medicines:", error);
@@ -99,7 +101,7 @@ const DashboardHms = () => {
     const fetchTouchmessages
     = async () => {
       try {
-        const response = await axios.get("https://hms.tsaritservices.com/fetchTouchmessages");
+        const response = await axios.get(`${API_URL}/fetchTouchmessages`);
         setContactMessages(response.data)
       } catch (error) {
         console.error("Error fetching medicines:", error);

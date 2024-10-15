@@ -4,7 +4,10 @@ import '../../css/Profile.css';
 
 import { FaArrowRightLong } from "react-icons/fa6";
 
-const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
+// const API_URL = "https://hms.tsaritservices.com/get/api/"; // Replace with your actual API URL
+
+import { API_URL } from "../../API";
+
 
 const HospitalData = () => {
   const [activeTab, setActiveTab] = useState("personal");
@@ -27,7 +30,7 @@ const HospitalData = () => {
 
   useEffect(() => {
     axios
-      .get(API_URL)
+      .get(`${API_URL}/get/api/`)
       .then((response) => {
         const data = response.data;
         setProfilePhoto(data.profilePhoto);

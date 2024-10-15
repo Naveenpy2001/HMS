@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+import { API_URL } from '../../API';
+
+
 const AppointmentForm = () => {
   const [formData, setFormData] = useState({
     patientName: '',
@@ -35,7 +38,7 @@ const AppointmentForm = () => {
     
     if (patientName && day && month && year && time && reason) {
       try {
-        const response = await axios.post('https://your-backend-endpoint.com/api/appointments', formData); // Replace with your actual API endpoint
+        const response = await axios.post(`${API_URL}/api/appointments`, formData); // Replace with your actual API endpoint
         if (response.status === 200) {
           setIsSuccess(true);
        

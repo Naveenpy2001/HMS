@@ -3,6 +3,8 @@ import axios from "axios";
 
 import '../../css/Support.css';
 
+import { API_URL } from "../../API";
+
 function Support() {
   const [subject, setSubject] = useState("");
   const [priority, setPriority] = useState("low");
@@ -18,7 +20,7 @@ function Support() {
   const fetchTickets = async () => {
     setLoading(true); // Start loading animation
     try {
-      const response = await axios.get("https://hms.tsaritservices.com/support/tickets");
+      const response = await axios.get(`${API_URL}/support/tickets`);
       console.log(response.data); // Log the full response to check the structure
       setRaisedTickets(response.data || []);
     } catch (error) {
@@ -36,7 +38,7 @@ function Support() {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("https://hms.tsaritservices.com/support", {
+      await axios.post(`${API_URL}/support`, {
         subject,
         priority,
         issueDescription,

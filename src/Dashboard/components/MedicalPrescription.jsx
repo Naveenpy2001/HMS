@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { API_URL } from "../../API";
+
 function Appointments({ token }) {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,7 +14,7 @@ function Appointments({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://hms.tsaritservices.com/api/records", {
+        const response = await fetch(`${API_URL}/api/records`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -47,14 +49,16 @@ function Appointments({ token }) {
   }, [token]);
 
   const updateTodayAppointmentsCount = (appointments, today) => {
-    const todayAppointments = appointments.filter(appointment => appointment.date === today);
+    const todayAppointments = appointments.filter(
+      (appointment) => appointment.date === today
+    );
     const count = todayAppointments.length;
     setTodayAppointmentsCount(count);
   };
 
   const updateAppointmentCounts = async (date, totalCount) => {
     try {
-      await fetch("https://hms.tsaritservices.com/appointments/counts", {
+      await fetch(`${API_URL}/appointments/counts`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -99,7 +103,8 @@ function Appointments({ token }) {
         appointment.reason.toLowerCase().includes(term) ||
         appointment.age.toString().includes(term);
       const matchesDate = dateFilter === "" || appointment.date === dateFilter;
-      const matchesStatus = statusFilter === "" || appointment.status === statusFilter;
+      const matchesStatus =
+        statusFilter === "" || appointment.status === statusFilter;
 
       return matchesTerm && matchesDate && matchesStatus;
     });
@@ -110,9 +115,10 @@ function Appointments({ token }) {
   };
 
   const handleStatusChange = async (id, currentStatus) => {
-    const newStatus = currentStatus === "Completed" ? "Not Completed" : "Completed";
+    const newStatus =
+      currentStatus === "Completed" ? "Not Completed" : "Completed";
     try {
-      const response = await fetch(`https://hms.tsaritservices.com/appointments/${id}/status`, {
+      const response = await fetch(`${API_URL}/appointments/${id}/status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -126,7 +132,9 @@ function Appointments({ token }) {
       }
 
       const updatedAppointments = filteredAppointments.map((appointment) =>
-        appointment.id === id ? { ...appointment, status: newStatus } : appointment
+        appointment.id === id
+          ? { ...appointment, status: newStatus }
+          : appointment
       );
       setFilteredAppointments(updatedAppointments);
       setData(updatedAppointments); // Update the main data state as well
@@ -190,14 +198,22 @@ function Appointments({ token }) {
             {filteredAppointments.length > 0 ? (
               filteredAppointments.map((appointment) => (
                 <tr key={appointment.id}>
-                  <td>{appointment.firstName} {appointment.lastName}</td>
+                  <td>
+                    {appointment.firstName} {appointment.lastName}
+                  </td>
                   <td>{appointment.age}</td>
                   <td>{appointment.disease}</td>
                   <td>{appointment.date}</td>
                   <td>
                     <button
-                      onClick={() => handleStatusChange(appointment.id, appointment.status)}
-                      className={`status-button ${appointment.status === 'Completed' ? 'completed' : 'not-completed'}`}
+                      onClick={() =>
+                        handleStatusChange(appointment.id, appointment.status)
+                      }
+                      className={`status-button ${
+                        appointment.status === "Completed"
+                          ? "completed"
+                          : "not-completed"
+                      }`}
                     >
                       {appointment.status}
                     </button>
