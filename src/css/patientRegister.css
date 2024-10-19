@@ -497,6 +497,7 @@
 
 .hospital-data-section {
     margin-bottom: 20px;
+    padding: 0 40px;
 }
 
 .hospital-data-subheading {
@@ -722,3 +723,96 @@
   .dct-table th {
     background-color: #f2f2f2;
   }
+
+
+  .ac-btn-freeze {
+    background-color: #007BFF;
+    color: white;
+    padding: 6px 20px;
+    border: none;
+    margin: 0 5px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ac-btn-freeze:hover {
+    background-color: #0056b3;
+  }
+  
+  .ac-btn-freeze:active {
+    background-color: #004085;
+  }
+
+  .ac-btn-purge {
+    background-color: #ffc107;
+    color: black;
+    padding: 6px 20px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ac-btn-purge:hover {
+    background-color: #e0a800;
+  }
+  
+  .ac-btn-purge:active {
+    background-color: #d39e00;
+  }
+
+
+  .ac-btn-reply {
+    background-color: #17a2b8;
+    color: white;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ac-btn-reply:hover {
+    background-color: #138496;
+  }
+  
+  .ac-btn-reply:active {
+    background-color: #117a8b;
+  }
+
+
+  .ac-btn-back {
+    background-color: #6c757d;
+    color: white;
+    padding: 6px 20px;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ac-btn-back:hover {
+    background-color: #5a6268;
+  }
+  
+  .ac-btn-back:active {
+    background-color: #4e555b;
+  }
+  
+
+
+  .ac-input {
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 2px;
+    font-size: 13px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .ac-input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  

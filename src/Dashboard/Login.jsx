@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../css/login.css"; 
-import HMS from '../media/HMS.png'
+import HMS from '../media/HMS.png';
 
 import { useNavigate } from "react-router-dom";
 

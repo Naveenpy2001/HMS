@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { API_URL } from "../../API";
 
 function MedicalTests({ token }) {
@@ -12,6 +11,7 @@ function MedicalTests({ token }) {
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [filterVisited, setFilterVisited] = useState("all");
   const [filterDate, setFilterDate] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,23 +28,20 @@ function MedicalTests({ token }) {
           throw new Error(`HTTP fetching error! status: ${response.status}`);
         }
 
-        const result = await response.json(); // Correct usage of response.json()
-        console.log("API Response:", result); // Log entire response object
+        const result = await response.json();
+        console.log("API Response:", result);
 
-        // Wrap single patient object in an array if necessary
         const patientTrackingData = Array.isArray(result) ? result : [result];
         const records = result.records || [];
-        // Update state
         setData({
-          TodaypatientCount:  result.TodaypatientCount || 0, // Assuming today's patient count is based on returned records
-          TotalpatientCount: result.TotalpatientCount || 0, // Assuming total patient count is based on returned records
+          TodaypatientCount: result.TodaypatientCount || 0,
+          TotalpatientCount: result.TotalpatientCount || 0,
           patientTracking: records,
         });
         setFilteredPatients(records);
        
       } catch (error) {
         console.error("Error fetching data:", error.message);
-        // Handle error, e.g., show a notification or retry fetching
       }
     };
 
@@ -94,134 +91,111 @@ function MedicalTests({ token }) {
     setFilteredPatients(filtered);
   };
 
+  const handlePatientClick = (patient) => {
+    setSelectedPatient(patient);
+  };
+
+  const handleBackClick = () => {
+    setSelectedPatient(null);
+  };
+
   return (
     <div>
       <h1>Patients Data</h1>
-      <div className="tracking-summary">
-        <p>Today's Patients: {data.TodaypatientCount}</p>
-        <p>Total Patients: {data.TotalpatientCount}</p>
-      </div>
-      <div className="tracking-container">
-        <div className="filter-container">
-          <input
-            type="search"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search by name, disease, or age..."
-            className="search-input"
-          />
 
-          <select
-            value={filterVisited}
-            onChange={handleFilterVisitedChange}
-            className="filter-select"
-          >
-            <option value="all">All</option>
-            <option value="visited">Visited</option>
-            <option value="not_visited">Not Visited</option>
-          </select>
-
-          <input
-            type="date"
-            value={filterDate}
-            onChange={handleDateFilterChange}
-            className="search-input date"
-          />
-
-          <button onClick={handleClearFilters} className="clear-filters-button">
-            Clear Filters
+      {selectedPatient ? (
+        <div className="patient-details">
+          <button onClick={handleBackClick} className="back-button">
+            Back
           </button>
+          <h2>Patient Details</h2>
+          <p><strong>ID:</strong> {selectedPatient.id}</p>
+          <p><strong>First Name:</strong> {selectedPatient.firstName}</p>
+          <p><strong>Last Name:</strong> {selectedPatient.lastName}</p>
+          <p><strong>Email:</strong> {selectedPatient.email}</p>
+          <p><strong>Disease:</strong> {selectedPatient.disease}</p>
+          <p><strong>Phone Number:</strong> {selectedPatient.phoneNumber}</p>
+          <p><strong>Visits:</strong> {selectedPatient.visitsCount} times</p>
+          {/* Add other patient details as necessary */}
         </div>
+      ) : (
+        <>
+          <div className="tracking-summary">
+            <p>Today's Patients: {data.TodaypatientCount}</p>
+            <p>Total Patients: {data.TotalpatientCount}</p>
+          </div>
+          <div className="tracking-container">
+            <div className="filter-container">
+              <input
+                type="search"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                placeholder="Search by name, disease, or age..."
+                className="search-input"
+              />
 
-        <table className="tracking-table">
-        <thead>
-  <tr>
-    <th className="patients-id">ID</th>
-    <th className="patients-firstName">First Name</th>
-    <th className="patients-lastName">Last Name</th>
-    <th className="patients-email">Email</th>
-    <th className="patients-phoneNumber">Phone Number</th>
-    <th className="patients-aadharNumber">Aadhar Number</th>
-    <th className="patients-address">Address</th>
-    <th className="patients-gender">Gender</th>
-    <th className="patients-disease">Disease</th>
-    <th className="patients-otherDisease">Other Disease</th>
-    <th className="patients-day">Date of birth</th>
+              <select
+                value={filterVisited}
+                onChange={handleFilterVisitedChange}
+                className="filter-select"
+              >
+                <option value="all">All</option>
+                <option value="visited">Visited</option>
+                <option value="not_visited">Not Visited</option>
+              </select>
 
-    <th className="patients-age">Age</th>
-    <th className="patients-modeOfPayment">Mode of Payment</th>
-    <th className="patients-amount">Amount</th>
-    <th className="patients-upiTransactionNo">UPI Transaction No</th>
-    <th className="patients-netBankingTransactionId">Net Banking Transaction ID</th>
-    <th className="patients-netBankingScreenshot">Net Banking Screenshot</th>
-    <th className="patients-accountTransactionId">Account Transaction ID</th>
-    <th className="patients-accountDocument">Account Document</th>
-    <th className="patients-reference">Reference</th>
-    <th className="patients-insurance">Insurance</th>
-    <th className="patients-otherPayment">Other Payment</th>
-    <th className="patients-weight">Weight</th>
-    <th className="patients-bp">BP</th>
-    <th className="patients-appointmentTaken">Appointment Taken</th>
-    <th className="patients-appointmentDetails">Appointment Details</th>
-    <th className="patients-modeOfPatient">Mode of Patient</th>
-    <th className="patients-bedAssign">Bed Assign</th>
-    <th className="patients-bedDetails">Bed Details</th>
-    <th className="patients-bedNo">Bed No</th>
-    <th className="patients-bedDays">Bed Days</th>
-    <th className="patients-date">Date</th>
-    <th className="patients-time">Time</th>
-  </tr>
-</thead>
+              <input
+                type="date"
+                value={filterDate}
+                onChange={handleDateFilterChange}
+                className="search-input date"
+              />
 
-<tbody>
-  {filteredPatients.length > 0 ? (
-    filteredPatients.map((patient, index) => (
-      <tr key={index}>
-        <td className="patients-id">{patient.id}</td>
-        <td className="patients-firstName">{patient.firstName}</td>
-        <td className="patients-lastName">{patient.lastName}</td>
-        <td className="patients-email">{patient.email}</td>
-        <td className="patients-phoneNumber">{patient.phoneNumber}</td>
-        <td className="patients-aadharNumber">{patient.aadharNumber}</td>
-        <td className="patients-address">{patient.address}</td>
-        <td className="patients-gender">{patient.gender}</td>
-        <td className="patients-disease">{patient.disease}</td>
-        <td className="patients-otherDisease">{patient.otherDisease}</td>
-        <td className="patients-day">{patient.day} / {patient.month} / {patient.year}</td>
+              <button onClick={handleClearFilters} className="clear-filters-button">
+                Clear Filters
+              </button>
+            </div>
 
-        <td className="patients-age">{patient.age}</td>
-        <td className="patients-modeOfPayment">{patient.modeOfPayment}</td>
-        <td className="patients-amount">{patient.amount}</td>
-        <td className="patients-upiTransactionNo">{patient.upiTransactionNo}</td>
-        <td className="patients-netBankingTransactionId">{patient.netBankingTransactionId}</td>
-        <td className="patients-netBankingScreenshot">{patient.netBankingScreenshot}</td>
-        <td className="patients-accountTransactionId">{patient.accountTransactionId}</td>
-        <td className="patients-accountDocument">{patient.accountDocument}</td>
-        <td className="patients-reference">{patient.reference}</td>
-        <td className="patients-insurance">{patient.insurance}</td>
-        <td className="patients-otherPayment">{patient.otherPayment}</td>
-        <td className="patients-weight">{patient.weight}</td>
-        <td className="patients-bp">{patient.bp}</td>
-        <td className="patients-appointmentTaken">{patient.appointmentTaken}</td>
-        <td className="patients-appointmentDetails">{patient.appointmentDetails}</td>
-        <td className="patients-modeOfPatient">{patient.modeOfPatient}</td>
-        <td className="patients-bedAssign">{patient.bedAssign}</td>
-        <td className="patients-bedDetails">{patient.bedDetails}</td>
-        <td className="patients-bedNo">{patient.bedNo}</td>
-        <td className="patients-bedDays">{patient.bedDays}</td>
-        <td className="patients-date">{patient.date}</td>
-        <td className="patients-time">{patient.time}</td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="38" className="patients-noData">No patients found</td>
-    </tr>
-  )}
-</tbody>
+            <table className="tracking-table">
+              <thead>
+                <tr>
+                  <th className="patients-id">ID</th>
+                  <th className="patients-firstName">First Name</th>
+                  <th className="patients-lastName">Last Name</th>
+                  <th className="patients-email">Email</th>
+                  <th className="patients-phoneNumber">Phone Number</th>
+                  <th className="patients-aadharNumber">Aadhar Number</th>
+                  <th className="patients-address">Address</th>
+                  <th className="patients-gender">Gender</th>
+                  <th className="patients-day">Date of birth</th>
+                </tr>
+              </thead>
 
-        </table>
-      </div>
+              <tbody>
+                {filteredPatients.length > 0 ? (
+                  filteredPatients.map((patient, index) => (
+                    <tr key={index} onClick={() => handlePatientClick(patient)} style={{ cursor: "pointer" }}>
+                      <td className="patients-id">{patient.id}</td>
+                      <td className="patients-firstName">{patient.firstName}</td>
+                      <td className="patients-lastName">{patient.lastName}</td>
+                      <td className="patients-email">{patient.email}</td>
+                      <td className="patients-phoneNumber">{patient.phoneNumber}</td>
+                      <td className="patients-aadharNumber">{patient.aadharNumber}</td>
+                      <td className="patients-address">{patient.address}</td>
+                      <td className="patients-gender">{patient.gender}</td>
+                      <td className="patients-day">{patient.day} / {patient.month} / {patient.year}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="9" className="patients-noData">No patients found</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }

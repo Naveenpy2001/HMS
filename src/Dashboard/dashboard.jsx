@@ -25,6 +25,9 @@ function App(token) {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [userData, setUserData] = useState('');
 
+  const [isPaid, setIsPaid] = useState(true);
+
+
   const UserDataFetch = async () => {
     try {
       const response = await fetch(`${API_URL}/api/dashboard`, {
@@ -36,6 +39,8 @@ function App(token) {
       });
       const data = await response.json();
       setUserData(data);
+      // Ideally, set the payment status from API response like below:
+      // setIsPaid(data.isPaid);     --------------------- here getting status of user paid or not
       console.log("Data", data.firstname, data.lastname);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -62,11 +67,66 @@ function App(token) {
     }
   };
 
+  const handlePayment = () => {
+    const options = {
+      key: "rzp_live_oRtGw5y3RbD9MH", 
+      amount: userData.dueAmount * 100, 
+      currency: "INR",
+      name: "Hospital Payment",
+      description: "Test Transaction",
+      handler: async function (response) {
+        try {
+          await axios.post(`${API_URL}/api/payment/verify`, {
+            paymentId: response.razorpay_payment_id,
+          });
+          alert("Payment successful!");
+          setIsPaid(true); 
+        } catch (error) {
+          console.error("Error verifying payment:", error);
+          alert("Error processing payment");
+        }
+      },
+      prefill: {
+        name: userData.firstname,
+        email: userData.email,
+        contact: userData.contact,
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
+
+
   useEffect(() => {
     UserDataFetch();
   }, []);
 
+
+
+
+  // tabs
+
   const renderContent = () => {
+
+    if (!isPaid) {
+      return (
+        <div className="ntpd-payment-prompt">
+          
+          <h2 className="ntpd-heading">Please pay the bill amount to <br /> access Your Account.</h2>
+          <p className="ntpd-amount-due">Amount Due: {userData.dueAmount}</p>
+          <button className="ntpd-pay-button" onClick={handlePayment}>
+            Click to Pay with Razorpay
+          </button>
+          <p className="ntpd-contact-us">
+          If you need assistance, please <a href="ContactUs" className="ntpd-contact-link">contact us</a>.
+        </p>
+        </div>
+      );
+    }
+
     switch (activeTab) {
       case "Dashboard":
         return <Dashboard setActiveTab={setActiveTab} token={token} />;
@@ -81,7 +141,7 @@ function App(token) {
       case "Billing":
         return <Billing />;
       case "HospitalData":
-        return <HospitalData />;
+        return <HospitalData  />;
       case "Support": // Support tab handler
         return <Support />;
         case "Lab": // Handle Lab component
@@ -92,6 +152,8 @@ function App(token) {
         return <Dashboard token={token} />;
     }
   };
+
+  
 
   return (
     <div className="App">

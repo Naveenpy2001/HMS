@@ -179,3 +179,123 @@
     position: relative;
     padding-top: 60px;
 }
+
+
+
+/* not paid */
+
+
+.ntpd-payment-prompt {
+    background-color: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 50px 40px;
+    text-align: center;
+    margin: 160px auto;
+    max-width: 700px;
+  }
+  
+
+  .ntpd-heading {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+  }
+  
+ 
+  .ntpd-amount-due {
+    font-size: 1.2em;
+    color: #888;
+    margin-bottom: 20px;
+  }
+  
+
+  .ntpd-pay-button {
+    background-color: #3399cc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s;
+  }
+  
+  .ntpd-pay-button:hover {
+    background-color: #287a9e;
+  }
+  
+
+  .ntpd-contact-us {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  .ntpd-contact-link {
+    color: #3399cc;
+    text-decoration: none;
+  }
+  
+  .ntpd-contact-link:hover {
+    text-decoration: underline;
+  }
+  
+
+  /* unfreeze account */
+
+  .ntpd-unfreeze-form {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 40px auto;
+  }
+  
+  .ntpd-form-group {
+    margin-bottom: 15px;
+  }
+  
+  .ntpd-form-group label {
+    display: block;
+    font-size: 0.9em;
+    color: #333;
+    margin-bottom: 5px;
+  }
+  
+  .ntpd-form-group input,
+  .ntpd-form-group textarea {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .ntpd-form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+  
+  .ntpd-submit-button {
+    background-color: #3399cc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .ntpd-submit-button:hover {
+    background-color: #287a9e;
+  }
+  
+  .ntpd-form-message {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: green;
+  }
+  
