@@ -36,16 +36,17 @@ const Login = () => {
       });
       const token = response.data.token;
       if (token) {
-        localStorage.setItem('token', token); // Store the token
+        sessionStorage.setItem('token', token); // Store the token
         console.log("Login successful:", response.data);
+        setToken(token);
         navigate('/dashboard'); // Redirect to dashboard
       } else {
         console.error("Login failed: Token not received");
       }
       
-      // setToken=response.data
+      // const token = sessionStorage.getItem('token');
      
-      setToken(response.data);
+      // setToken(sessionStorage.getItem('token'));
       // localStorage.setItem("token", token);
     } catch (error) {
       alert("Error logging in:")

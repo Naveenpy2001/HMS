@@ -20,13 +20,19 @@ import HMS from '../media/HMS-Transparent.png';
 
 import { API_URL } from "../API";
 
-function App(token) {
+function App() {
   const [activeTab, setActiveTab] = useState("Dashboard");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [userData, setUserData] = useState('');
 
+  const token = sessionStorage.getItem('token'); // Fetch token from sessionStorage
   const UserDataFetch = async () => {
     try {
+      if (!token) {
+        console.error("No token found, redirecting to login");
+        navigate("/login");
+        return;
+      }
       const response = await fetch(`${API_URL}/api/dashboard`, {
         method: "GET",
         headers: {
@@ -47,10 +53,10 @@ function App(token) {
 
   const navigate = useNavigate();
   const handleLogout = async () => {
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     try {
       await axios.post(`${API_URL}/reactlogout`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        headers: {"Authorization": `Bearer ${sessionStorage.getItem('token')}`, }
 
       });
       alert("if you want Logout click OK")

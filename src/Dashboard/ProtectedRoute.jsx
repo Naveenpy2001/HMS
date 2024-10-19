@@ -2,7 +2,7 @@ import React from "react";
 import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = localStorage.getItem("token"); // Assuming you store JWT token in localStorage
+  const isAuthenticated = sessionStorage.getItem('token'); // Assuming you store JWT token in localStorage
 
   if (!isAuthenticated) {
     // If user is not authenticated, redirect to login page

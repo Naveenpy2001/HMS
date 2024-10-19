@@ -247,7 +247,6 @@ const DoctorView = () => {
               <tr>
 
                 <th>ID</th>
-=======
               <th>Patient id</th>
 
                 <th>Patient Name</th>
