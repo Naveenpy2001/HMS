@@ -23,6 +23,9 @@ const Register = () => {
   const [address, setAddress] = useState("");
   const navigate = useNavigate();
 
+  const [hospitalType, setHospitalType] = useState("");
+const [referredBy, setReferredBy] = useState("");
+
 
   
 const [otpVerify,setOtpVerify] = useState(false)
@@ -49,6 +52,8 @@ const [otpVerify,setOtpVerify] = useState(false)
         address,
         password,
         repetepassword,
+        hospitalType,
+        referredBy,
         // gender,
       });
       setLoading(false)
@@ -249,7 +254,44 @@ const [otpVerify,setOtpVerify] = useState(false)
             value={repetepassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+        
         </div>
+
+        <div className="input_container">
+  <label className="input_label" htmlFor="hospital_type">
+    Hospital Type
+  </label>
+  <select
+    name="hospitalType"
+    className="input_field"
+    id="hospital_type"
+    value={hospitalType}
+    onChange={(e) => setHospitalType(e.target.value)}
+  >
+    <option value="">Select Hospital Type</option>
+    <option value="General">General</option>
+    <option value="Specialized">Specialized</option>
+    <option value="Clinic">Clinic</option>
+    <option value="Other">Other</option>
+  </select>
+</div>
+
+<div className="input_container">
+  <label className="input_label" htmlFor="referred_by">
+    Referred By
+  </label>
+  <input
+    placeholder="Referred By "
+    name="referredBy"
+    type="text"
+    className="input_field"
+    id="referred_by"
+    value={referredBy}
+    onChange={(e) => setReferredBy(e.target.value)}
+  />
+</div>
+
+
         {/* <div className="gender_container">
           <p className="input_label">Gender</p>
           <div className="gender_options">

@@ -1,216 +1,262 @@
-/* Container */
 .lab-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-    background-color: #f8f9fa;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.lab-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.lab-tab-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lab-tab-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.lab-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.lab-form-group {
+  margin-bottom: 15px;
+}
+
+.lab-label, .lab-select-label, .lab-input-label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.lab-input, .lab-select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lab-fetch-button, .lab-add-test-button, .lab-submit-button, .lab-download-button, .lab-view-button {
+  background-color: #007bff;
+  color: rgb(0, 0, 0);
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lab-fetch-button:hover, 
+.lab-add-test-button:hover, 
+.lab-submit-button:hover, 
+.lab-download-button:hover, 
+.lab-view-button:hover {
+  background-color: #0056b3;
+}
+
+.lab-results-title, .lab-add-title, .lab-details-title {
+  margin-top: 20px;
+}
+
+.lab-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.lab-th, .lab-td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.lab-th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.lab-filter-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.lab-search-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.lab-clear-filters-button {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.lab-clear-filters-button:hover {
+  background-color: #c82333;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .lab-navigation {
     flex-direction: column;
+    align-items: stretch;
   }
   
-  /* Form */
-  .lab-form {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 60%;
-  }
-  
-  .lab-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+  .lab-tab-button {
+    margin-bottom: 10px;
   }
   
   .lab-form-group {
-    margin-bottom: 15px;
-  }
-  
-  .lab-label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-    color: #555;
-  }
-  
-  .lab-input,
-  .lab-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  
-  .lab-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .lab-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Table */
-  .lab-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    padding: 0 50px;
-  }
-  
-  .lab-th,
-  .lab-td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-    
-  }
-  
-  .lab-th {
-    background-color: #0A2558;
-    color: white;
-  }
-  
-  .lab-td {
-    background-color: #ffffff;
-  }
-  
-  .lab-view-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .lab-view-button:hover {
-    background-color: #218838;
-  }
-  
-  /* Medicine Details */
-  .lab-test-details {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-  }
-
-  
-
-  /* Container */
-.phrmcy-container {
-
-    background-color: #f8f9fa;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
   }
   
-  /* Form */
-  .phrmcy-form {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 60%;
+  .lab-filter-container {
+    flex-direction: column;
   }
   
-  .phrmcy-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
+  .lab-search-input {
+    margin-right: 0;
+    margin-bottom: 10px;
   }
   
-  .phrmcy-form-group {
-    margin-bottom: 15px;
-  }
-  
-  .phrmcy-label {
-    font-weight: bold;
-    margin-bottom: 5px;
+  .lab-table {
     display: block;
-    color: #555;
+    overflow-x: auto;
   }
-  
-  .phrmcy-input,
-  .phrmcy-select {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
-  }
-  
-  .phrmcy-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .phrmcy-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Table */
-  .phrmcy-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .phrmcy-th,
-  .phrmcy-td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .phrmcy-th {
-    background-color: #0A2558;
-    color: white;
-  }
-  
-  .phrmcy-td {
-    background-color: #ffffff;
-  }
-  
-  .phrmcy-view-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  .phrmcy-view-button:hover {
-    background-color: #218838;
-  }
-  
-  /* Medicine Details */
-  .phrmcy-medicine-details {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f1f1f1;
-    border-radius: 5px;
-  }
-  
+}
 
-  .searchContainer{
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-    padding: 0 20px;
+
+
+/* pharmcay */
+
+
+.pharmacy-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.billing-navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dct-tab-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #000;
+}
+
+.dct-tab-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.pharmacy-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.flex {
+  display: flex;
+}
+
+.pharmacy-label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.pharmacy-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pharmacy-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pharmacy-button:hover {
+  background-color: #0056b3;
+}
+
+.pharmacy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.pharmacy-th, .pharmacy-td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.pharmacy-th {
+  background-color: #f0f0f0;
+  font-weight: bold;
+}
+
+.pharmacy-h1, .pharmacy-h2 {
+  margin-top: 20px;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+  .billing-navigation {
+    flex-direction: column;
+    align-items: stretch;
   }
+
+  .dct-tab-button {
+    margin-bottom: 10px;
+  }
+
+  .pharmacy-form-group {
+    flex-direction: column;
+  }
+
+  .pharmacy-table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+
+/*  */
+
+.gender{
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}

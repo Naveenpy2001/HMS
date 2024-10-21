@@ -168,14 +168,15 @@ const PatientRegistration = () => {
           className="pr-textarea"
         />
         <br />
-        <label>Gender:</label>
-        <input
+        <label>Gender :</label> <br />
+       <div className="flexStart gender">
+       <input
           type="radio"
           name="gender"
           value="Male"
           onChange={handleInputChange}
           className="pr-radio"
-        />{" "}
+        />{" "} 
         Male
         <input
           type="radio"
@@ -184,8 +185,7 @@ const PatientRegistration = () => {
           onChange={handleInputChange}
           className="pr-radio"
         />{" "}
-        Female
-        <input
+        Female <input
           type="radio"
           name="gender"
           value="Others"
@@ -194,6 +194,7 @@ const PatientRegistration = () => {
         />{" "}
 
         Others
+       </div>
         <br />
         <br />
         <label>Disease:</label>

@@ -159,7 +159,7 @@ const Billing = () => {
         <button onClick={() => handleTabClick('todaysPayments')}>Today's Payments</button>
         <button onClick={() => handleTabClick('totalPayments')}>Total Payments</button>
         <button onClick={() => handleTabClick('wallet')}>Wallet Amount</button>
-        <button onClick={() => handleTabClick('bankDetails')}>Bank Details</button> {/* New tab for Bank Details */}
+        {/* <button onClick={() => handleTabClick('bankDetails')}>Bank Details</button> */}
       </div>
 
       {/* Today's Payments Tab */}
