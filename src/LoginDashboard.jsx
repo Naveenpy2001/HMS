@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import HMS from './media/HMS-LOGO.jpg';
+
 
 import { API_URL } from './API';
 
@@ -43,13 +45,16 @@ const LoginDashboard = () => {
 
   return (
     <>
-      <div className="formConatinerCenter">
+      <div className="formConatinerCenter" style={{marginTop:'80px'}}>
       <form className="form_container" onSubmit={forgotPassword ? handleForgotPassword : handleLoginSubmit}>
-        <div className="logo_container"></div>
+      <div className="flexCenter">
+          <div className="logo_container">
+            <img src={HMS} alt="hms"/>
+          </div>
+          </div>
         <div className="title_container">
-          <p className="title">Login to your Account</p>
+          <p className="title">Admin Login</p>
           <span className="subtitle">
-            {forgotPassword ? 'Reset your password' : 'Get started with our app, just create an account and enjoy the experience.'}
           </span>
         </div>
         <br />
@@ -92,12 +97,12 @@ const LoginDashboard = () => {
             </div>
 
             <button title="Sign In" type="submit" className="sign-in_btn">
-              <span>Sign In</span>
+              <span>Login</span>
             </button>
 
-            <div className="forgot-password">
+            {/* <div className="forgot-password">
               <a href="#" onClick={() => setForgotPassword(true)}>Forgot Password?</a>
-            </div>
+            </div> */}
           </>
         ) : (
           <>

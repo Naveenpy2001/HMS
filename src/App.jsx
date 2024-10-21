@@ -13,7 +13,6 @@ import Services from "./home/HomeComponents/Services";
 
 import ContactUs from "./home/HomeComponents/ContactUSMain";
 import AboutUs from "./home/HomeComponents/AboutUsMain";
-import Support from "./home/HomeComponents/Support";
 import PrivateRoute from './home/HomeComponents/PrivateRoute';
 import ProtectedRoute from './Dashboard/ProtectedRoute';
 
@@ -22,26 +21,29 @@ import LoginDashboard from "./LoginDashboard";
 
 import HospitalProfile from "./Dashboard/components/HospitalProfile";
 
+
 const App = () => {
   return (
     <>
 
       <Routes>
         <Route path="/" element={<IndexPage />} />
-        <Route path="/Dashboard" element={<ProtectedRoute>
+        {/* <Route path="/Dashboard" element={<ProtectedRoute>
                                          <DashboardHMS />
                                          </ProtectedRoute>
-                                         } />
-        {/* <Route path="/Dashboard" element={<DashboardHMS />} /> */}
+                                         } /> */}
+        <Route path="/Dashboard" element={<DashboardHMS />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Register" element={<Register />} />
         <Route path="/pswd" element={<ForgotPswd />} />
         <Route path="/Services" element={<Services />} />
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/AboutUs" element={<AboutUs />} />
-        <Route path="/Support" element={<Support />} />
-        <Route path="/dashboard-hms" element={<DashboardHms />} />
-        <Route path='/Admin' element={<LoginDashboard />} />
+
+
+        <Route path='/AdminLogin' element={<LoginDashboard />} />
+        <Route path="/Admin" element={<DashboardHms />} />
+
         <Route path='/HospitalProfile' element={<HospitalProfile />} />
       </Routes>
 

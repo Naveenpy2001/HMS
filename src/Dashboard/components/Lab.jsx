@@ -28,6 +28,26 @@ const Lab = () => {
     notes: "",
   });
 
+  const [customTestName, setCustomTestName] = useState("");
+  const [isOtherSelected, setIsOtherSelected] = useState(false);
+
+  const handleTestNameChange = (e) => {
+    const value = e.target.value;
+    if (value === "Other") {
+      setIsOtherSelected(true);
+      setFormData({ ...formData, testName: "" });
+    } else {
+      setIsOtherSelected(false);
+      setFormData({ ...formData, testName: value });
+    }
+  };
+
+  const handleAddCustomTestName = () => {
+    setFormData({ ...formData, testName: customTestName });
+    setIsOtherSelected(false);
+    setCustomTestName("");
+  };
+
   const [labTests, setLabTests] = useState([]); // To store the data from backend
   const [selectedPatient, setSelectedPatient] = useState(null); // For view details
   const [data, setData] = useState();
@@ -118,6 +138,29 @@ const Lab = () => {
   const handleTabChange = (tabIndex) => {
     setActiveTab(tabIndex);
   };
+  const printBill = async (test) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/Lab-bill/${test.patientId}`,test, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/pdf",
+          },
+        }
+      );
+  
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const newWindow = window.open(url);
+      if (newWindow) {
+        newWindow.onload = () => {
+          newWindow.print();
+        };
+      }
+    } catch (error) {
+      console.error("Error printing the certificate:", error);
+    }
+  };
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
@@ -183,94 +226,38 @@ const Lab = () => {
         {activeTab === 1 && (
           <form className="lab-form" onSubmit={handleSubmit}>
             <h1 className="lab-h1">Lab Test Form</h1>
-            {/* <label htmlFor="patientId" className="dct-label">
-            Patient ID:
-          </label>
-        <input
-            type="text"
-            id="patientId"
-            className="dct-input"
-            value={patientId}
-            onChange={(e) => setPatientId(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onBlur={fetchPatientData}
-            required
-          />
-           <button type="button" onClick={fetchPatientData} className="dct-fetch-button">
-            Fetch Patient Data
-          </button>
-       
-
-        <div className="dct-form-group">
-          <label htmlFor="patientName" className="dct-label">
-            Patient Name:
-          </label>
-          <input
-            type="text"
-            id="patientName"
-            className="dct-input"
-            value={patientName}
-            onChange={(e) => setPatientName(e.target.value)}
-            required
-            readOnly
-          />
-        </div>
-
-        <div className="dct-form-group">
-          <label htmlFor="ptDiseases" className="dct-label">
-            Patient Diseases:
-          </label>
-          <input
-            type="text"
-            id="ptDiseases"
-            className="dct-input"
-            value={ptDiseases}
-            onChange={(e) => setPtDiseases(e.target.value)}
-            required
-            readOnly
-          />
-        </div>
-
-        <div className="dct-form-group">
-          <label htmlFor="ptDiseases" className="dct-label">
-            Patient Age:
-          </label>
-          <input
-            type="text"
-            id="ptDiseases"
-            className="dct-input"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            required
-            readOnly
-          />
-        </div> */}
-            {/* <div className="dct-form-group">
-          <label htmlFor="pttests" className="dct-label">
-            Patient Tests:
-          </label>
-          <input
-            type="text"
-            id="pttests"
-            className="dct-input"
-            value={labtest}
-            onChange={(e) => setAge(e.target.value)}
-            required
-            readOnly
-          />
-        </div> */}
-            <hr />
-            <hr />
-            <h2 className="dct-subheading">Lab Treatment</h2>
             <div className="lab-form-group">
-              <label className="lab-label">Test Name:</label>
-              <input
-                type="text"
+            <label className="lab-label">Test Name:</label>
+              <select
                 className="lab-input"
                 name="testName"
                 value={formData.testName}
-                onChange={handleChange}
-              />
+                onChange={handleTestNameChange}
+              >
+                <option value="">Select Test</option>
+                <option value="Blood Test">Blood Test</option>
+                <option value="X-Ray">X-Ray</option>
+                <option value="MRI">MRI</option>
+                <option value="Other">Other</option>
+              </select>
+              {isOtherSelected && (
+                <div className="custom-test-name">
+                  <input
+                    type="text"
+                    className="lab-input"
+                    placeholder="Enter custom test name"
+                    value={customTestName}
+                    onChange={(e) => setCustomTestName(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="lab-button"
+                    onClick={handleAddCustomTestName}
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="lab-form-group">
@@ -451,7 +438,9 @@ const Lab = () => {
                       >
                         View
                       </button>{" "}
-                      | <button>Download</button>
+                       <button
+                        onClick={() =>printBill(test)}
+                       >Download</button>
                     </td>
                   </tr>
                 ))}

@@ -43,14 +43,14 @@ const Billing = () => {
       })
       .catch(error => console.error('Error fetching today\'s payments:', error));
 
-      axios.get('https://hms.tsaritservices.com/api/today')
+      axios.get(`${API_URL}/api/today`)
       .then(response => {
         setTodaysPayments(response.data || []);
       })
       .catch(error => console.error('Error fetching today\'s payments:', error));
 
 
-    axios.get('https://hms.tsaritservices.com/monthly-total')
+    axios.get(`${API_URL}/monthly-total`)
       .then(response => setMonthlyTotalPayments(response.data || { monthWise: [], yearWise: [] }))
       .catch(error => console.error('Error fetching total payments:', error));
   }, []);

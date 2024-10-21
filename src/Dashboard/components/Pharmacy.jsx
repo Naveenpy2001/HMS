@@ -13,8 +13,10 @@ const Pharmacy = () => {
   const [age, setAge] = useState("");
   const [formData, setFormData] = useState({
     medicineName: "",
+    customMedicineName: "",
     quantity: "",
     expiryDate: "",
+    startData:'',
     price: "",
     batchNumber: "",
     manufacturer: "",
@@ -28,6 +30,7 @@ const Pharmacy = () => {
 
   const [medicines, setMedicines] = useState([]);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
+  const [customMedicines, setCustomMedicines] = useState([]);
 
   useEffect(() => {
     // Fetch data from backend
@@ -69,12 +72,35 @@ const Pharmacy = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+
+    if (name === "medicineName" && value !== "Others") {
+      setFormData((prevFormData) => ({ ...prevFormData, customMedicineName: "" }));
+    }
+  };
+
+
+  const handleAddCustomMedicine = () => {
+    if (formData.customMedicineName) {
+      // Add the custom medicine to the list
+      setCustomMedicines((prevCustomMedicines) => [
+        ...prevCustomMedicines,
+        formData.customMedicineName,
+      ]);
+      setFormData({ ...formData, medicineName: formData.customMedicineName });
+    } else {
+      alert("Please enter a medicine name before adding.");
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const medicineToSave =
+      formData.medicineName === "Others"
+        ? formData.customMedicineName
+        : formData.medicineName;
     try {
-      const response = await axios.post(`${API_URL}/savepharmacy`, formData
+      const response = await axios.post(`${API_URL}/savepharmacy`, {formData,medicineName: medicineToSave,}
         , {
           headers: {
             "Content-Type": "application/json",
@@ -84,6 +110,7 @@ const Pharmacy = () => {
       setMedicines([...medicines, response.data]);
       setFormData({
         medicineName: "",
+        customMedicineName: "",
         quantity: "",
         expiryDate: "",
         price: "",
@@ -113,6 +140,41 @@ const Pharmacy = () => {
     setActiveTab(tabIndex);
   };
 
+  const handlePrescriptionChange = (e) => {
+    const { name, value } = e.target;
+    setPrescriptionData({ ...prescriptionData, [name]: value });
+  };
+
+
+  const [prescriptionData, setPrescriptionData] = useState({
+    patientId: "",
+    medicineName: "",
+    dosage: "",
+    instructions: "",
+  });
+
+  const handlePrescriptionSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${API_URL}/saveprescription`, prescriptionData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      alert(response.data.message); // Adjust based on your response structure
+      setPrescriptionData({
+        patientId: "",
+        medicineName: "",
+        dosage: "",
+        instructions: "",
+      });
+    } catch (error) {
+      console.error("Error submitting prescription data:", error);
+    }
+  };
+
+
+
   return (
     <>
     <div className="phrmcy-container">
@@ -121,96 +183,66 @@ const Pharmacy = () => {
           className={`dct-tab-button ${activeTab === 1 ? "active" : ""}`}
           onClick={() => handleTabChange(1)}
         >
-          Lab Test Form
+          Pharmacy Form
         </button>
         <button
           className={`dct-tab-button ${activeTab === 2 ? "active" : ""}`}
           onClick={() => handleTabChange(2)}
         >
-          View/Update Lab Details
+          View/Update Pharmacy Details
         </button>
+        <button
+            className={`dct-tab-button ${activeTab === 3 ? "active" : ""}`}
+            onClick={() => handleTabChange(3)}
+          >
+            Prescription Form
+          </button>
       </div>
       {activeTab === 1 && (
         <form className="phrmcy-form" onSubmit={handleSubmit}>
 
-{/* <label htmlFor="patientId" className="dct-label">
-            Patient ID:
-          </label>
-        <input
-            type="text"
-            id="patientId"
-            className="dct-input"
-            value={patientId}
-            onChange={(e) => setPatientId(e.target.value)}
-            onKeyDown={handleKeyDown}
-            onBlur={fetchPatientData}
-            required
-          />
-           <button type="button" onClick={fetchPatientData} className="dct-fetch-button">
-            Fetch Patient Data
-          </button>
-       
-
-        <div className="dct-form-group">
-          <label htmlFor="patientName" className="dct-label">
-            Patient Name:
-          </label>
-          <input
-            type="text"
-            id="patientName"
-            className="dct-input"
-            value={patientName}
-            onChange={(e) => setPatientName(e.target.value)}
-            required
-            readOnly
-          />
-        </div>
-
-        <div className="dct-form-group">
-          <label htmlFor="ptDiseases" className="dct-label">
-            Patient Diseases:
-          </label>
-          <input
-            type="text"
-            id="ptDiseases"
-            className="dct-input"
-            value={ptDiseases}
-            onChange={(e) => setPtDiseases(e.target.value)}
-            required
-            readOnly
-          />
-        </div>
-
-        <div className="dct-form-group">
-          <label htmlFor="ptDiseases" className="dct-label">
-            Patient Age:
-          </label>
-          <input
-            type="text"
-            id="ptDiseases"
-            className="dct-input"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            required
-            readOnly
-          />
-        </div>
-
-        <hr/>
-        <hr /> */}
-
         <h1 className="phrmcy-h1">Pharmacy Inventory</h1>
 
         <div className="phrmcy-form-group">
-          <label className="phrmcy-label">Medicine Name:</label>
-          <input
-            type="text"
-            className="phrmcy-input"
-            name="medicineName"
-            value={formData.medicineName}
-            onChange={handleChange}
-          />
-        </div>
+            <label className="phrmcy-label">Medicine Name:</label>
+            <select
+              className="phrmcy-select"
+              name="medicineName"
+              value={formData.medicineName}
+              onChange={handleChange}
+            >
+              <option value="">Select</option>
+              {customMedicines.map((medicine, index) => (
+                <option key={index} value={medicine}>
+                  {medicine}
+                </option>
+              ))}
+              <option value="Paracetamol">Paracetamol</option>
+              <option value="Ibuprofen">Ibuprofen</option>
+              <option value="Aspirin">Aspirin</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+          {formData.medicineName === "Others" && (
+            <div className="phrmcy-form-group">
+              <label className="phrmcy-label">Custom Medicine Name:</label>
+              <input
+                type="text"
+                className="phrmcy-input"
+                name="customMedicineName"
+                value={formData.customMedicineName}
+                onChange={handleChange}
+              />
+              <button
+                type="button"
+                className="phrmcy-button"
+                onClick={handleAddCustomMedicine}
+              >
+                Add
+              </button>
+            </div>
+          )}
+      
 
         <div className="phrmcy-form-group">
           <label className="phrmcy-label">Quantity:</label>
@@ -219,6 +251,16 @@ const Pharmacy = () => {
             className="phrmcy-input"
             name="quantity"
             value={formData.quantity}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="phrmcy-form-group">
+          <label className="phrmcy-label">Manufacture Date:</label>
+          <input
+            type="date"
+            className="phrmcy-input"
+            name="expiryDate"
+            value={formData.startData}
             onChange={handleChange}
           />
         </div>
@@ -371,6 +413,57 @@ const Pharmacy = () => {
             </>
         )
       }
+
+{activeTab === 3 && (
+          <form className="phrmcy-form" onSubmit={handlePrescriptionSubmit}>
+            <h1 className="phrmcy-h1">Prescription Form</h1>
+            <div className="phrmcy-form-group">
+              <label className="phrmcy-label">Patient ID:</label>
+              <input
+                type="text"
+                className="phrmcy-input"
+                name="patientId"
+                value={prescriptionData.patientId}
+                onChange={handlePrescriptionChange}
+                required
+              />
+            </div>
+            <div className="phrmcy-form-group">
+              <label className="phrmcy-label">Medicine Name:</label>
+              <input
+                type="text"
+                className="phrmcy-input"
+                name="medicineName"
+                value={prescriptionData.medicineName}
+                onChange={handlePrescriptionChange}
+                required
+              />
+            </div>
+            <div className="phrmcy-form-group">
+              <label className="phrmcy-label">Dosage:</label>
+              <input
+                type="text"
+                className="phrmcy-input"
+                name="dosage"
+                value={prescriptionData.dosage}
+                onChange={handlePrescriptionChange}
+                required
+              />
+            </div>
+            <div className="phrmcy-form-group">
+              <label className="phrmcy-label">Instructions:</label>
+              <input
+                type="text"
+                className="phrmcy-input"
+                name="instructions"
+                value={prescriptionData.instructions}
+                onChange={handlePrescriptionChange}
+                required
+              />
+            </div>
+            <button type="submit" className="phrmcy-button">Submit Prescription</button>
+          </form>
+        )}
 
       {selectedMedicine && (
         <div className="phrmcy-medicine-details">

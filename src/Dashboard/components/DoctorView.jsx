@@ -134,7 +134,7 @@ const DoctorView = () => {
 
     try {
       const response = await axios.post(
-        `${API_URL}savetreatment`, // Update with your actual Spring Boot endpoint
+        `${API_URL}/savetreatment`, // Update with your actual Spring Boot endpoint
         formData,
         {
           headers: {
@@ -246,7 +246,9 @@ const DoctorView = () => {
             <thead>
               <tr>
 
-                <th>ID</th>
+                {/* <th>ID</th> */}
+
+
               <th>Patient id</th>
 
                 <th>Patient Name</th>
@@ -265,7 +267,7 @@ const DoctorView = () => {
                   <td>
                     <button
                       className="dct-view-button"
-                      onClick={() => handlePatientView(patient.id)}
+                      onClick={() => handlePatientView(patient)}
                     >
                       View
                     </button>
