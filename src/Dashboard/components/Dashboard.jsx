@@ -41,8 +41,8 @@ const Dashboard = ({ emailid, setActiveTab, token }) => {
         setData({
           TodaypatientCount: result.TodaypatientCount || 0,
           TotalpatientCount: result.TotalpatientCount || 0,
-          todayAppointmentsCount: result.todayAppointmentsCount || 0,
-          totalAppointmentsCount: result.totalAppointmentsCount || 0,
+          todayAppointmentsCount: result.TodayAppointments || 0,
+          totalAppointmentsCount: result.TotalAppointments || 0,
           todayPayment: result.todayPayment || 0,
           totalPayment: result.totalPayment || 0,
           patientTracking: result.patientTracking || [],

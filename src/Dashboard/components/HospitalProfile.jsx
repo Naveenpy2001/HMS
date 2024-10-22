@@ -24,7 +24,7 @@ const HospitalProfile = () => {
       .then((response) => {
         setHospitalData(response.data);
         setLoading(false);
-        console.log(response.data);
+        // console.log(response.data);
         
       })
       .catch((error) => {

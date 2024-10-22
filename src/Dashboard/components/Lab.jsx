@@ -141,7 +141,7 @@ const Lab = () => {
   const printBill = async (test) => {
     try {
       const response = await fetch(
-        `${API_URL}/Lab-bill/${test.patientId}`,test, {
+        `${API_URL}/Lab-bill/${test.patientId}/${test.id}`,selectedPatient, {
           method: "GET",
           headers: {
             "Content-Type": "application/pdf",
@@ -453,6 +453,9 @@ const Lab = () => {
         {selectedPatient && (
           <div className="lab-patient-details">
             <h3>Patient Details</h3>
+            <p>
+              <strong>Id:</strong> {selectedPatient.id}
+            </p>
             <p>
               <strong>Test Name:</strong> {selectedPatient.testName}
             </p>

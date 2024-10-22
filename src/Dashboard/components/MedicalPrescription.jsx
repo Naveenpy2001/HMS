@@ -14,28 +14,32 @@ function Appointments({ token }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/records`, {
+        const response = await fetch(`${API_URL}/getAllappointments`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem(token)}`,
+            // Authorization: `Bearer ${sessionStorage.getItem('token')}`,
           },
         });
+        // console.log(response)
         if (!response.ok) {
           throw new Error(`HTTP fetching error! status: ${response.status}`);
         }
+        
         const result = await response.json();
-        const appointments = result.appointments || [];
+        console.log(result)
+        const appointments = result.records || [];
+        console.log(appointments)
         setData(appointments);
         setFilteredAppointments(appointments);
 
         // Calculate and update today's appointments count
         const today = new Date().toISOString().split("T")[0];
         updateTodayAppointmentsCount(appointments, today);
-        setTotalAppointmentsCount(appointments.length);
-
+        setTotalAppointmentsCount(result.TotalAppointments);
+        setTodayAppointmentsCount(result.TodayAppointments);
         // Optionally, send the updated counts to the backend
-        await updateAppointmentCounts(today, appointments.length);
+        // await updateAppointmentCounts(today, appointments.length);
       } catch (error) {
         console.error("Error fetching data:", error);
         setData([]);
@@ -56,20 +60,20 @@ function Appointments({ token }) {
     setTodayAppointmentsCount(count);
   };
 
-  const updateAppointmentCounts = async (date, totalCount) => {
-    try {
-      await fetch(`${API_URL}/appointments/counts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem(token)}`,
-        },
-        body: JSON.stringify({ date, totalCount }),
-      });
-    } catch (error) {
-      console.error("Error updating appointment counts:", error);
-    }
-  };
+  // const updateAppointmentCounts = async (date, totalCount) => {
+  //   try {
+  //     await fetch(`${API_URL}/appointments/counts`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${localStorage.getItem(token)}`,
+  //       },
+  //       body: JSON.stringify({ date, totalCount }),
+  //     });
+  //   } catch (error) {
+  //     console.error("Error updating appointment counts:", error);
+  //   }
+  // };
 
   const handleSearchChange = (e) => {
     const term = e.target.value.toLowerCase();
@@ -118,8 +122,8 @@ function Appointments({ token }) {
     const newStatus =
       currentStatus === "Completed" ? "Not Completed" : "Completed";
     try {
-      const response = await fetch(`${API_URL}/appointments/${id}/status`, {
-        method: "PATCH",
+      const response = await fetch(`${API_URL}/appointmrnt-email/send/${id}`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem(token)}`,
@@ -188,10 +192,13 @@ function Appointments({ token }) {
           <thead>
             <tr>
               <th>Patient Name</th>
-              <th>Age</th>
+              {/* <th>Age</th> */}
               <th>Reason</th>
+              <th>Time</th>
               <th>Date</th>
+              <th>Email</th>
               <th>Status</th>
+
             </tr>
           </thead>
           <tbody>
@@ -199,11 +206,13 @@ function Appointments({ token }) {
               filteredAppointments.map((appointment) => (
                 <tr key={appointment.id}>
                   <td>
-                    {appointment.firstName} {appointment.lastName}
+                    {appointment.patientName}
                   </td>
-                  <td>{appointment.age}</td>
-                  <td>{appointment.disease}</td>
-                  <td>{appointment.date}</td>
+                  {/* <td>{appointment.age}</td> */}
+                  <td>{appointment.reason}</td>
+                  <td>{appointment.time} {appointment.period} </td>
+                  <td>{appointment.appointmentDate}</td>
+                  <td>{appointment.email}</td>  
                   <td>
                     <button
                       onClick={() =>
