@@ -6,7 +6,6 @@
 
 .lab-navigation {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 20px;
 }
 
@@ -86,7 +85,6 @@
 
 .lab-filter-container {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 20px;
 }
 
@@ -154,7 +152,6 @@
 
 .billing-navigation {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 20px;
 }
 

@@ -785,22 +785,27 @@ const [selectedTest, setSelectedTest] = useState("");
           <div className="dct-form-group">
             <label htmlFor="tabletCount" className="dct-label">Number of Tablets:</label>
             <input type="number" className="dct-input" onChange={(e) => handleTabletCountChange(e.target.value)} />
+          {/* <label>Tablet {index + 1}:</label> */}
           </div>
           {tablets.map((tablet, index) => (
-            <div key={index} className="dct-form-group">
-              <label>Tablet {index + 1}:</label>
+            <div key={index} className="dct-form-group flex">
               <select value={tablet.name} onChange={(e) => handleTabletChange(index, 'name', e.target.value)} className="dct-input">
                 {medicineOptions.map((option) => (
                   <option key={option} value={option}>{option}</option>
                 ))}
               </select>
               <input
-                type="number"
+                type="text"
                 placeholder="Count"
                 value={tablet.count}
                 onChange={(e) => handleTabletChange(index, 'count', e.target.value)}
                 className="dct-input"
               />
+              <select name="" id="" className="dct-input">
+                <option value="" selected disabled>select MG</option>
+                <option value="">1 MG</option>
+                <option value="">2 MG</option>
+              </select>
             </div>
           ))}
 

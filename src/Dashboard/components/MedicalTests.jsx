@@ -76,9 +76,12 @@ function MedicalTests({ token }) {
   const filterPatients = (term, visitedFilter, dateFilter) => {
     const filtered = data.patientTracking.filter((patient) => {
       const matchesTerm =
+        patient.id.toString().includes(term) ||
         patient.firstName.toLowerCase().includes(term) ||
         patient.disease.toLowerCase().includes(term) ||
-        patient.age.toString().includes(term);
+        patient.email.toLowerCase().includes(term) ||
+        patient.phoneNumber.includes(term) ||
+        patient.aadharNumber.includes(term);
       const matchesVisited =
         visitedFilter === "all" ||
         (visitedFilter === "visited" && patient.visited) ||
@@ -134,7 +137,7 @@ function MedicalTests({ token }) {
                 className="search-input"
               />
 
-              <select
+              {/* <select
                 value={filterVisited}
                 onChange={handleFilterVisitedChange}
                 className="filter-select"
@@ -142,7 +145,7 @@ function MedicalTests({ token }) {
                 <option value="all">All</option>
                 <option value="visited">Visited</option>
                 <option value="not_visited">Not Visited</option>
-              </select>
+              </select> */}
 
               <input
                 type="date"

@@ -429,6 +429,64 @@ const HospitalData = () => {
       .catch((error) => console.error("Error:", error));
   };
 
+
+
+
+  useEffect(() => {
+    // Fetch the initial values for the checkboxes from the backend
+    const fetchTabSettings = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/tab-settings`, {
+          headers: {
+            
+          },
+        });
+        setShowLabTab(response.data.showLabTab);
+        setShowPharmacyTab(response.data.showPharmacyTab);
+      } catch (error) {
+        console.error("Error fetching tab settings:", error);
+      }
+    };
+    fetchTabSettings();
+  }, []);
+
+
+  const handleTabToggle = async (tabType, value) => {
+    try {
+      
+      const response = await axios.post(
+        `${API_URL}/api/update-tab-settings`,
+        {
+          tabType, // 'lab' or 'pharmacy'
+          value, // true or false
+        },
+        {
+          headers: {
+            
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log(`Successfully updated ${tabType} tab to ${value}`);
+      }
+    } catch (error) {
+      console.error(`Error updating ${tabType} tab:`, error);
+    }
+  };
+
+  const handleLabTabChange = () => {
+    const updatedValue = !showLabTab;
+    setShowLabTab(updatedValue);
+    handleTabToggle("lab", updatedValue);
+  };
+
+  const handlePharmacyTabChange = () => {
+    const updatedValue = !showPharmacyTab;
+    setShowPharmacyTab(updatedValue);
+    handleTabToggle("pharmacy", updatedValue);
+  };
+
   const renderTabContent = () => {
     switch (activeTab) {
       case "personal":
@@ -540,7 +598,13 @@ const HospitalData = () => {
         );
       case "images":
         return (
+          <>
           <section className="hospital-data-section">
+          <div>
+          <h2>Upload Profile Photo</h2>
+            <input type="file"  className="hospital-data-input"/>
+          </div>
+            
             <h2>Upload Images</h2>
             <input
               type="file"
@@ -571,26 +635,29 @@ const HospitalData = () => {
               ))}
             </div>
           </section>
+          </>
         );
       case "customize":
         return (
           <section className="hospital-data-section">
             <h2>Customize Tabs</h2>
-            <label>
+            <label class="switch flex" >
               <input
                 type="checkbox"
                 checked={showLabTab}
-                onChange={() => setShowLabTab(!showLabTab)}
+                onChange={handleLabTabChange}
               />
+              <span class="slider"></span>
               Show Lab Tab
             </label>
             <br />
-            <label>
+            <label class="switch flex">
               <input
                 type="checkbox"
                 checked={showPharmacyTab}
-                onChange={() => setShowPharmacyTab(!showPharmacyTab)}
+                onChange={handlePharmacyTabChange}
               />
+              <span class="slider"></span>
               Show Pharmacy Tab
             </label>
           </section>

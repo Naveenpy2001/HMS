@@ -9,7 +9,7 @@ import MedicalTests from "./components/MedicalTests";
 import MedicalPrescription from "./components/MedicalPrescription";
 import Billing from "./components/Billing";
 import HospitalData from "./components/HospitalData";
-import Support from "./components/Support";  // Import the new Support component
+import Support from "./components/Support";  
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -39,8 +39,12 @@ function App(token) {
       });
       const data = await response.json();
       setUserData(data);
+
       // Ideally, set the payment status from API response like below:
       // setIsPaid(data.isPaid);     --------------------- here getting status of user paid or not
+      // setIsLabEnabled(data.isLabEnabled); // Example API response key for Lab visibility
+      // setIsPharmacyEnabled(data.isPharmacyEnabled);
+
       console.log("Data", data.firstname, data.lastname);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -106,6 +110,8 @@ function App(token) {
 
 
 
+  const [isLabEnabled, setIsLabEnabled] = useState(true); 
+  const [isPharmacyEnabled, setIsPharmacyEnabled] = useState(true); 
 
   // tabs
 
@@ -144,7 +150,7 @@ function App(token) {
         return <HospitalData  />;
       case "Support": // Support tab handler
         return <Support />;
-        case "Lab": // Handle Lab component
+      case "Lab": // Handle Lab component
         return <Lab />;
       case "Pharmacy": // Handle Pharmacy component
         return <Pharmacy />;
@@ -196,7 +202,19 @@ function App(token) {
              </button>
            </li>
            {/* lab */}
-           <li>
+           {isLabEnabled ? (
+            <li>
+              <button
+                className={activeTab === "Lab" ? "active" : ""}
+                onClick={() => setActiveTab("Lab")}
+              >
+                <i className="bx bx-test-tube"></i>
+                <span className="links_name">Lab</span>
+              </button>
+            </li>
+          ) : null}
+
+           {/* <li>
             <button
               className={activeTab === "Lab" ? "active" : ""}
               onClick={() => setActiveTab("Lab")}
@@ -205,9 +223,9 @@ function App(token) {
              
               <span className="links_name">Lab</span>
             </button>
-          </li>
+          </li> */}
           {/* pharmacy */}
-          <li>
+          {/* <li>
             <button
               className={activeTab === "Pharmacy" ? "active" : ""}
               onClick={() => setActiveTab("Pharmacy")}
@@ -215,7 +233,18 @@ function App(token) {
               <i className="bx bx-capsule"></i>
               <span className="links_name">Pharmacy</span>
             </button>
-          </li>
+          </li> */}
+          {isPharmacyEnabled ? (
+            <li>
+              <button
+                className={activeTab === "Pharmacy" ? "active" : ""}
+                onClick={() => setActiveTab("Pharmacy")}
+              >
+                <i className="bx bx-capsule"></i>
+                <span className="links_name">Pharmacy</span>
+              </button>
+            </li>
+          ) : null}
             <li>
              <button
                className={activeTab === "MedicalTests" ? "active" : ""}
